@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SchedulingApp",
+    "\\SchedulingApp\\src"
   ],
-  "SelectedNode": "\\SchedulingApp",
+  "SelectedNode": "\\SchedulingApp\\src\\JSON.js",
   "PreviewInSolutionExplorer": false
 }
