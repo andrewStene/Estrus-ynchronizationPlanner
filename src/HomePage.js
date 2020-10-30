@@ -3,7 +3,14 @@ import { Button } from '@material-ui/core';
 
 function HomePage()
 {
-    return (<Button color="primary">Hello World</Button>);
+    return (
+        <div>
+            <h1>Welcome to the Estrus Synchronization Planner</h1>
+            <h1>To continue select the “Get Started” button below</h1>
+            <Button color="defualt"variant="contained">Get Started</Button>
+        
+        </div>
+        );
 }
 
 
