@@ -7,8 +7,7 @@ function Header()
 {
     return (
         <div style={{backgroundColor: "#eeeeee"}}>
-            <img src= {cow} alt="moo"/>
-           
+            <img src= {cow} alt="moo" />
         </div>
     );
 }
