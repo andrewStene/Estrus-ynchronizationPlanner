@@ -13,7 +13,7 @@ function NamePage (){
         <br/>
         <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "large" >Back</Button>
 
-        <Button className = "sidebysidebutton"color="defualt"variant="contained" size = "large">Next</Button>
+        <Button className = "sidebysidebutton"component={Link} to="/selectionpage"color="defualt"variant="contained" size = "large">Next</Button>
 
         </div>
 
