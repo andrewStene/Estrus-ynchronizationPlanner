@@ -12,8 +12,7 @@ function Reference()
             <img src= {bp} alt="bp" />
             <img src= {hp} alt="hp" />
             <br/>
-            <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "small" >Home</Button>
-            
+            <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "small" >Home</Button>            
         </div>
     );
 }
