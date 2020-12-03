@@ -7,6 +7,7 @@ import Footer from './Footer';
 import SelectionPage from './SelectionPage';
 import Help from './Help';
 import Reference from './Reference'
+import Protocol from './ProtocolPage'
 import {
   BrowserRouter as Router,
   Route,
@@ -73,6 +74,8 @@ class App extends React.Component
           component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType} setSelection = {this.setSelection}/>}/>
           <Route path = "/help" component = {Help}/>
           <Route path = "/reference" component = {Reference}/>
+          <Route path = "/protocol" component = 
+          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name}/>}/>
           <Footer/>
         </div>
         </Router>);
