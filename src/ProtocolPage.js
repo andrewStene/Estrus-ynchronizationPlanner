@@ -31,7 +31,6 @@ class ProtocolPage extends React.Component
 
    updateParent(value)
    {   
-        this.props.setName(value);
         this.setState({id:value});
    }
 
@@ -40,7 +39,30 @@ class ProtocolPage extends React.Component
         return(
             <div>         
             <h1>Select a Protocol</h1>
-            <TextField id="outlined-basic" label="Name" variant="outlined" defaultValue = {this.state.name} onBlur = {(event) => this.updateParent(event.target.value)}/>
+            <br/>
+            <ul>
+            <li>{this.state.name}</li>
+            <li>Breed: {this.state.breed}</li>
+            <li>System Type: {this.state.systemType}</li>
+            <li>Cow or Hiefer: {this.state.cowType}</li>
+            </ul>
+            <br/>
+            <FormControl variant="outlined">
+              <InputLabel id="demo-simple-select-outlined-label">Protocol</InputLabel>
+                  <Select
+                   id="protocol"
+                    //value={age}
+                    onChange={this.updateParent}
+                    label="Protocol"
+                                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                     </Select>
+            </FormControl>
             <br/>
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
