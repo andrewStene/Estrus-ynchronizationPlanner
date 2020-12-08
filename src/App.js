@@ -35,7 +35,9 @@ class App extends React.Component
 
     }
     this.setName = this.setName.bind(this);
-    this.setSelection = this.setSelection.bind(this);
+    this.setCowType = this.setCowType.bind(this);
+    this.setBreed = this.setBreed.bind(this);
+    this.setSystemType = this.setSystemType.bind(this);
   }
 
   /**
@@ -48,15 +50,24 @@ class App extends React.Component
     console.log(this.state.name);
   }
 
-  /**
-   * Sets the options determind by the SelectionPage component in the state
-   * @param {*breed of cattle} breed 
-   * @param {*type of system} systemType 
-   * @param {*cow or hiefer} cowType 
-   */
-  setSelection(breed, systemType, cowType)
+  setCowType(cowType)
   {
-    this.setState({breed:breed}, {systemType:systemType}, {cowType:cowType});
+    this.setState({cowType:cowType});
+    console.log(this.state.cowType)
+  }
+
+  setBreed(breed)
+  {
+    this.setState({breed:breed});
+    console.log(this.state.breed)
+
+  }
+
+  setSystemType(sys)
+  {
+    this.setState({systemType:sys});
+    console.log(this.state.systemType)
+
   }
 
   /**
@@ -71,11 +82,12 @@ class App extends React.Component
           <Route path = "/namepage" component ={()=><NamePage name = {this.state.name} setName = {this.setName}/>}/>
           <Route path = "/" exact component = {HomePage}/>
           <Route path = "/selectionpage" 
-          component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType} setSelection = {this.setSelection}/>}/>
+          component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType} setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
           <Route path = "/help" component = {Help}/>
           <Route path = "/reference" component = {Reference}/>
           <Route path = "/protocol" component = 
-          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name}/>}/>
+          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name} 
+          />}/>
           <Footer/>
         </div>
         </Router>);

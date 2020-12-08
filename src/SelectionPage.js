@@ -22,6 +22,7 @@ class SelectionPage extends React.Component
     }
     this.updateParentCowType = this.updateParentCowType.bind(this);
     this.updateParentBreed = this.updateParentBreed.bind(this);
+    this.updateParentSystemType = this.updateParentSystemType.bind(this);
   }
   
   static getDerivedStateFromProps(props,state)
@@ -32,21 +33,20 @@ class SelectionPage extends React.Component
   updateParentCowType(cowType)
   {
     this.setState({cowType:cowType});
-    console.log(this.state.cowType)
+    this.props.setCowType(cowType);
   }
 
   updateParentBreed(breed)
   {
     this.setState({breed:breed});
-    console.log(this.state.breed)
+    this.props.setBreed(breed);
 
   }
 
   updateParentSystemType(sys)
   {
     this.setState({systemType:sys});
-    console.log(this.state.systemType)
-
+    this.props.setSystemType(sys);
   }
 
   render()
@@ -56,7 +56,7 @@ class SelectionPage extends React.Component
             <h1>Select Breed Type</h1>
             <FormControl>
               <FormLabel>Breed Type</FormLabel>
-              <RadioGroup aria-label = "Breed Type" name = "breed" defaultValue={this.state.breed} onChange={(event)=>this.updateParentBreed(event.target.value)}>
+              <RadioGroup aria-label = "Breed Type" name = "breed" value={this.state.breed} onChange={(event)=>this.updateParentBreed(event.target.value)}>
                 <FormControlLabel value ="bosTaurus" control={<Radio />} label="Bos Taurus"/>
                 <FormControlLabel value ="bosIndicusInfluence" control={<Radio />} label="Bos Indicus Influence"/>
               </RadioGroup>
@@ -65,7 +65,7 @@ class SelectionPage extends React.Component
             <br/>
             <FormControl>
               <FormLabel>Cow or Heifer</FormLabel>
-              <RadioGroup aria-label = "Breed Type" name = "cow" value={this.state.cowType} onChange={(event)=>this.updateParentCowType(event.target.value)}>
+              <RadioGroup aria-label = "Cow or Heifer" name = "cow" value={this.state.cowType} onChange={(event)=>this.updateParentCowType(event.target.value)}>
                 <FormControlLabel value ="cow" control={<Radio />} label="Cow "/>
                 <FormControlLabel value ="heifer" control={<Radio />} label="Heifer "/>
               </RadioGroup>

@@ -10,7 +10,7 @@ class HomePage extends React.Component
         return (
             <div>
                 <h1>Welcome to the Estrus Synchronization Planner</h1>
-                <h1>To continue select the “Get Started” button below</h1>
+                <h1>To continue select the 'Get Started' button below</h1>
                 <Button component={Link} to="/namepage" color="defualt" variant="contained" size = "large">Get Started</Button>
             
             </div>
