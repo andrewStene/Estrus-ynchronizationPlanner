@@ -1,3 +1,6 @@
+/**
+ * ProtocolPage.js
+ */
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom'
@@ -8,11 +11,21 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+/**
+ * Can't think of a good description rn
+ */
 class ProtocolPage extends React.Component
 {
+    /**
+     * Constructor for the ProtocolPage class
+     * @param {Includes the Name, Breed, SystemType and CowType} props 
+     */
    constructor(props)
    {
        super(props);
+       /**
+        * State is used to store previous values to display to the user
+        */
        this.state =
        {
         name: "",
@@ -24,16 +37,28 @@ class ProtocolPage extends React.Component
        this.updateParent = this.updateParent.bind(this);  
    }
 
+    /**
+     * Sets the state based on the values passed in the props
+     * @param {Props} props 
+     * @param {State} state 
+     */
    static getDerivedStateFromProps(props,state)
    {
        return{name: props.name, breed:props.breed, systemType:props.systemType, cowType:props.cowType};
    }
 
+   /**
+    * Dont remember what this is atm
+    * @param {} value 
+    */
    updateParent(value)
    {   
         this.setState({id:value});
    }
 
+    /**
+     * Render function for the class
+     */
     render()
     {
         return(

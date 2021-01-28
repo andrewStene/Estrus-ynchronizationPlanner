@@ -1,7 +1,13 @@
+/**
+ * Help.js
+ */
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button} from '@material-ui/core'
 
+/**
+ * React component that implements the help page
+ */
 function Help()
 {
     return(

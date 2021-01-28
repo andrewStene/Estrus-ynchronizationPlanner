@@ -1,9 +1,15 @@
+/**
+ * Reference.js
+ */
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button} from '@material-ui/core';
 import bp from './bp.png';
 import hp from './hp.png';
 
+/**
+ * React component that represents a refernce type page
+ */
 function Reference()
 {
     return(

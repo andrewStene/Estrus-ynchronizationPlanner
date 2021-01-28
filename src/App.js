@@ -1,3 +1,6 @@
+/**
+ * App.js
+ */
 import React from 'react';
 import './App.css';
 import Header from './components/Header';
@@ -14,14 +17,17 @@ import {
 } from "react-router-dom";
 
 /**
- * Contains the main logic for the application
+ * The class that contains the main logic for the application
  */
-
 class App extends React.Component 
 {
   constructor(props)
   {
     super(props);
+    /**
+     * The different components of a protocol are stored in the state of the main 
+     * react component and passed to other components or updated as needed
+     */
     this.state = 
     {
       name:"",
@@ -34,6 +40,9 @@ class App extends React.Component
       pg:"",
 
     }
+    /**
+     * The bindings for the functions to update the state
+     */
     this.setName = this.setName.bind(this);
     this.setCowType = this.setCowType.bind(this);
     this.setBreed = this.setBreed.bind(this);
@@ -41,32 +50,47 @@ class App extends React.Component
   }
 
   /**
-   * Sets the name of the protocol plan in the state based on the given name
-   * @param {the new name to be set} name 
+   * Sets the name of the protocol plan in the state based on the given Name
+   * @param {The new Name to be set} name 
    */
   setName(name)
   {
     this.setState({name:name});
-    console.log(this.state.name);
+    console.log(this.state.name); //Makes sure that the correct value is stored in the state
   }
-
+  
+  /**
+   * Updates the state to the proper value of Cow or Heifer 
+   * based on what is given in the SelectionPage
+   * @param {Either a value of Cow or Heifer} cowType 
+   */
   setCowType(cowType)
   {
     this.setState({cowType:cowType});
-    console.log(this.state.cowType)
+    console.log(this.state.cowType); //Makes sure that the correct value is stored in the state
   }
 
+  /**
+   * Updates the state to the proper type of Cattle Breed
+   * based on what is given in the SelectionPage
+   * @param {The Breed value to update the state with} breed 
+   */
   setBreed(breed)
   {
     this.setState({breed:breed});
-    console.log(this.state.breed)
+    console.log(this.state.breed); //Makes sure that the correct value is stored in the state
 
   }
 
+  /**
+   * Updates the state to the proper System Type
+   * based on what is given in the SelectionPage
+   * @param {The System Type being used to be stored in the state} sys 
+   */
   setSystemType(sys)
   {
     this.setState({systemType:sys});
-    console.log(this.state.systemType)
+    console.log(this.state.systemType); //Makes sure that the correct value is stored in the state
 
   }
 
@@ -86,8 +110,7 @@ class App extends React.Component
           <Route path = "/help" component = {Help}/>
           <Route path = "/reference" component = {Reference}/>
           <Route path = "/protocol" component = 
-          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name} 
-          />}/>
+          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name} />}/>
           <Footer/>
         </div>
         </Router>);
