@@ -1,6 +1,14 @@
+/**
+ * Footer.js
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
+
+/**
+ * React component that represents the static footer at the 
+ * bottom of the page
+ */
 function Footer()
 {
     return (
