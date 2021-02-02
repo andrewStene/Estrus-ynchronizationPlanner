@@ -35,6 +35,7 @@ class SelectionPage extends React.Component
     this.updateParentCowType = this.updateParentCowType.bind(this);
     this.updateParentBreed = this.updateParentBreed.bind(this);
     this.updateParentSystemType = this.updateParentSystemType.bind(this);
+    this.verifyInput = this.verifyInput.bind(this);
   }
 
   /**
@@ -46,6 +47,7 @@ class SelectionPage extends React.Component
   {
       return{breed: props.breed, systemType:props.systemType, cowType:props.cowType};
   }
+
   /**
    * Function to update both the state of the SelectionType
    *  as well as the state contained in App.js
@@ -57,6 +59,7 @@ class SelectionPage extends React.Component
     this.setState({cowType:cowType});
     this.props.setCowType(cowType);
   }
+
   /**
   * Function to update both the state of the SelectionType
   *  as well as the state contained in App.js
@@ -69,6 +72,7 @@ class SelectionPage extends React.Component
     this.props.setBreed(breed);
 
   }
+
   /**
   * Function to update both the state of the SelectionType
    *  as well as the state contained in App.js
@@ -80,6 +84,18 @@ class SelectionPage extends React.Component
     this.setState({systemType:sys});
     this.props.setSystemType(sys);
   }
+
+  /**
+   * Ensures that all inputs on a page contain some value
+   * @param {The event raised when a user clicks the next button} event 
+   */
+  verifyInput(event)
+  {
+    event.preventDefualt();
+    console.log("here");
+
+  }
+
   /**
    * The render function for the SelectionPage class
    */
@@ -88,6 +104,7 @@ class SelectionPage extends React.Component
     return(
         <div>
             <h1>Select Breed Type</h1>
+            <form onSubmit = {(event)=> this.verifyInput(event)}>
             <FormControl>
               <FormLabel>Breed Type</FormLabel>
               <RadioGroup aria-label = "Breed Type" name = "breed" value={this.state.breed} onChange={(event)=>this.updateParentBreed(event.target.value)}>
@@ -117,6 +134,7 @@ class SelectionPage extends React.Component
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/namepage" variant="contained" size = "large" >Back</Button>
             <Button className = "sidebysidebutton"  component={Link} to="/protocol" variant="contained" size = "large">Next</Button>
+            </form>
         </div>
     );
     }

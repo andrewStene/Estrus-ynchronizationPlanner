@@ -56,6 +56,12 @@ class ProtocolPage extends React.Component
         this.setState({id:value});
    }
 
+   verifyInput(event)
+   {
+       event.preventDefualt();
+       
+   }
+
     /**
      * Render function for the class
      */
@@ -72,6 +78,7 @@ class ProtocolPage extends React.Component
             <li>Cow or Hiefer: {this.state.cowType}</li>
             </ul>
             <br/>
+            <form>
             <FormControl variant="outlined">
               <InputLabel id="demo-simple-select-outlined-label">Protocol</InputLabel>
                   <Select
@@ -92,6 +99,7 @@ class ProtocolPage extends React.Component
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
             <Button className = "sidebysidebutton"component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
+            </form>
             </div>
             );
     }
