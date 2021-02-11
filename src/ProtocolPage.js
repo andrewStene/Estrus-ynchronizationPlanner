@@ -1,15 +1,30 @@
 /**
- * ProtocolPage.js
+ *  ProtocolPage.js
+ *  Copyright (C) 2021  Andrew Stene
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import './ProtocolPage.css';
+
+
 
 /**
  * Can't think of a good description rn
@@ -33,8 +48,11 @@ class ProtocolPage extends React.Component
         systemType:"",
         cowType:"",
         id:"",
+        startDate: "",
        }
-       this.updateParent = this.updateParent.bind(this);  
+
+       this.updateMainID = this.updateMainID.bind(this);
+       this.updateStartDate = this.updateStartDate.bind(this);
    }
 
     /**
@@ -48,14 +66,32 @@ class ProtocolPage extends React.Component
    }
 
    /**
-    * Dont remember what this is atm
-    * @param {} value 
+    * Updates the desired protocol
+    * @param {ID of the protocol selected} value 
     */
-   updateParent(value)
+   updateMainID(value)
    {   
-        this.setState({id:value});
+        this.props.setProtocol(value);
+        this.setState({id:value});      
    }
 
+   /**
+    * Updates the intended breed date
+    * @param {The new date value} value 
+    */
+   updateStartDate(value)
+   {
+       this.props.setStartDate(value);
+       this.setState({startDate:value});
+       
+       console.log(this.state.startDate);
+       console.log(value);
+   }
+
+   /**
+    * 
+    * @param {form submission} event 
+    */
    verifyInput(event)
    {
        event.preventDefualt();
@@ -72,10 +108,10 @@ class ProtocolPage extends React.Component
             <h1>Select a Protocol</h1>
             <br/>
             <ul>
-            <li>{this.state.name}</li>
+            <li>Name: {this.state.name}</li>
             <li>Breed: {this.state.breed}</li>
-            <li>System Type: {this.state.systemType}</li>
             <li>Cow or Hiefer: {this.state.cowType}</li>
+            <li>System Type: {this.state.systemType}</li>
             </ul>
             <br/>
             <form>
@@ -83,10 +119,9 @@ class ProtocolPage extends React.Component
               <InputLabel id="demo-simple-select-outlined-label">Protocol</InputLabel>
                   <Select
                    id="protocol"
-                    //value={age}
-                    onChange={this.updateParent}
-                    label="Protocol"
-                                    >
+                    value={this.state.id}
+                    onBlur={(event) =>this.updateMainID(event.target.value)}
+                    label="Protocol">
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
@@ -95,6 +130,18 @@ class ProtocolPage extends React.Component
                         <MenuItem value={30}>Thirty</MenuItem>
                      </Select>
             </FormControl>
+            <br/>
+            <br/>
+            <TextField
+                id="date"
+                label="Start Date"
+                type="date"
+                Value={this.state.startDate}
+                onBlur = {(event) => this.updateStartDate(event.target.value)}
+                InputLabelProps={{
+                shrink: true,
+                }}
+            />
             <br/>
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
