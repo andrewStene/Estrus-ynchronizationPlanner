@@ -1,5 +1,19 @@
 /**
- * App.js
+ *  App.js
+ *  Copyright (C) 2021  Andrew Stene
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
 import './App.css';
@@ -38,6 +52,7 @@ class App extends React.Component
       systemType:"",
       gnrh:"",
       pg:"",
+      startDate:"",
 
     }
     /**
@@ -47,6 +62,8 @@ class App extends React.Component
     this.setCowType = this.setCowType.bind(this);
     this.setBreed = this.setBreed.bind(this);
     this.setSystemType = this.setSystemType.bind(this);
+    this.setStartDate = this.setStartDate.bind(this);
+    this.setProtocol = this.setProtocol.bind(this);
   }
 
   /**
@@ -95,6 +112,28 @@ class App extends React.Component
   }
 
   /**
+   * Updates the state on the users desired start date
+   * based on what is given in the ProtocolPage
+   * @param {The desired start date for breeding} date 
+   */
+  setStartDate(date)
+  {
+    this.setState({startDate:date});
+    console.log(date);
+  }
+
+  /**
+   * Updates the state to the selected breeding protocol
+   * based on what is given in the ProtocolPage
+   * @param {The ID assigned to the selected protocol} protocol 
+   */
+  setProtocol(protocol)
+  {
+    this.setState({id:protocol});
+    console.log(protocol)
+  }
+
+  /**
    * Render function for the class which includes all of the routes
    */
   render()
@@ -103,14 +142,24 @@ class App extends React.Component
         <Router>
         <div className="App">
           <Header/>
-          <Route path = "/namepage" component ={()=><NamePage name = {this.state.name} setName = {this.setName}/>}/>
-          <Route path = "/" exact component = {HomePage}/>
+
+          <Route path = "/namepage" 
+          component ={()=><NamePage name = {this.state.name}
+          setName = {this.setName}/>}/>
+        
           <Route path = "/selectionpage" 
-          component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType} setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
+          component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType}
+          setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
+
+          <Route path = "/protocol"
+          component = {()=><Protocol breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
+          setProtocol = {this.setProtocol} setStartDate = {this.setStartDate}/>}/>
+
+
+          <Route path = "/" exact component = {HomePage}/>
           <Route path = "/help" component = {Help}/>
           <Route path = "/reference" component = {Reference}/>
-          <Route path = "/protocol" component = 
-          {()=><Protocol breed = {this.state.breed} systemType = {this.state.breedType} cowType={this.state.cowType} name = {this.state.name} />}/>
+          
           <Footer/>
         </div>
         </Router>);

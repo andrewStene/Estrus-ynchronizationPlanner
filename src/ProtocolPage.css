@@ -1,5 +1,5 @@
 /**
- *  Footer.css
+ *  ProtocolPage.css
  *  Copyright (C) 2021  Andrew Stene
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
-* The stylesheet used exclusively for the Footer
-*/
-.Footer
-{
-    height: auto;
-    width: auto;
-    background-color: #eeeeee;
-    font-size: 20px;
-    font-weight: 250;
-    text-align: left;
-    padding-left: 10px;
-    
-}
+ /**
+ * Contains the css tweaks for ProtocolPage.js
+ */
 
+ 
 
