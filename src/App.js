@@ -25,6 +25,7 @@ import SelectionPage from './SelectionPage';
 import Help from './Help';
 import Reference from './Reference'
 import Protocol from './ProtocolPage'
+import { Database } from './Database.js';
 import {
   BrowserRouter as Router,
   Route,
@@ -44,26 +45,27 @@ class App extends React.Component
      */
     this.state = 
     {
-      name:"",
-      breed:"",
-      cowType:"",
-      id:"",
-      semen:"",
-      systemType:"",
-      gnrh:"",
-      pg:"",
-      startDate:"",
+      name:       "",
+      breed:      "",
+      cowType:    "",
+      id:         "",
+      semen:      "",
+      systemType: "",
+      gnrh:       "",
+      pg:         "",
+      startDate:  "",
 
+      database:   new Database()      
     }
     /**
      * The bindings for the functions to update the state
      */
-    this.setName = this.setName.bind(this);
-    this.setCowType = this.setCowType.bind(this);
-    this.setBreed = this.setBreed.bind(this);
-    this.setSystemType = this.setSystemType.bind(this);
-    this.setStartDate = this.setStartDate.bind(this);
-    this.setProtocol = this.setProtocol.bind(this);
+    this.setName        = this.setName.bind(this);
+    this.setCowType     = this.setCowType.bind(this);
+    this.setBreed       = this.setBreed.bind(this);
+    this.setSystemType  = this.setSystemType.bind(this);
+    this.setStartDate   = this.setStartDate.bind(this);
+    this.setProtocol    = this.setProtocol.bind(this);
   }
 
   /**
@@ -96,7 +98,6 @@ class App extends React.Component
   {
     this.setState({breed:breed});
     console.log(this.state.breed); //Makes sure that the correct value is stored in the state
-
   }
 
   /**
@@ -108,7 +109,6 @@ class App extends React.Component
   {
     this.setState({systemType:sys});
     console.log(this.state.systemType); //Makes sure that the correct value is stored in the state
-
   }
 
   /**
@@ -144,15 +144,17 @@ class App extends React.Component
           <Header/>
 
           <Route path = "/namepage" 
-          component ={()=><NamePage name = {this.state.name}
+          component ={()=><NamePage database = {this.state.database} name = {this.state.name}
           setName = {this.setName}/>}/>
         
           <Route path = "/selectionpage" 
-          component = {()=><SelectionPage breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType}
+          component = {()=><SelectionPage database = {this.state.database}
+          breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType}
           setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
 
           <Route path = "/protocol"
-          component = {()=><Protocol breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
+          component = {()=><Protocol database = {this.state.database}
+          breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
           setProtocol = {this.setProtocol} setStartDate = {this.setStartDate}/>}/>
 
 

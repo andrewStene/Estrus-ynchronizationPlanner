@@ -22,6 +22,8 @@ class NamePage extends React.Component
        this.state =
        {
         name: "",
+
+        /** @type {Database} */ database: this.props.database
        }
        this.updateParent = this.updateParent.bind(this);  
    }

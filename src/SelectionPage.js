@@ -23,6 +23,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Button} from '@material-ui/core';
 import { Link } from 'react-router-dom'
+import { Database } from './Database.js';
 
 /**
  * Class that represents the page where a user will select the parameters
@@ -43,6 +44,8 @@ class SelectionPage extends React.Component
       breed:"",
       systemType:"",
       cowType:"",
+      
+      /** @type {Database} */ database: this.props.database
     }
     this.updateParentCowType = this.updateParentCowType.bind(this);
     this.updateParentBreed = this.updateParentBreed.bind(this);
@@ -113,15 +116,27 @@ class SelectionPage extends React.Component
    */
   render()
   {
+    const breeds      = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.BREED ).map( 
+                        (breed) => < FormControlLabel 
+                        value   = { Database.DATABASE_LIST_NAME.BREED + "-" + breed.Id } 
+                        control = { <Radio /> } 
+                        label   = { breed.Name }/> );
+
+    const systemTypes = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ).map(
+                        (systemType) => < FormControlLabel 
+                        value        = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE + "-" + systemType.Id } 
+                        control      = { <Radio /> } 
+                        label        = { systemType.Name } /> );
+    
     return(
         <div>
-            <h1>Select Breed Type</h1>
+            <h1>Select { Database.DATABASE_LIST_NAME.BREED } Type</h1>
             <form onSubmit = {(event)=> this.verifyInput(event)}>
             <FormControl>
-              <FormLabel>Breed Type</FormLabel>
-              <RadioGroup aria-label = "Breed Type" name = "breed" value={this.state.breed} onChange={(event)=>this.updateParentBreed(event.target.value)}>
-                <FormControlLabel value ="bosTaurus" control={<Radio />} label="Bos Taurus"/>
-                <FormControlLabel value ="bosIndicusInfluence" control={<Radio />} label="Bos Indicus Influence"/>
+              <FormLabel> { Database.DATABASE_LIST_NAME.BREED } </FormLabel>
+              <RadioGroup aria-label = { Database.DATABASE_LIST_NAME.BREED } name = {Database.DATABASE_LIST_NAME.BREED }
+               value={this.state.breed} onChange={(event)=>this.updateParentBreed(event.target.value)}>
+                { breeds }
               </RadioGroup>
             </FormControl>
             <br/>
@@ -137,10 +152,9 @@ class SelectionPage extends React.Component
             <br/>
             <FormControl>
               <FormLabel>System Type</FormLabel>
-              <RadioGroup aria-label = "System Type" name = "sys" value={this.state.systemType} onChange={(event)=>this.updateParentSystemType(event.target.value)}>
-                <FormControlLabel value ="estrusAi" control={<Radio />} label="Estrus AI "/>
-                <FormControlLabel value ="cleanUpAi" control={<Radio />} label="Estrus AI and Clean-Up AI "/>
-                <FormControlLabel value ="fixedTimeAI" control={<Radio />} label="Fixed Time AI "/>
+              <RadioGroup aria-label = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE } name = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE } 
+               value={this.state.systemType} onChange={(event)=>this.updateParentSystemType(event.target.value)} >
+                { systemTypes }                
               </RadioGroup>
             </FormControl>
             <br/>

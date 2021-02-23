@@ -33,6 +33,8 @@ class ProtocolPage extends React.Component
         systemType:"",
         cowType:"",
         id:"",
+        
+         /** @type {Database} */ database: this.props.database
        }
        this.updateParent = this.updateParent.bind(this);  
    }
