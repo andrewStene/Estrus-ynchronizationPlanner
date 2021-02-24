@@ -33,6 +33,8 @@ import {
   KeyboardDateTimePicker,
 } from '@material-ui/pickers';
 
+import { Database } from './Database.js';
+
 
 /**
  * Can't think of a good description rn
@@ -57,6 +59,7 @@ class ProtocolPage extends React.Component
         cowType:"",
         id:"",
         startDate: new Date(),
+         /** @type {Database} */ database: this.props.database
        }
 
        this.updateProtocolId = this.updateProtocolId.bind(this); 
@@ -108,26 +111,43 @@ class ProtocolPage extends React.Component
        
    }
 
+
     /**
      * Render function for the class
      */
     render()
-    {
+    {        
+        const recommendedProtocals = this.state.database.GetRecommendedProtocals(
+                                     null, parseIdFromLabel( this.state.systemType ), parseIdFromLabel( this.state.breed ), 
+                                     null, null ).map(
+                                     ( protocal ) => < MenuItem 
+                                       value = { protocal.Name } > { protocal.Name } </ MenuItem > );
+        
+        let styles = { width: 400,
+                        height: 55 };
         return(
             <div>         
             <h1>Select a Protocol</h1>
             <br/>
             <ul>
-                <li>Name: {this.state.name}</li>
-                <li>Breed: {this.state.breed}</li>
-                <li>System Type: {this.state.systemType}</li>
-                <li>Cow or Hiefer: {this.state.cowType}</li>
+
+            <li>{this.state.name}</li>
+            <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
+                 { this.state.database.GetNameById( parseIdFromLabel( this.state.breed ), 
+                                                    Database.DATABASE_LIST_TYPE.BREED ) } </li>
+            <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
+                 { this.state.database.GetNameById( parseIdFromLabel( this.state.systemType ), 
+                                                    Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
+            <li><b>Cow or Hiefer</b>: {this.state.cowType}</li>
+
             </ul>
             <br/>
             <form>
             <FormControl variant="outlined">
-              <InputLabel id="demo-simple-select-outlined-label">Protocol</InputLabel>
-                  <Select
+              <InputLabel id="demo-simple-select-outlined-label">
+                  { Database.DATABASE_LIST_NAME.PROTOCALS } 
+              </InputLabel>
+                  <Select style = {styles}
                    id="protocol"
                     //value={age}
                     onChange={this.updateParent}
@@ -136,9 +156,7 @@ class ProtocolPage extends React.Component
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {recommendedProtocals}                        
                      </Select>
             </FormControl>
             <br/>
@@ -172,3 +190,25 @@ class ProtocolPage extends React.Component
 }
 export default ProtocolPage;
 
+
+   /**
+    * @function parseIdFromLabel - parses a label to convert to number id
+    * @param {string} label - the label to parse, should be in format "SomeLabel-1"
+    * @returns {number} - the id as a number, null if unsuccessful
+    */
+   function parseIdFromLabel(label)
+   {
+        let sId = label.split('-');
+        let intId = null;
+
+        if(sId.length != null && sId.length > 1);
+        {
+            intId = parseInt(sId[1]);
+            if(isNaN(intId))
+            {
+                // parse failed
+                intId = null;
+            }
+        }
+        return intId;
+   } /* parseIdFromLabel() */
