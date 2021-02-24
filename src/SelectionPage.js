@@ -126,7 +126,7 @@ class SelectionPage extends React.Component
                         (systemType) => < FormControlLabel 
                         value        = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE + "-" + systemType.Id } 
                         control      = { <Radio /> } 
-                        label        = { systemType.Name } /> );
+                        label        = { systemType.Name } /> );    
     
     return(
         <div>
