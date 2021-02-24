@@ -1,5 +1,19 @@
 /**
- * ProtocolPage.js
+ *  ProtocolPage.js
+ *  Copyright (C) 2021  Andrew Stene
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
@@ -10,7 +24,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import 'date-fns';
+import { format } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDateTimePicker,
+} from '@material-ui/pickers';
+
 import { Database } from './Database.js';
+
 
 /**
  * Can't think of a good description rn
@@ -34,10 +58,14 @@ class ProtocolPage extends React.Component
         systemType:"",
         cowType:"",
         id:"",
-        
+        startDate: new Date(),
          /** @type {Database} */ database: this.props.database
        }
-       this.updateParent = this.updateParent.bind(this);  
+
+       this.updateProtocolId = this.updateProtocolId.bind(this); 
+       this.updateStartDateTime = this.updateStartDateTime.bind(this);
+
+
    }
 
     /**
@@ -52,13 +80,31 @@ class ProtocolPage extends React.Component
 
    /**
     * Dont remember what this is atm
-    * @param {} value 
+    * @param {The new protocol ID} id 
     */
-   updateParent(value)
+   updateProtocolId(id)
    {   
-        this.setState({id:value});
+        this.setState({id:id});
+        this.props.setProtocol(id);
    }
 
+   /**
+    * Updates the starting date and time
+    * @param {The start date} date 
+    */
+   updateStartDateTime(date)
+   {
+    console.log(date);
+    this.setState({startDate:new Date(date)});
+    //this.props.setStartDateTime(date);
+   }
+
+
+
+   /**
+    * Not currently implemented
+    * @param {*} event 
+    */
    verifyInput(event)
    {
        event.preventDefualt();
@@ -84,6 +130,7 @@ class ProtocolPage extends React.Component
             <h1>Select a Protocol</h1>
             <br/>
             <ul>
+
             <li>{this.state.name}</li>
             <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
                  { this.state.database.GetNameById( parseIdFromLabel( this.state.breed ), 
@@ -92,6 +139,7 @@ class ProtocolPage extends React.Component
                  { this.state.database.GetNameById( parseIdFromLabel( this.state.systemType ), 
                                                     Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
             <li><b>Cow or Hiefer</b>: {this.state.cowType}</li>
+
             </ul>
             <br/>
             <form>
@@ -111,6 +159,25 @@ class ProtocolPage extends React.Component
                         {recommendedProtocals}                        
                      </Select>
             </FormControl>
+            <br/>
+            <br/>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                
+            <KeyboardDateTimePicker
+                variant="inline"
+             
+                label="With keyboard"
+                value={this.state.startDate}
+                onChange={(value)=> this.updateStartDateTime(value)}
+                onError={console.log}
+                disablePast
+                format="MM/dd/yyyy hh:mm aa"
+            />
+                
+
+            </MuiPickersUtilsProvider>
+
+            
             <br/>
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
