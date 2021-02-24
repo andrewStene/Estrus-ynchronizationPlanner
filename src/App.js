@@ -52,7 +52,7 @@ class App extends React.Component
       systemType:"",
       gnrh:"",
       pg:"",
-      startDate:"",
+      startDateTime:"",
 
     }
     /**
@@ -62,7 +62,7 @@ class App extends React.Component
     this.setCowType = this.setCowType.bind(this);
     this.setBreed = this.setBreed.bind(this);
     this.setSystemType = this.setSystemType.bind(this);
-    this.setStartDate = this.setStartDate.bind(this);
+    this.setStartDateTime = this.setStartDateTime.bind(this);
     this.setProtocol = this.setProtocol.bind(this);
   }
 
@@ -111,16 +111,7 @@ class App extends React.Component
 
   }
 
-  /**
-   * Updates the state on the users desired start date
-   * based on what is given in the ProtocolPage
-   * @param {The desired start date for breeding} date 
-   */
-  setStartDate(date)
-  {
-    this.setState({startDate:date});
-    console.log(date);
-  }
+ 
 
   /**
    * Updates the state to the selected breeding protocol
@@ -131,6 +122,16 @@ class App extends React.Component
   {
     this.setState({id:protocol});
     console.log(protocol)
+  }
+
+  /**
+   * Updates the state to the selected starting date and time
+   * based on what is given in the ProtocolPage
+   * @param {The intended starting date and time} date 
+   */
+  setStartDateTime(date)
+  {
+    this.setState({startDateTime:date});
   }
 
   /**
@@ -153,7 +154,7 @@ class App extends React.Component
 
           <Route path = "/protocol"
           component = {()=><Protocol breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
-          setProtocol = {this.setProtocol} setStartDate = {this.setStartDate}/>}/>
+          setProtocol = {this.setProtocol} setStartDateTime = {this.setStartDateTime}/>}/>
 
 
           <Route path = "/" exact component = {HomePage}/>
