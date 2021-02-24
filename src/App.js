@@ -25,6 +25,7 @@ import SelectionPage from './SelectionPage';
 import Help from './Help';
 import Reference from './Reference'
 import Protocol from './ProtocolPage'
+import CalPage from './CalendarPage'
 import { Database } from './Database.js';
 import {
   BrowserRouter as Router,
@@ -45,7 +46,6 @@ class App extends React.Component
      */
     this.state = 
     {
-
       name:"",
       breed:"",
       cowType:"",
@@ -54,10 +54,8 @@ class App extends React.Component
       systemType:"",
       gnrh:"",
       pg:"",
-      startDateTime:"",
-
-
-      database:   new Database()      
+      startDateTime:null,
+      database:new Database()      
     }
     /**
      * The bindings for the functions to update the state
@@ -157,12 +155,12 @@ class App extends React.Component
           setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
 
           <Route path = "/protocol"
-
           component = {()=><Protocol database = {this.state.database}
           breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
           setProtocol = {this.setProtocol} setStartDateTime = {this.setStartDate}/>}/>
 
-
+          <Route path = "/calendar"
+          component = {()=><CalPage/>}/>
 
           <Route path = "/" exact component = {HomePage}/>
           <Route path = "/help" component = {Help}/>

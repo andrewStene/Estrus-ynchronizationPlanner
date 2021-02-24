@@ -161,8 +161,7 @@ class ProtocolPage extends React.Component
             </FormControl>
             <br/>
             <br/>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>                
             <KeyboardDateTimePicker
                 variant="inline"
              
@@ -173,15 +172,11 @@ class ProtocolPage extends React.Component
                 disablePast
                 format="MM/dd/yyyy hh:mm aa"
             />
-                
-
-            </MuiPickersUtilsProvider>
-
-            
+            </MuiPickersUtilsProvider>         
             <br/>
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
-            <Button className = "sidebysidebutton"component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
+            <Button className = "sidebysidebutton"component={Link} to="/calendar"color="defualt"variant="contained" size = "large">Next</Button>
             </form>
             </div>
             );
