@@ -92,12 +92,12 @@ class ProtocolPage extends React.Component
    updateProtocolId( event )
    {   
        
-        let protocal    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCALS )
+        let protocol    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS )
         let description = "";
         
-        if( protocal != null )
+        if( protocol != null )
         {
-            description = protocal.Description;
+            description = protocol.Description;
         }
 
         this.setState( { id: event.target.value } );        
@@ -145,15 +145,15 @@ class ProtocolPage extends React.Component
      */
     render()
     {        
-        const recommendedProtocals = this.state.database.GetRecommendedProtocals(
+        const recommendedProtocols = this.state.database.GetRecommendedProtocols(
                                      parseIdFromLabel( this.state.semen ),
                                      parseIdFromLabel( this.state.systemType ),
                                      parseIdFromLabel( this.state.breed ),
                                      null,
                                      null,
                                      null ).map(
-                                     ( protocal ) => < MenuItem 
-                                       value = { protocal.Name } > { protocal.Name } </ MenuItem > );
+                                     ( protocol ) => < MenuItem 
+                                       value = { protocol.Name } > { protocol.Name } </ MenuItem > );
         
         let styles = { width:  400,
                        height: 55 };
@@ -170,13 +170,13 @@ class ProtocolPage extends React.Component
                     <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
                         { this.lookupNameFromLabel( this.state.breed, Database.DATABASE_LIST_TYPE.BREED ) } </li>
 
-                    <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
+                    <li> <b>{ `${ Database.DATABASE_LIST_NAME.SYSTEM_TYPE }: ` }</b> 
                         { this.lookupNameFromLabel( this.state.systemType, Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
 
-                    <li><b>{"Cow or Hiefer: "}</b> 
-                        { this.lookupNameFromLabel(this.state.cowType, Database.DATABASE_LIST_TYPE.CATTLE ) }</li>
+                    <li><b>{ "Cow or Hiefer: " }</b> 
+                        { this.lookupNameFromLabel( this.state.cowType, Database.DATABASE_LIST_TYPE.CATTLE ) }</li>
 
-                    <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
+                    <li> <b>{ `${ Database.DATABASE_LIST_NAME.SEMEN }: ` }</b> 
                         { this.lookupNameFromLabel( this.state.semen, Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
                 </ul>            
                 <br/>
@@ -184,7 +184,7 @@ class ProtocolPage extends React.Component
                     <FormControl variant="outlined">
                         
                         <InputLabel id = "demo-simple-select-outlined-label" >
-                            { Database.DATABASE_LIST_NAME.PROTOCALS } 
+                            { Database.DATABASE_LIST_NAME.PROTOCOLS } 
                         </InputLabel>
                         
                         <Select 
@@ -194,12 +194,12 @@ class ProtocolPage extends React.Component
                             label    = "Protocol"
                         >
                             <MenuItem value = "" ><em>None</em></MenuItem>
-                            { recommendedProtocals }                        
+                            { recommendedProtocols }                        
                         </Select>
 
                     </FormControl>
                     
-                    <p><b>Protocal Description:</b> { this.state.description }</p>           
+                    <p><b>Protocol Description:</b> { this.state.description }</p>           
                     
                     <br/>
                     <br/>

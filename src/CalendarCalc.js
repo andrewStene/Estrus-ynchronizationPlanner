@@ -7,14 +7,14 @@
  *          IMPORTS
  ******************************/
 
- import { Database, Protocal, Task } from './Database.js';
+ import { Database, Protocol, Task } from './Database.js';
 
 /******************************
  *          EXPORT
  ******************************/
 
 export {
-    CalculateProtocalCalendar, 
+    CalculateProtocolCalendar, 
     CowCalendar, 
     ScheduledEvent
 };
@@ -24,15 +24,15 @@ export {
  *********************************/
 
  /**
-  * @function CalculateProtocalCalendar - Creates a new CowSchedulingCalendar based on a protocal
-  * @param {Protocal} protocal - the protocal to create the calendar from
+  * @function CalculateProtocolCalendar - Creates a new CowSchedulingCalendar based on a protocol
+  * @param {Protocol} protocol - the protocol to create the calendar from
   * @param {Date} dateOffset - the date to start the calendar
-  * @param {Database} database - A database object which contains all the protocals
+  * @param {Database} database - A database object which contains all the protocols
   * @returns {CowCalendar} - A calendar of all the different tasks to be displayed 
   */
- function CalculateProtocalCalendar(protocal, dateOffset, database)
+ function CalculateProtocalCalendar(protocol, dateOffset, database)
  {
-    if(protocal == null || database == null)
+    if(protocol == null || database == null)
     {
         return null;
     }
@@ -42,18 +42,18 @@ export {
         dateOffset = new Date( Date.now() );
     }
     let events = []
-    for(let i = 0; i < protocal.Tasks.length; i++)
+    for(let i = 0; i < protocol.Tasks.length; i++)
     {
-        let task = database.GetObjectById(protocal.Tasks[i].TaskId, Database.DATABASE_LIST_TYPE.TASKS);
+        let task = database.GetObjectById(protocol.Tasks[i].TaskId, Database.DATABASE_LIST_TYPE.TASKS);
         if(task == null)
         {
             return null;
         }
-        let start = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart);
-        let end = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart + task.TaskLength);
+        let start = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart);
+        let end = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart + task.TaskLength);
         events.push(new ScheduledEvent(task.Name, task.Description, start, end))
     }
-    return new CowCalendar("Protocal: " + protocal.Name, events);
+    return new CowCalendar("Protocal: " + protocol.Name, events);
  } /* CalculateProtocalCalendar() */
 
 /**********************************
