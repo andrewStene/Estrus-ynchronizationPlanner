@@ -54,8 +54,7 @@ class App extends React.Component
       systemType:"",
       gnrh:"",
       pg:"",
-      startDateTime:"",
-
+      startDateTime:"",      
 
       database:   new Database()      
     }
@@ -63,12 +62,13 @@ class App extends React.Component
      * The bindings for the functions to update the state
      */
 
-    this.setName = this.setName.bind(this);
-    this.setCowType = this.setCowType.bind(this);
-    this.setBreed = this.setBreed.bind(this);
-    this.setSystemType = this.setSystemType.bind(this);
+    this.setName          = this.setName.bind(this);
+    this.setCowType       = this.setCowType.bind(this);
+    this.setBreed         = this.setBreed.bind(this);
+    this.setSystemType    = this.setSystemType.bind(this);
+    this.setSemen         = this.setSemen.bind(this);
     this.setStartDateTime = this.setStartDateTime.bind(this);
-    this.setProtocol = this.setProtocol.bind(this);
+    this.setProtocol      = this.setProtocol.bind(this);
   }
 
   /**
@@ -114,7 +114,16 @@ class App extends React.Component
     console.log(this.state.systemType); //Makes sure that the correct value is stored in the state
   }
 
- 
+  /**
+   * Updates the state to the proper Semen
+   * based on what is given in the SelectionPage
+   * @param {The System Type being used to be stored in the state} semen 
+   */
+  setSemen(semen)
+  {
+    this.setState({semen:semen});
+    console.log(this.state.semen);
+  } 
 
   /**
    * Updates the state to the selected breeding protocol
@@ -154,15 +163,15 @@ class App extends React.Component
           <Route path = "/selectionpage" 
           component = {()=><SelectionPage database = {this.state.database}
           breed = {this.state.breed} systemType = {this.state.systemType} cowType ={this.state.cowType}
-          setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}/>}/>
+          setBreed = {this.setBreed} setCowType = {this.setCowType} setSystemType = {this.setSystemType}
+          setSemen = {this.setSemen} semen = {this.state.semen} />}/>
 
           <Route path = "/protocol"
 
           component = {()=><Protocol database = {this.state.database}
           breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
+          semen = {this.state.semen}
           setProtocol = {this.setProtocol} setStartDateTime = {this.setStartDate}/>}/>
-
-
 
           <Route path = "/" exact component = {HomePage}/>
           <Route path = "/help" component = {Help}/>

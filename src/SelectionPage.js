@@ -46,7 +46,8 @@ class SelectionPage extends React.Component
     {
       breed:      props.breed,
       systemType: props.systemType,
-      cowType:    props.cowType,   
+      cowType:    props.cowType,
+      semen:      props.semen,
       
       /** @type {Database} */ database: this.props.database
     }
@@ -54,6 +55,7 @@ class SelectionPage extends React.Component
     this.updateParentCowType    = this.updateParentCowType.bind(this);
     this.updateParentBreed      = this.updateParentBreed.bind(this);
     this.updateParentSystemType = this.updateParentSystemType.bind(this);
+    this.updateParentSemen      = this.updateParentSemen.bind(this);
     this.verifyInput            = this.verifyInput.bind(this);
   }
 
@@ -104,6 +106,18 @@ class SelectionPage extends React.Component
   }
 
   /**
+   *  Function to update both the state of the SelectionType
+   *  as well as the state contained in App.js
+   *  of the Semen to be used
+   * @param {string} semen
+   */
+  updateParentSemen(semen)
+  {
+    this.setState({semen:semen});
+    this.props.setSemen(semen);
+  }
+
+  /**
    * Ensures that all inputs on a page contain some value
    * @param {The event raised when a user clicks the next button} event 
    */
@@ -128,6 +142,11 @@ class SelectionPage extends React.Component
                         (systemType) => < MenuItem
                         key = { systemType.Name } 
                         value        = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE + "-" + systemType.Id }> { systemType.Name } </MenuItem> );
+
+    const semens      = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.SEMEN ).map(
+                      (semen) => < MenuItem
+                      key = { semen.Name } 
+                      value        = { Database.DATABASE_LIST_NAME.SEMEN + "-" + semen.Id }> { semen.Name } </MenuItem> );
 
     let styles = { width:  400,
                    height: 55 };
@@ -171,6 +190,18 @@ class SelectionPage extends React.Component
                       <em>None</em>
                   </MenuItem>
                 { systemTypes }                
+              </Select>
+            </FormControl>
+            <br/>
+            <br/>
+            <FormControl variant="outlined">
+              <InputLabel> { Database.DATABASE_LIST_NAME.SEMEN } </InputLabel>
+              <Select style = {styles} name = { Database.DATABASE_LIST_NAME.SEMEN } 
+               value={this.state.semen} onChange={(event)=>this.updateParentSemen(event.target.value)} >
+                 <MenuItem value="">
+                      <em>None</em>
+                  </MenuItem>
+                { semens }                
               </Select>
             </FormControl>
             <br/>

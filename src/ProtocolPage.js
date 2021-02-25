@@ -47,7 +47,7 @@ class ProtocolPage extends React.Component
      */
    static getDerivedStateFromProps(props,state)
    {
-       return{name: props.name, breed:props.breed, systemType:props.systemType, cowType:props.cowType};
+       return{name: props.name, breed:props.breed, systemType:props.systemType, cowType:props.cowType, semen:props.semen};
    }
 
    /**
@@ -80,7 +80,7 @@ class ProtocolPage extends React.Component
     render()
     {        
         const recommendedProtocals = this.state.database.GetRecommendedProtocals(
-                                     null, parseIdFromLabel( this.state.systemType ), parseIdFromLabel( this.state.breed ), 
+                                     parseIdFromLabel( this.state.semen ), parseIdFromLabel( this.state.systemType ), parseIdFromLabel( this.state.breed ), 
                                      null, null ).map(
                                      ( protocal ) => < MenuItem 
                                        value = { protocal.Name } > { protocal.Name } </ MenuItem > );
@@ -100,6 +100,9 @@ class ProtocolPage extends React.Component
                  { this.state.database.GetNameById( parseIdFromLabel( this.state.systemType ), 
                                                     Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
             <li><b>Cow or Hiefer</b>: {this.state.cowType}</li>
+            <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
+                 { this.state.database.GetNameById( parseIdFromLabel( this.state.semen ), 
+                                                    Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
             </ul>
             <br/>
             <form>
