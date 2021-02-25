@@ -20,6 +20,10 @@
  * Contains the css tweaks for ProtocolPage.js
  */
 
+ ul {
+     list-style-type: none;
+ }
+
  p {
      padding: 0 80px 0 80px;
  }
