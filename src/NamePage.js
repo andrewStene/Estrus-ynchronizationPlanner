@@ -65,11 +65,11 @@ class NamePage extends React.Component
     */
    updateParent(value)
    {   
-        if(!this.notBlank())
-        {
-            value.preventDefault();
-            return;
-        }
+        // if(!this.notBlank())
+        // {
+        //     value.preventDefault();
+        //     return;
+        // }
         this.props.setName(value);
         this.setState({name:value});
    }
