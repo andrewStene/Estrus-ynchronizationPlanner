@@ -1165,7 +1165,7 @@ var testingData =
  Protocals: [
      new Protocal(0, 
        "1 Injection Prostaglandin Prior Estrus",               
-       "...", 
+       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At varius vel pharetra vel turpis nunc eget lorem. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Sed odio morbi quis commodo odio. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus. Eget nullam non nisi est. Tincidunt arcu non sodales neque sodales ut.", 
        [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
          new ProtocalTask(2, 950400), new ProtocalTask(3, 0),
          new ProtocalTask(4, 950400), new ProtocalTask(5, 2332800)
@@ -1174,7 +1174,7 @@ var testingData =
        ),
      new Protocal(1, 
        "1 Injection Prostaglandin No Prior Estrus",               
-       "...", 
+       "Vitae suscipit tellus mauris a diam maecenas sed enim ut. Ridiculus mus mauris vitae ultricies. Integer malesuada nunc vel risus commodo viverra maecenas. Ornare arcu dui vivamus arcu felis. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Elementum facilisis leo vel fringilla est ullamcorper eget nulla facilisi.", 
          [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
            new ProtocalTask(2, 432000), new ProtocalTask(3, 0),
            new ProtocalTask(4, 950400), new ProtocalTask(5, 1987200)
