@@ -37,7 +37,7 @@ import {
 import './ProtocolPage.css';
 
 /**
- * Can't think of a good description rn
+ * Page to display a list of recommended protocals to select, and the date to start calendar
  */
 class ProtocolPage extends React.Component
 {
@@ -45,77 +45,84 @@ class ProtocolPage extends React.Component
      * Constructor for the ProtocolPage class
      * @param {Includes the Name, Breed, SystemType and CowType} props 
      */
-   constructor(props)
+   constructor( props )
    {
-       super(props);
+       super( props );
+
        /**
         * State is used to store previous values to display to the user
         */
        this.state =
        {
-        name: "",
-        breed:"",
-        systemType:" ",
-        cowType:"",
-        id:"",
-        startDate: new Date(),
-        description:"",
-         /** @type {Database} */ database: this.props.database
+            name:           "",
+            breed:          "",
+            systemType:     "",
+            cowType:        "",
+            semen:          "",
+            id:             "",
+            description:    "",
+            startDate:      new Date(),
+        
+            /** @type {Database} */ database: this.props.database
        }
          
-       this.updateProtocolId = this.updateProtocolId.bind(this); 
+       this.updateProtocolId    = this.updateProtocolId.bind(this); 
        this.updateStartDateTime = this.updateStartDateTime.bind(this);
        this.lookupNameFromLabel = this.lookupNameFromLabel.bind(this);
    }
 
     /**
      * Sets the state based on the values passed in the props
-     * @param {Props} props 
-     * @param {State} state 
+     * @param {Props} props - the props which contains the parameters
+     * @param {State} state - the state to update
      */
-   static getDerivedStateFromProps(props,state)
+   static getDerivedStateFromProps( props, state )
    {
-       return{name: props.name, breed:props.breed, systemType:props.systemType, cowType:props.cowType, semen:props.semen};
-   }
+       return ( { name:          props.name,
+                  breed:         props.breed,
+                  systemType:    props.systemType, 
+                  cowType:       props.cowType, 
+                  semen:         props.semen } );
+   } /* getDerivedStateFromProps() */
 
    /**
-    * Dont remember what this is atm
-    * @param {The new protocol ID} value
+    * Update the selected protocol
+    * @param {event} event
     */
-   updateProtocolId(value)
+   updateProtocolId( event )
    {   
        
-        let protocal = this.state.database.GetObjectByName(value.target.value, Database.DATABASE_LIST_TYPE.PROTOCALS)
+        let protocal    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCALS )
         let description = "";
-        if(protocal != null)
+        
+        if( protocal != null )
         {
             description = protocal.Description;
         }
-        this.setState({id:value});
-        
-        this.setState({description: description })
-   }
+
+        this.setState( { id: event.target.value } );        
+        this.setState( { description: description } )
+   } /* updateProtocolId() */
 
    /**
     * Updates the starting date and time
-    * @param {The start date} date 
+    * @param {Date} date - the start date 
     */
-   updateStartDateTime(date)
+   updateStartDateTime( date )
    {
-    console.log(date);
-    this.setState({startDate:new Date(date)});
-    //this.props.setStartDateTime(date);
-   }
+        console.log( date );
+        this.setState( { startDate: new Date( date ) } );
+        //this.props.setStartDateTime(date);
+   } /* updateStartDateTime() */
 
     /**
     * Not currently implemented
     * @param {*} event 
     */
-   verifyInput(event)
+   verifyInput( event )
    {
-       event.preventDefualt();
-       
-   }
+       event.preventDefualt();       
+   } /* verifyInput() */
 
    /**
     * Looks up a given name in the database given a label
@@ -123,16 +130,15 @@ class ProtocolPage extends React.Component
     * @param {DATABASE_LIST_TYPE} databaseListType - the database list to search
     * @return {string} - the name of the label, or Not Selected if not found
     */
-   lookupNameFromLabel(label, databaseListType)
+   lookupNameFromLabel( label, databaseListType )
    {
         let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
-        if(name == "")
+        if( name == "" )
         {
             name = <em>Not Selected</em>;
         }
         return name;
-   } /* lookypNameFromLabel() */
-
+   } /* lookupNameFromLabel() */
 
     /**
      * Render function for the class
@@ -140,8 +146,12 @@ class ProtocolPage extends React.Component
     render()
     {        
         const recommendedProtocals = this.state.database.GetRecommendedProtocals(
-                                     parseIdFromLabel( this.state.semen ), parseIdFromLabel( this.state.systemType ), parseIdFromLabel( this.state.breed ), 
-                                     null, null ).map(
+                                     parseIdFromLabel( this.state.semen ),
+                                     parseIdFromLabel( this.state.systemType ),
+                                     parseIdFromLabel( this.state.breed ),
+                                     null,
+                                     null,
+                                     null ).map(
                                      ( protocal ) => < MenuItem 
                                        value = { protocal.Name } > { protocal.Name } </ MenuItem > );
         
@@ -150,60 +160,88 @@ class ProtocolPage extends React.Component
 
         return(
             <div>         
-            <h1>Select a Protocol</h1>
-            <br/>            
-            <ul>
-            <li>{this.state.name}</li>
-            <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
-                 { this.lookupNameFromLabel( this.state.breed, Database.DATABASE_LIST_TYPE.BREED ) } </li>
+                <h1>Select a Protocol</h1>
+                <br/>            
+                <ul>
+                    <li><b>Schedule Name: </b> { this.state.name } </li>
+                    
+                    <br/>
+                    
+                    <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
+                        { this.lookupNameFromLabel( this.state.breed, Database.DATABASE_LIST_TYPE.BREED ) } </li>
 
-            <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
-                 { this.lookupNameFromLabel( this.state.systemType, Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
+                    <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
+                        { this.lookupNameFromLabel( this.state.systemType, Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
 
-            <li><b>{"Cow or Hiefer: "}</b> 
-                { this.lookupNameFromLabel(this.state.cowType, Database.DATABASE_LIST_TYPE.CATTLE ) }</li>
+                    <li><b>{"Cow or Hiefer: "}</b> 
+                        { this.lookupNameFromLabel(this.state.cowType, Database.DATABASE_LIST_TYPE.CATTLE ) }</li>
 
-            <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
-                 { this.lookupNameFromLabel( this.state.semen, Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
-            </ul>            
-            <br/>
-            <form>
-            <FormControl variant="outlined">
-              <InputLabel id="demo-simple-select-outlined-label">
-                  { Database.DATABASE_LIST_NAME.PROTOCALS } 
-              </InputLabel>
-                   <Select style = {styles}
-                   id="protocol"                    
-                    onChange={this.updateProtocolId}
-                    label="Protocol"
-                                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        {recommendedProtocals}                        
-                     </Select>
-            </FormControl>
-            <p><b>Protocal Description:</b> {this.state.description}</p>           
-            <br/>
-            <br/>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
+                        { this.lookupNameFromLabel( this.state.semen, Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
+                </ul>            
+                <br/>
+                <form>
+                    <FormControl variant="outlined">
+                        
+                        <InputLabel id = "demo-simple-select-outlined-label" >
+                            { Database.DATABASE_LIST_NAME.PROTOCALS } 
+                        </InputLabel>
+                        
+                        <Select 
+                            style    = { styles }
+                            id       = "protocol"                    
+                            onChange = { this.updateProtocolId }
+                            label    = "Protocol"
+                        >
+                            <MenuItem value = "" ><em>None</em></MenuItem>
+                            { recommendedProtocals }                        
+                        </Select>
 
-            <KeyboardDateTimePicker
-                variant="inline"
+                    </FormControl>
+                    
+                    <p><b>Protocal Description:</b> { this.state.description }</p>           
+                    
+                    <br/>
+                    <br/>
+                    
+                    <MuiPickersUtilsProvider utils = { DateFnsUtils } >
 
-                label="With keyboard"
-                value={this.state.startDate}
-                onChange={(value)=> this.updateStartDateTime(value)}
-                onError={console.log}
-                disablePast
-                format="MM/dd/yyyy hh:mm aa"
-            />
-            </MuiPickersUtilsProvider>
-            <br/>
-            <br/>
-            <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
-            <Button className = "sidebysidebutton"component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
-            </form>
+                    <KeyboardDateTimePicker
+                        variant     = "inline"
+                        label       = "With keyboard"
+                        value       = { this.state.startDate }
+                        onChange    = { ( value ) => this.updateStartDateTime( value ) }
+                        onError     = { console.log }
+                        disablePast
+                        format      = "MM/dd/yyyy hh:mm aa"
+                    />
+                    </MuiPickersUtilsProvider>
+                    
+                    <br/>
+                    <br/>
+
+                    <Button 
+                        className = "sidebysidebutton" 
+                        component = { Link } 
+                        to        = "/selectionpage" 
+                        color     = "defualt" 
+                        variant   = "contained" 
+                        size      = "large" 
+                    >
+                        Back
+                    </Button>                    
+                    <Button 
+                        className = "sidebysidebutton"
+                        component = { Link } 
+                        to        = "/"
+                        color     = "defualt"
+                        variant   = "contained" 
+                        size      = "large"
+                    >
+                        Next
+                    </Button>
+                
+                </form>
             </div>
             );
     }
@@ -211,25 +249,24 @@ class ProtocolPage extends React.Component
 }
 export default ProtocolPage;
 
-
-   /**
-    * @function parseIdFromLabel - parses a label to convert to number id
-    * @param {string} label - the label to parse, should be in format "SomeLabel-1"
-    * @returns {number} - the id as a number, null if unsuccessful
-    */
-   function parseIdFromLabel(label)
-   {
-        let sId = label.split('-');
-        let intId = null;
-
-        if(sId.length != null && sId.length > 1);
+/**
+* @function parseIdFromLabel - parses a label to convert to number id
+* @param {string} label - the label to parse, should be in format "SomeLabel-1"
+* @returns {number} - the id as a number, null if unsuccessful
+*/
+function parseIdFromLabel( label )
+{
+    let sId   = label.split( '-' );
+    let intId = null;
+    
+    if( sId.length != null && sId.length > 1 );
+    {
+        intId = parseInt( sId[1] );
+        if( isNaN( intId ) )
         {
-            intId = parseInt(sId[1]);
-            if(isNaN(intId))
-            {
-                // parse failed
-                intId = null;
-            }
+            // parse failed
+            intId = null;
         }
-        return intId;
-   } /* parseIdFromLabel() */
+    }
+    return intId;
+} /* parseIdFromLabel() */
