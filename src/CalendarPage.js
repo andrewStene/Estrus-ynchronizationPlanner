@@ -17,26 +17,37 @@
  */
 import React from 'react';
 import { Button} from '@material-ui/core';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import {  CalculateProtocalCalendar, CowCalendar, ScheduledEvent } from './CalendarCalc';
 
 /**
- * 
+ * A react component to display the steps of the desired protocol 
+ * in a calendar type format
  */
 class CalendarPage extends React.Component
 {
     constructor(props)
     {
         super(props);
+
+        this.state=
+        {
+
+        }
     }
 
+    /**
+     * Render function for the class
+     */
     render()
     {
         return(
             <div>
+
                 <br/>
-            <br/>
-            <Button className = "sidebysidebutton" component={Link} to="/protocol" color="defualt" variant="contained" size = "large" >Back</Button>
-            <Button className = "sidebysidebutton"component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
+                <br/>
+                <Button className = "sidebysidebutton" component={Link} to="/protocol" color="defualt" variant="contained" size = "large" >Back</Button>
+                <Button className = "sidebysidebutton" component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
             </div>
         )
     }

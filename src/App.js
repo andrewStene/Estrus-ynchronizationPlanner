@@ -112,8 +112,6 @@ class App extends React.Component
     console.log(this.state.systemType); //Makes sure that the correct value is stored in the state
   }
 
- 
-
   /**
    * Updates the state to the selected breeding protocol
    * based on what is given in the ProtocolPage
