@@ -65,6 +65,7 @@ class ProtocolPage extends React.Component
          
        this.updateProtocolId = this.updateProtocolId.bind(this); 
        this.updateStartDateTime = this.updateStartDateTime.bind(this);
+       this.lookupNameFromLabel = this.lookupNameFromLabel.bind(this);
    }
 
     /**
@@ -116,6 +117,22 @@ class ProtocolPage extends React.Component
        
    }
 
+   /**
+    * Looks up a given name in the database given a label
+    * @param {string} label - the label to look up
+    * @param {DATABASE_LIST_TYPE} databaseListType - the database list to search
+    * @return {string} - the name of the label, or Not Selected if not found
+    */
+   lookupNameFromLabel(label, databaseListType)
+   {
+        let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
+        if(name == "")
+        {
+            name = <em>Not Selected</em>;
+        }
+        return name;
+   } /* lookypNameFromLabel() */
+
 
     /**
      * Render function for the class
@@ -138,15 +155,14 @@ class ProtocolPage extends React.Component
             <ul>
             <li>{this.state.name}</li>
             <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
-                 { this.state.database.GetNameById( parseIdFromLabel( this.state.breed ), 
-                                                    Database.DATABASE_LIST_TYPE.BREED ) } </li>
+                 { this.lookupNameFromLabel( this.state.breed, Database.DATABASE_LIST_TYPE.BREED ) } </li>
+
             <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
-                 { this.state.database.GetNameById( parseIdFromLabel( this.state.systemType ), 
-                                                    Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
+                 { this.lookupNameFromLabel( this.state.systemType, Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
+
             <li><b>Cow or Hiefer</b>: {this.state.cowType}</li>
             <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
-                 { this.state.database.GetNameById( parseIdFromLabel( this.state.semen ), 
-                                                    Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
+                 { this.lookupNameFromLabel( this.state.semen, Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
             </ul>            
             <br/>
             <form>
