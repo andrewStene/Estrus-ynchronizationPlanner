@@ -74,6 +74,20 @@ class Database
     }
     
     /**
+     * @function GetDatabaseName - returns the name of the database given the type
+     * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+     * @returns {string} - the name of the database
+     */
+    GetDatabaseName(databaseListType)
+    {
+      if(checkParameterTypes([databaseListType], ["number"]))
+      {
+        return getDatabaseName(databaseListType);
+      }
+      return "";
+    }
+
+    /**
      * @function GetObjectById - Lookup element by its id
      * @param {number} id - the id of the element 
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup in
@@ -481,6 +495,44 @@ class ProtocalRecommendation
 /************************************
  *          PUBLIC FUNCTIONS        *
  ************************************/
+
+/**
+ * @function getDatabaseName - get the database list name given a type
+ * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+ * @returns {string} - the name of the database
+ */
+function getDatabaseName(databaseListType)
+{
+    switch(databaseListType)
+    {
+      case DATABASE_LIST_TYPE.TASKS:
+        return DATABASE_LIST_NAME.TASKS;
+      
+      case DATABASE_LIST_TYPE.PROTOCALS:
+        return DATABASE_LIST_NAME.PROTOCALS;
+
+      case DATABASE_LIST_TYPE.SEMEN:
+        return DATABASE_LIST_NAME.SEMEN;
+
+      case DATABASE_LIST_TYPE.SYSTEM_TYPE:
+        return DATABASE_LIST_NAME.SYSTEM_TYPE;
+
+      case DATABASE_LIST_TYPE.BREED:
+        return DATABASE_LIST_NAME.BREED;
+
+      case DATABASE_LIST_TYPE.GN_RH:
+        return DATABASE_LIST_NAME.GN_RH;
+
+      case DATABASE_LIST_TYPE.P_G:
+        return DATABASE_LIST_NAME.P_G;
+
+      case DATABASE_LIST_TYPE.CATTLE:
+        return DATABASE_LIST_NAME.CATTLE;
+
+      default:
+        return "";
+    }
+} /* getDatabaseName() */
 
 /** @function getObjectById
  * Look up a given object by its id

@@ -14,7 +14,6 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * ProtocolPage.js
  */
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
@@ -35,6 +34,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
 } from '@material-ui/pickers';
+import './ProtocolPage.css';
 
 /**
  * Can't think of a good description rn
@@ -160,7 +160,9 @@ class ProtocolPage extends React.Component
             <li> <b>{ `${Database.DATABASE_LIST_NAME.SYSTEM_TYPE}: ` }</b> 
                  { this.lookupNameFromLabel( this.state.systemType, Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }</li>
 
-            <li><b>Cow or Hiefer</b>: {this.state.cowType}</li>
+            <li><b>{"Cow or Hiefer: "}</b> 
+                { this.lookupNameFromLabel(this.state.cowType, Database.DATABASE_LIST_TYPE.CATTLE ) }</li>
+
             <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
                  { this.lookupNameFromLabel( this.state.semen, Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
             </ul>            

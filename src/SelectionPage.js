@@ -57,6 +57,7 @@ class SelectionPage extends React.Component
     this.updateParentSystemType = this.updateParentSystemType.bind(this);
     this.updateParentSemen      = this.updateParentSemen.bind(this);
     this.verifyInput            = this.verifyInput.bind(this);
+    this.mapListToMenuItems     = this.mapListToMenuItems.bind(this);
   }
 
   /**
@@ -129,25 +130,23 @@ class SelectionPage extends React.Component
   }
 
   /**
+   * @function mapListToMenuItems - maps a given database list to array of menu items
+   * @param {DATABASE_LIST_TYPE} databaseListType - which list to map
+   * @return {MenuItem[]} - an array of menu items 
+   */
+  mapListToMenuItems(databaseListType)
+  {
+      return ( this.state.database.GetDatabaseListElements( databaseListType ).map( 
+               (item) => < MenuItem
+                key   = { item.Name }
+                value = { this.state.database.GetDatabaseName(databaseListType) + "-" + item.Id }> { item.Name } </MenuItem > ));
+  } /* mapListToMenuItems() */
+
+  /**
    * The render function for the SelectionPage class
    */
   render()
   {
-    const breeds      = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.BREED ).map( 
-                        (breed) => < MenuItem
-                        key = { breed.Name }
-                        value   = { Database.DATABASE_LIST_NAME.BREED + "-" + breed.Id }> { breed.Name } </MenuItem > );
-
-    const systemTypes = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ).map(
-                        (systemType) => < MenuItem
-                        key = { systemType.Name } 
-                        value        = { Database.DATABASE_LIST_NAME.SYSTEM_TYPE + "-" + systemType.Id }> { systemType.Name } </MenuItem> );
-
-    const semens      = this.state.database.GetDatabaseListElements( Database.DATABASE_LIST_TYPE.SEMEN ).map(
-                      (semen) => < MenuItem
-                      key = { semen.Name } 
-                      value        = { Database.DATABASE_LIST_NAME.SEMEN + "-" + semen.Id }> { semen.Name } </MenuItem> );
-
     let styles = { width:  400,
                    height: 55 };
     
@@ -165,7 +164,7 @@ class SelectionPage extends React.Component
                   <MenuItem value="">
                       <em>None</em>
                   </MenuItem>
-                { breeds }
+                { this.mapListToMenuItems(Database.DATABASE_LIST_TYPE.BREED ) }
               </Select>
             </FormControl>
             <br/>
@@ -176,8 +175,7 @@ class SelectionPage extends React.Component
                    <MenuItem value="">
                       <em>None</em>
                   </MenuItem>
-                <MenuItem value ="Cow">Cow</MenuItem>
-                <MenuItem value ="Heifer">Heifer</MenuItem>
+                { this.mapListToMenuItems( Database.DATABASE_LIST_TYPE.CATTLE ) }
               </Select>
             </FormControl>
             <br/>
@@ -189,7 +187,7 @@ class SelectionPage extends React.Component
                  <MenuItem value="">
                       <em>None</em>
                   </MenuItem>
-                { systemTypes }                
+                { this.mapListToMenuItems( Database.DATABASE_LIST_TYPE.SYSTEM_TYPE ) }                
               </Select>
             </FormControl>
             <br/>
@@ -201,7 +199,7 @@ class SelectionPage extends React.Component
                  <MenuItem value="">
                       <em>None</em>
                   </MenuItem>
-                { semens }                
+                { this.mapListToMenuItems( Database.DATABASE_LIST_TYPE.SEMEN ) }                
               </Select>
             </FormControl>
             <br/>
