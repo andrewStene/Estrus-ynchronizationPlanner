@@ -65,7 +65,6 @@ class ProtocolPage extends React.Component
        this.updateProtocolId = this.updateProtocolId.bind(this); 
        this.updateStartDateTime = this.updateStartDateTime.bind(this);
 
-
    }
 
     /**
@@ -99,8 +98,6 @@ class ProtocolPage extends React.Component
     //this.props.setStartDateTime(date);
    }
 
-
-
    /**
     * Not currently implemented
     * @param {*} event 
@@ -110,7 +107,6 @@ class ProtocolPage extends React.Component
        event.preventDefualt();
        
    }
-
 
     /**
      * Render function for the class
@@ -131,7 +127,7 @@ class ProtocolPage extends React.Component
             <br/>
             <ul>
 
-            <li>{this.state.name}</li>
+            <li><b>Name:{this.state.name}</b></li>
             <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
                  { this.state.database.GetNameById( parseIdFromLabel( this.state.breed ), 
                                                     Database.DATABASE_LIST_TYPE.BREED ) } </li>
@@ -164,8 +160,7 @@ class ProtocolPage extends React.Component
             <MuiPickersUtilsProvider utils={DateFnsUtils}>                
             <KeyboardDateTimePicker
                 variant="inline"
-             
-                label="With keyboard"
+                label="Select Date for Breeding"
                 value={this.state.startDate}
                 onChange={(value)=> this.updateStartDateTime(value)}
                 onError={console.log}
