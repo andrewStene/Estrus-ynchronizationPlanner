@@ -32,7 +32,8 @@ const DATABASE_LIST_TYPE =
    SYSTEM_TYPE: 4,
    BREED:       5,
    GN_RH:       6,
-   P_G:         7
+   P_G:         7,
+   CATTLE:      8
 };
 
 /** @DATABASE_LIST_TYPE 
@@ -46,7 +47,8 @@ const DATABASE_LIST_NAME =
   SYSTEM_TYPE: "System Type",
   BREED:       "Breed",
   GN_RH:       "Gonadotropin Releasing Hormone",
-  P_G:         "Prostaglandin"
+  P_G:         "Prostaglandin",
+  CATTLE:      "Cattle"
 }
 
 /************************************
@@ -71,6 +73,20 @@ class Database
       return getJSONData();
     }
     
+    /**
+     * @function GetDatabaseName - returns the name of the database given the type
+     * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+     * @returns {string} - the name of the database
+     */
+    GetDatabaseName(databaseListType)
+    {
+      if(checkParameterTypes([databaseListType], ["number"]))
+      {
+        return getDatabaseName(databaseListType);
+      }
+      return "";
+    }
+
     /**
      * @function GetObjectById - Lookup element by its id
      * @param {number} id - the id of the element 
@@ -152,13 +168,14 @@ class Database
      * @param {number} breedId - the id of the breed
      * @param {number} gnrhId - the id of the gonadotropin hormone
      * @param {number} pgId - the id of the prostaglandin
+     * @param {number} cattleId - the id of the cattle
      * @returns {Protocal[]} - a list of all the recommended protocals
      */
-    GetRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId)
+    GetRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
     {
-      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId], ["number", "number", "number", "number", "number"]))
+      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId, cattleId], ["number", "number", "number", "number", "number", "number"]))
       {
-        return getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, this.database);
+        return getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
       }
       return [];
     } /* GetRecommendedProtocals() */
@@ -170,13 +187,14 @@ class Database
      * @param {number} breedId - the id of the breed 
      * @param {number} gnrhId - the id of the gonadtropin hormone
      * @param {number} pgId - the id of the prostaglandin
+     * @param {number} cattleId - the id of the cattle
      * @returns {string[]} - A list of the names of the recommended protocals
      */
-    GetRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId)
+    GetRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
     {
-      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId], ["number", "number", "number", "number", "number"]))
+      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId, cattleId], ["number", "number", "number", "number", "number", "number"]))
       {
-        return getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, this.database);
+        return getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
       }
       return [];
     } /* GetRecommendedProtocalNames() */
@@ -404,8 +422,9 @@ class ProtocalRecommendation
    * @param {number[]} breed - a list of recommended breed id's
    * @param {number[]} gnRH - a list of recommended GnRH id's 
    * @param {number[]} pG - a list of recommended PG id's 
+   * @param {number[]} cattle - a list of recommended cattle id's
    */
-  constructor(systemType, semen, breed, gnRH, pG)
+  constructor(systemType, semen, breed, gnRH, pG, cattle)
   {
     if(typeof systemType == "object")
     {
@@ -427,6 +446,10 @@ class ProtocalRecommendation
     {
       this.PG = pG;
     }    
+    if(typeof cattle == "object")
+    {
+      this.Cattle = cattle;
+    }
   }
 
   /**
@@ -440,6 +463,7 @@ class ProtocalRecommendation
     let breedCopy = [];
     let gnRHCopy = [];
     let pgCopy = [];
+    let cattleCopy = [];
     for(let i = 0; i < this.SystemType.length; i++)
     {
       systemTypeCopy.push( this.SystemType[i] );
@@ -460,13 +484,55 @@ class ProtocalRecommendation
     {
       pgCopy.push( this.PG[i] );
     }
-    return new ProtocalRecommendation(systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy);
+    for(let i = 0; i < this.Cattle.length; i++)
+    {
+      cattleCopy.push( this.Cattle[i] );
+    }
+    return new ProtocalRecommendation(systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy);
   } /* Copy() */
 } /* class ProtocalRecommendation */
 
 /************************************
  *          PUBLIC FUNCTIONS        *
  ************************************/
+
+/**
+ * @function getDatabaseName - get the database list name given a type
+ * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+ * @returns {string} - the name of the database
+ */
+function getDatabaseName(databaseListType)
+{
+    switch(databaseListType)
+    {
+      case DATABASE_LIST_TYPE.TASKS:
+        return DATABASE_LIST_NAME.TASKS;
+      
+      case DATABASE_LIST_TYPE.PROTOCALS:
+        return DATABASE_LIST_NAME.PROTOCALS;
+
+      case DATABASE_LIST_TYPE.SEMEN:
+        return DATABASE_LIST_NAME.SEMEN;
+
+      case DATABASE_LIST_TYPE.SYSTEM_TYPE:
+        return DATABASE_LIST_NAME.SYSTEM_TYPE;
+
+      case DATABASE_LIST_TYPE.BREED:
+        return DATABASE_LIST_NAME.BREED;
+
+      case DATABASE_LIST_TYPE.GN_RH:
+        return DATABASE_LIST_NAME.GN_RH;
+
+      case DATABASE_LIST_TYPE.P_G:
+        return DATABASE_LIST_NAME.P_G;
+
+      case DATABASE_LIST_TYPE.CATTLE:
+        return DATABASE_LIST_NAME.CATTLE;
+
+      default:
+        return "";
+    }
+} /* getDatabaseName() */
 
 /** @function getObjectById
  * Look up a given object by its id
@@ -586,11 +652,11 @@ function getDatabaseListNames(databaseListType, database)
  * @param {object} database - the database to search
  * @returns {Protocal[]} - A list of protocals associated with inputs 
  */
-function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, database)
+function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
 {
   let protocals = database.Protocals;
   let newList = [];
-  if(semenId == null && systemTypeId == null && breedId == null && gnrhId == null && pgId == null)
+  if(semenId == null && systemTypeId == null && breedId == null && gnrhId == null && pgId == null && cattleId == null)
   {
     for(let i = 0; i < protocals.length; i++)
     {
@@ -601,7 +667,7 @@ function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, d
   {
     for(let i = 0; i < protocals.length; i++)
     {
-      if(isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, protocals[i].Recommendations))
+      if(isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocals[i].Recommendations))
       {
         newList.push(protocals[i].Copy());
       }
@@ -616,13 +682,14 @@ function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, d
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed 
  * @param {number} gnrhId - the id of the gonadatropin hormone
- * @param {number} pgId - the id of the prostaglandin 
+ * @param {number} pgId - the id of the prostaglandin
+ * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to traverse
  * @returns {string[]} - A list of the names of the recommended protocals 
  */
-function getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, database)
+function getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
 {
-  let protocals = getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, database);
+  let protocals = getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database);
   let newList = [];  
   for(let i = 0; i < protocals.length; i++)
   {
@@ -820,8 +887,7 @@ async function getJSONData()
       }).then(function(dataobj){
         json = dataobj
       })
-  
-  console.log(await json);
+    
   return (await json);
 }
 
@@ -896,6 +962,9 @@ function findDatabaseInputList(databaseListType, database)
 
     case DATABASE_LIST_TYPE.GN_RH:
       return database.GnRH;
+
+    case DATABASE_LIST_TYPE.CATTLE:
+      return database.Cattle;
 
     default:
       return null;
@@ -1000,10 +1069,11 @@ function addElementToDatabase(element, list)
  * @param {number} breedId - the id of the breed
  * @param {number} gnrhId - the id of the gonadtropin hormone
  * @param {number} pgId - the id of the prostaglandin
+ * @param {number} cattleId - the id of the cattle type
  * @param {ProtocalRecommendation} protocalRecommendation - the protocal recommendation to compare to
  * @returns {boolean} - Whether the protocal is recommended or not
  */
-function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, protocalRecommendation)
+function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocalRecommendation)
 {
   if(semenId != null)
   {
@@ -1036,6 +1106,13 @@ function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, pro
   if(pgId != null)
   {
     if(!isContainedInList(pgId, protocalRecommendation.PG, isEqualNum))
+    {
+      return false;
+    }
+  }
+  if(cattleId != null)
+  {
+    if(!isContainedInList(cattleId, protocalRecommendation.Cattle, isEqualNum))
     {
       return false;
     }
@@ -1170,7 +1247,7 @@ var testingData =
          new ProtocalTask(2, 950400), new ProtocalTask(3, 0),
          new ProtocalTask(4, 950400), new ProtocalTask(5, 2332800)
        ],
-       new ProtocalRecommendation([0],[0],[0],[1],[5])
+       new ProtocalRecommendation([0],[0],[0],[1],[5],[1])
        ),
      new Protocal(1, 
        "1 Injection Prostaglandin No Prior Estrus",               
@@ -1179,7 +1256,7 @@ var testingData =
            new ProtocalTask(2, 432000), new ProtocalTask(3, 0),
            new ProtocalTask(4, 950400), new ProtocalTask(5, 1987200)
          ],
-         new ProtocalRecommendation([0],[0],[1],[1],[5])
+         new ProtocalRecommendation([0],[0],[1],[1],[5],[0])
        )
      ],
  Semen: [
@@ -1210,5 +1287,9 @@ var testingData =
      new ListType(4, "ProstaMate"),
      new ListType(5, "HiConc. Lut"),
      new ListType(6, "Synchsure"),
-    ]
+    ],
+  Cattle: [
+    new ListType(0, "Cow"),
+    new ListType(1, "Heifer")
+  ]
 }
