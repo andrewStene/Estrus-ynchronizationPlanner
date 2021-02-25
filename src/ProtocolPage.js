@@ -1,4 +1,19 @@
 /**
+ *  ProtocolPage.js
+ *  Copyright (C) 2021  Andrew Stene
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ProtocolPage.js
  */
 import React from 'react';
@@ -12,6 +27,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
 import centering from './ProtocolPage.css';
+import 'date-fns';
+import { format } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDateTimePicker,
+} from '@material-ui/pickers';
 
 /**
  * Can't think of a good description rn
@@ -35,10 +58,13 @@ class ProtocolPage extends React.Component
         systemType:" ",
         cowType:"",
         id:"",
+        startDate: new Date(),
         description:"",
          /** @type {Database} */ database: this.props.database
        }
-       this.updateParent = this.updateParent.bind(this);  
+         
+       this.updateProtocolId = this.updateProtocolId.bind(this); 
+       this.updateStartDateTime = this.updateStartDateTime.bind(this);
    }
 
     /**
@@ -53,10 +79,11 @@ class ProtocolPage extends React.Component
 
    /**
     * Dont remember what this is atm
-    * @param {} value 
+    * @param {The new protocol ID} value
     */
-   updateParent(value)
+   updateProtocolId(value)
    {   
+       
         let protocal = this.state.database.GetObjectByName(value.target.value, Database.DATABASE_LIST_TYPE.PROTOCALS)
         let description = "";
         if(protocal != null)
@@ -68,6 +95,21 @@ class ProtocolPage extends React.Component
         this.setState({description: description })
    }
 
+   /**
+    * Updates the starting date and time
+    * @param {The start date} date 
+    */
+   updateStartDateTime(date)
+   {
+    console.log(date);
+    this.setState({startDate:new Date(date)});
+    //this.props.setStartDateTime(date);
+   }
+
+    /**
+    * Not currently implemented
+    * @param {*} event 
+    */
    verifyInput(event)
    {
        event.preventDefualt();
@@ -114,7 +156,7 @@ class ProtocolPage extends React.Component
               </InputLabel>
                    <Select style = {styles}
                    id="protocol"                    
-                    onChange={this.updateParent}
+                    onChange={this.updateProtocolId}
                     label="Protocol"
                                     >
                         <MenuItem value="">
@@ -124,6 +166,21 @@ class ProtocolPage extends React.Component
                      </Select>
             </FormControl>
             <p><b>Protocal Description:</b> {this.state.description}</p>           
+            <br/>
+            <br/>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+            <KeyboardDateTimePicker
+                variant="inline"
+
+                label="With keyboard"
+                value={this.state.startDate}
+                onChange={(value)=> this.updateStartDateTime(value)}
+                onError={console.log}
+                disablePast
+                format="MM/dd/yyyy hh:mm aa"
+            />
+            </MuiPickersUtilsProvider>
             <br/>
             <br/>
             <Button className = "sidebysidebutton" component={Link} to="/selectionpage" color="defualt" variant="contained" size = "large" >Back</Button>
