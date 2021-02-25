@@ -12,10 +12,10 @@
           Database, 
           ListType, 
           Task, 
-          Protocal, 
-          ProtocalTask, 
-          ProtocalRecommendation 
-        }; 
+          Protocol, 
+          ProtocolTask, 
+          ProtocolRecommendation 
+        };
 
  /************************************
  *            CONSTANTS              *
@@ -27,7 +27,7 @@
 const DATABASE_LIST_TYPE = 
 {
    TASKS:       1,
-   PROTOCALS:   2,
+   PROTOCOLS:   2,
    SEMEN:       3,
    SYSTEM_TYPE: 4,
    BREED:       5,
@@ -42,7 +42,7 @@ const DATABASE_LIST_TYPE =
 const DATABASE_LIST_NAME = 
 {
   TASKS:       "Tasks",
-  PROTOCALS:   "Protocals",
+  PROTOCOLS:   "Protocols",
   SEMEN:       "Semen",
   SYSTEM_TYPE: "System Type",
   BREED:       "Breed",
@@ -161,7 +161,7 @@ class Database
     } /* GetDatabaseList() */
 
     /**
-     * @function GetRecommendedProtocals - Gets a list of protocals filtered by the input types, all null parameters
+     * @function GetRecommendedProtocols - Gets a list of protocals filtered by the input types, all null parameters
      *  will return a list of all the protocals
      * @param {number} semenId - the id of the semen
      * @param {number} systemTypeId - the id of the system type
@@ -169,19 +169,19 @@ class Database
      * @param {number} gnrhId - the id of the gonadotropin hormone
      * @param {number} pgId - the id of the prostaglandin
      * @param {number} cattleId - the id of the cattle
-     * @returns {Protocal[]} - a list of all the recommended protocals
+     * @returns {Protocol[]} - a list of all the recommended protocals
      */
-    GetRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
+    GetRecommendedProtocols(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
     {
       if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId, cattleId], ["number", "number", "number", "number", "number", "number"]))
       {
-        return getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
+        return getRecommendedProtocols(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
       }
       return [];
-    } /* GetRecommendedProtocals() */
+    } /* GetRecommendedProtocols() */
 
     /**
-     * @function GetRecommendedProtocalNames - Get a list of names of the recommended protocals filtered by inputs
+     * @function GetRecommendedProtocolNames - Get a list of names of the recommended protocals filtered by inputs
      * @param {number} semenId - the id of the semen 
      * @param {number} systemTypeId - the id of the system type 
      * @param {number} breedId - the id of the breed 
@@ -190,14 +190,14 @@ class Database
      * @param {number} cattleId - the id of the cattle
      * @returns {string[]} - A list of the names of the recommended protocals
      */
-    GetRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
+    GetRecommendedProtocolNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId)
     {
       if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId, cattleId], ["number", "number", "number", "number", "number", "number"]))
       {
-        return getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
+        return getRecommendedProtocolNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database);
       }
       return [];
-    } /* GetRecommendedProtocalNames() */
+    } /* GetRecommendedProtocolNames() */
 
     /**
      * @function AddListElement - Add a new list element to the database if it doesn't already exist
@@ -333,18 +333,18 @@ class Task extends ListType
   } /* Copy() */
 } /* class Task */
 
-/** Class Protocal
+/** Class Protocol
  * A given protocal to be executed
  */
-class Protocal extends ListType
+class Protocol extends ListType
 {
   /**
-   * Constructs a protocal
-   * @param {number} id - the id of the protocal 
-   * @param {string} name - the name of the protocal 
-   * @param {string} description - the description of the protocal
-   * @param {ProtocalTask[]} tasks - the protocals tasks to complete 
-   * @param {ProtocalRecommendation} recommendations - the recommended inputs for this protocal  
+   * Constructs a protocol
+   * @param {number} id - the id of the protocol 
+   * @param {string} name - the name of the protocol 
+   * @param {string} description - the description of the protocol
+   * @param {ProtocolTask[]} tasks - the protocals tasks to complete 
+   * @param {ProtocolRecommendation} recommendations - the recommended inputs for this protocol  
    */
   constructor(id, name, description, tasks, recommendations)
   {
@@ -365,7 +365,7 @@ class Protocal extends ListType
 
   /**
    * @function Copy - creates a copy of the protocal
-   * @returns {Protocal} - a copy of the protocal
+   * @returns {Protocol} - a copy of the protocal
    */
   Copy()
   {
@@ -374,17 +374,17 @@ class Protocal extends ListType
     {
       tasksCopy.push( this.Tasks[i].Copy() );
     }
-    return new Protocal(this.Id, this.Name, this.Description, tasksCopy, this.Recommendations.Copy() );
+    return new Protocol(this.Id, this.Name, this.Description, tasksCopy, this.Recommendations.Copy() );
   } /* Copy() */
-} /* class Protocal */
+} /* class Protocol */
 
-/** class ProtocalTask
+/** class ProtocolTask
  * A task to excecute in a protocal
  */
-class ProtocalTask
+class ProtocolTask
 {
   /**
-   * Constructs a ProtocalTask
+   * Constructs a ProtocolTask
    * @param {number} taskId - the id of the task in the protocal 
    * @param {number} secondsSinceStart - the relative seconds since the start of the protocal to begin task 
    */
@@ -401,22 +401,22 @@ class ProtocalTask
   }
 
   /**
-   * @function Copy - creates a copy of the ProtocalTask
-   * @returns {ProtocalTask} - a copy of the protocal task
+   * @function Copy - creates a copy of the ProtocolTask
+   * @returns {ProtocolTask} - a copy of the protocal task
    */
   Copy()
   {
-    return new ProtocalTask(this.TaskId, this.SecondsSinceStart);
+    return new ProtocolTask(this.TaskId, this.SecondsSinceStart);
   } /* Copy() */
-} /* class ProtocalTask */
+} /* class ProtocolTask */
 
-/** class ProtocalRecommendation
+/** class ProtocolRecommendation
  * An aggregation of all the recommended inputs for a protocal
  */
-class ProtocalRecommendation
+class ProtocolRecommendation
 {
   /**
-   * Constructs a ProtocalRecommendation
+   * Constructs a ProtocolRecommendation
    * @param {number[]} systemType - a list of recommended system type id's 
    * @param {number[]} semen - a list of recommended semen id's
    * @param {number[]} breed - a list of recommended breed id's
@@ -453,8 +453,8 @@ class ProtocalRecommendation
   }
 
   /**
-   * @function Copy - creates a copy of the ProtocalRecommendation
-   * @returns {ProtocalRecommendation} - a copy of the ProtocalRecommendation
+   * @function Copy - creates a copy of the ProtocolRecommendation
+   * @returns {ProtocolRecommendation} - a copy of the ProtocolRecommendation
    */
   Copy()
   {
@@ -488,9 +488,9 @@ class ProtocalRecommendation
     {
       cattleCopy.push( this.Cattle[i] );
     }
-    return new ProtocalRecommendation(systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy);
+    return new ProtocolRecommendation(systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy);
   } /* Copy() */
-} /* class ProtocalRecommendation */
+} /* class ProtocolRecommendation */
 
 /************************************
  *          PUBLIC FUNCTIONS        *
@@ -508,8 +508,8 @@ function getDatabaseName(databaseListType)
       case DATABASE_LIST_TYPE.TASKS:
         return DATABASE_LIST_NAME.TASKS;
       
-      case DATABASE_LIST_TYPE.PROTOCALS:
-        return DATABASE_LIST_NAME.PROTOCALS;
+      case DATABASE_LIST_TYPE.PROTOCOLS:
+        return DATABASE_LIST_NAME.PROTOCOLS;
 
       case DATABASE_LIST_TYPE.SEMEN:
         return DATABASE_LIST_NAME.SEMEN;
@@ -643,41 +643,42 @@ function getDatabaseListNames(databaseListType, database)
 } /* getDatabaseList() */
 
 /**
- * @function getRecommendedProtocals - Get the list of protocals which are recommended for the given inputs
+ * @function getRecommendedProtocols - Get the list of protocols which are recommended for the given inputs
  * @param {number} semenId - the id of the semen input 
  * @param {number} systemTypeId - the id of the system type 
  * @param {number} breedId - the id of the breed 
  * @param {number} gnrhId - the id of the gonadtropin hormone
- * @param {number} pgId - the id of the prostaglandin 
+ * @param {number} pgId - the id of the prostaglandin
+ * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to search
- * @returns {Protocal[]} - A list of protocals associated with inputs 
+ * @returns {Protocol[]} - A list of protocals associated with inputs 
  */
-function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
+function getRecommendedProtocols(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
 {
-  let protocals = database.Protocals;
+  let protocols = database.Protocols;
   let newList = [];
   if(semenId == null && systemTypeId == null && breedId == null && gnrhId == null && pgId == null && cattleId == null)
   {
-    for(let i = 0; i < protocals.length; i++)
+    for(let i = 0; i < protocols.length; i++)
     {
-      newList.push(protocals[i].Copy());
+      newList.push(protocols[i].Copy());
     }
   }
   else
   {
-    for(let i = 0; i < protocals.length; i++)
+    for(let i = 0; i < protocols.length; i++)
     {
-      if(isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocals[i].Recommendations))
+      if(isRecommendedProtocol(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocols[i].Recommendations))
       {
-        newList.push(protocals[i].Copy());
+        newList.push(protocols[i].Copy());
       }
     }
   }  
   return newList;
-} /* getRecommendedProtocals() */
+} /* getRecommendedProtocols() */
 
 /**
- * @function getRecommendedProtocalNames - Generates a list of the recommended protocal names associated with inputs
+ * @function getRecommendedProtocolNames - Generates a list of the recommended protocal names associated with inputs
  * @param {number} semenId - the id of the semen 
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed 
@@ -687,16 +688,16 @@ function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, c
  * @param {object} database - the database to traverse
  * @returns {string[]} - A list of the names of the recommended protocals 
  */
-function getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
+function getRecommendedProtocolNames(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database)
 {
-  let protocals = getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database);
+  let protocols = getRecommendedProtocols(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database);
   let newList = [];  
-  for(let i = 0; i < protocals.length; i++)
+  for(let i = 0; i < protocols.length; i++)
   {
-    newList.push(protocals[i].Name);
+    newList.push(protocols[i].Name);
   }  
   return newList;
-} /* getRecommendedProtocalNames() */
+} /* getRecommendedProtocolNames() */
 
 /** @function addListElement
  * Add a list element to a database list if it doesn't already exist
@@ -801,7 +802,7 @@ function parseJSON(json)
   let database =
   {
     Tasks: [],
-    Protocals: [],
+    Protocols: [],
     Semen: [],
     SystemType: [],
     Breed: [],
@@ -819,18 +820,18 @@ function parseJSON(json)
   }
 
   // Populate Protocals
-  for(let i = 0; i < json.Protocals.length; i++ )
+  for(let i = 0; i < json.Protocols.length; i++ )
   {
-    let protocal = json.Protocals[i];
+    let protocol = json.Protocols[i];
     let tasks = [];
-    for(let j = 0; j < protocal.Tasks.length; j++)
+    for(let j = 0; j < protocol.Tasks.length; j++)
     {
-      let task = protocal.Tasks[j]
-      tasks.push( new ProtocalTask(task.TaskId, task.SecondsSinceStart) )
+      let task = protocol.Tasks[j]
+      tasks.push( new ProtocolTask(task.TaskId, task.SecondsSinceStart) )
     }
-    let recommendation = new ProtocalRecommendation(protocal.Recommendations.SystemType, protocal.Recommendations.Semen,
-      protocal.Recommendations.Breed, protocal.Recommendations.GnRH, protocal.Recommendations.PG )
-    database.Protocals.push(new Protocal(protocal.Id, protocal.Name, protocal.Description, tasks, recommendation));
+    let recommendation = new ProtocolRecommendation(protocol.Recommendations.SystemType, protocol.Recommendations.Semen,
+      protocol.Recommendations.Breed, protocol.Recommendations.GnRH, protocol.Recommendations.PG )
+    database.Protocols.push(new Protocol(protocol.Id, protocol.Name, protocol.Description, tasks, recommendation));
   }
 
   // Populate Semen
@@ -930,8 +931,8 @@ function findDatabaseList(databaseListType, database)
     case DATABASE_LIST_TYPE.TASKS:
       return database.Tasks;
 
-    case DATABASE_LIST_TYPE.PROTOCALS:
-      return database.Protocals;
+    case DATABASE_LIST_TYPE.PROTOCOLS:
+      return database.Protocols;
 
     default:
       return null;
@@ -1063,62 +1064,62 @@ function addElementToDatabase(element, list)
 
 
 /**
- * @function isRecommendedProtocal - Checks whether a protocal is recommended or not
+ * @function isRecommendedProtocol - Checks whether a protocol is recommended or not
  * @param {number} semenId - the id of the semen
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed
  * @param {number} gnrhId - the id of the gonadtropin hormone
  * @param {number} pgId - the id of the prostaglandin
  * @param {number} cattleId - the id of the cattle type
- * @param {ProtocalRecommendation} protocalRecommendation - the protocal recommendation to compare to
+ * @param {ProtocolRecommendation} protocolRecommendation - the protocal recommendation to compare to
  * @returns {boolean} - Whether the protocal is recommended or not
  */
-function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocalRecommendation)
+function isRecommendedProtocol(semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocolRecommendation)
 {
   if(semenId != null)
   {
-    if(!isContainedInList(semenId, protocalRecommendation.Semen, isEqualNum))
+    if(!isContainedInList(semenId, protocolRecommendation.Semen, isEqualNum))
     {
       return false;
     }
   }
   if(systemTypeId != null)
   {
-    if(!isContainedInList(systemTypeId, protocalRecommendation.SystemType, isEqualNum))
+    if(!isContainedInList(systemTypeId, protocolRecommendation.SystemType, isEqualNum))
     {
       return false;
     }
   }
   if(breedId != null)
   {
-    if(!isContainedInList(breedId, protocalRecommendation.Breed, isEqualNum))
+    if(!isContainedInList(breedId, protocolRecommendation.Breed, isEqualNum))
     {
       return false;
     }
   }
   if(gnrhId != null)
   {
-    if(!isContainedInList(gnrhId, protocalRecommendation.GnRH, isEqualNum))
+    if(!isContainedInList(gnrhId, protocolRecommendation.GnRH, isEqualNum))
     {
       return false;
     }
   }
   if(pgId != null)
   {
-    if(!isContainedInList(pgId, protocalRecommendation.PG, isEqualNum))
+    if(!isContainedInList(pgId, protocolRecommendation.PG, isEqualNum))
     {
       return false;
     }
   }
   if(cattleId != null)
   {
-    if(!isContainedInList(cattleId, protocalRecommendation.Cattle, isEqualNum))
+    if(!isContainedInList(cattleId, protocolRecommendation.Cattle, isEqualNum))
     {
       return false;
     }
   }
   return true;
-} /* isRecommendedProtocal() */
+} /* isRecommendedProtocol() */
 
 /**
  * @function isEqualNum - Checks whether two numbers are equal
@@ -1239,24 +1240,24 @@ var testingData =
     new Task( 4, "Clean up", "...", 50 ),
     new Task( 5, "New Cycle", "...", 0 ),
         ],
- Protocals: [
-     new Protocal(0, 
+ Protocols: [
+     new Protocol(0, 
        "1 Injection Prostaglandin Prior Estrus",               
        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At varius vel pharetra vel turpis nunc eget lorem. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Sed odio morbi quis commodo odio. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus. Eget nullam non nisi est. Tincidunt arcu non sodales neque sodales ut.", 
-       [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
-         new ProtocalTask(2, 950400), new ProtocalTask(3, 0),
-         new ProtocalTask(4, 950400), new ProtocalTask(5, 2332800)
+       [ new ProtocolTask(0, 0), new ProtocolTask(1, 345600),
+         new ProtocolTask(2, 950400), new ProtocolTask(3, 0),
+         new ProtocolTask(4, 950400), new ProtocolTask(5, 2332800)
        ],
-       new ProtocalRecommendation([0],[0],[0],[1],[5],[1])
+       new ProtocolRecommendation([0],[0],[0],[1],[5],[1])
        ),
-     new Protocal(1, 
+     new Protocol(1, 
        "1 Injection Prostaglandin No Prior Estrus",               
        "Vitae suscipit tellus mauris a diam maecenas sed enim ut. Ridiculus mus mauris vitae ultricies. Integer malesuada nunc vel risus commodo viverra maecenas. Ornare arcu dui vivamus arcu felis. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Elementum facilisis leo vel fringilla est ullamcorper eget nulla facilisi.", 
-         [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
-           new ProtocalTask(2, 432000), new ProtocalTask(3, 0),
-           new ProtocalTask(4, 950400), new ProtocalTask(5, 1987200)
+         [ new ProtocolTask(0, 0), new ProtocolTask(1, 345600),
+           new ProtocolTask(2, 432000), new ProtocolTask(3, 0),
+           new ProtocolTask(4, 950400), new ProtocolTask(5, 1987200)
          ],
-         new ProtocalRecommendation([0],[0],[1],[1],[5],[0])
+         new ProtocolRecommendation([0],[0],[1],[1],[5],[0])
        )
      ],
  Semen: [
