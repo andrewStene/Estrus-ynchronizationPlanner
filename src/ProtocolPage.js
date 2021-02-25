@@ -11,6 +11,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
+import centering from './ProtocolPage.css';
 
 /**
  * Can't think of a good description rn
@@ -31,7 +32,7 @@ class ProtocolPage extends React.Component
        {
         name: "",
         breed:"",
-        systemType:"",
+        systemType:" ",
         cowType:"",
         id:"",
         description:"",
@@ -87,10 +88,11 @@ class ProtocolPage extends React.Component
         
         let styles = { width:  400,
                        height: 55 };
+
         return(
             <div>         
             <h1>Select a Protocol</h1>
-            <br/>
+            <br/>            
             <ul>
             <li>{this.state.name}</li>
             <li> <b>{ `${ Database.DATABASE_LIST_NAME.BREED }: ` }</b> 
@@ -103,7 +105,7 @@ class ProtocolPage extends React.Component
             <li> <b>{ `${Database.DATABASE_LIST_NAME.SEMEN}: ` }</b> 
                  { this.state.database.GetNameById( parseIdFromLabel( this.state.semen ), 
                                                     Database.DATABASE_LIST_TYPE.SEMEN ) }</li>
-            </ul>
+            </ul>            
             <br/>
             <form>
             <FormControl variant="outlined">
