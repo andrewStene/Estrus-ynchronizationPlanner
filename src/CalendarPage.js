@@ -19,6 +19,8 @@ import React from 'react';
 import { Button} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import {  CalculateProtocalCalendar, CowCalendar, ScheduledEvent } from './CalendarCalc';
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
 /**
  * A react component to display the steps of the desired protocol 
@@ -43,7 +45,10 @@ class CalendarPage extends React.Component
     {
         return(
             <div>
-
+                <br/>
+                <FullCalendar   
+                    plugins={[ dayGridPlugin ]}
+                    initialView="dayGridMonth"/>
                 <br/>
                 <br/>
                 <Button className = "sidebysidebutton" component={Link} to="/protocol" color="defualt" variant="contained" size = "large" >Back</Button>
