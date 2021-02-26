@@ -200,6 +200,7 @@ class App extends React.Component
                                         />
                                   }
                   />
+                  <Route path = "/calendar" component = {CalPage}/>
 
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />

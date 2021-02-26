@@ -239,7 +239,7 @@ class ProtocolPage extends React.Component
                     <Button 
                         className = "sidebysidebutton"
                         component = { Link } 
-                        to        = "/"
+                        to        = "/calendar"
                         color     = "defualt"
                         variant   = "contained" 
                         size      = "large"

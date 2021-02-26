@@ -18,7 +18,7 @@
 import React from 'react';
 import { Button} from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import {  CalculateProtocalCalendar, CowCalendar, ScheduledEvent } from './CalendarCalc';
+import {  CalculateProtocolCalendar} from './CalendarCalc';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import {Database} from './Database'
@@ -44,18 +44,13 @@ class CalendarPage extends React.Component
         }
     }
 
-    formatArray()
-    {
-
-    }
-
     /**
      * Render function for the class
      */
     render()
     {
         let db = new Database();
-        let results = CalculateProtocalCalendar(db.GetObjectById(0, Database.DATABASE_LIST_TYPE.PROTOCALS),Date.now(),db);
+        let results = CalculateProtocolCalendar(db.GetObjectById(0, Database.DATABASE_LIST_TYPE.PROTOCOLS),Date.now(),db);
         if(results === null)
         {
             console.log("Uh oh");

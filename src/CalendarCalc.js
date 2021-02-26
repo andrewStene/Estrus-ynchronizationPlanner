@@ -21,7 +21,7 @@
  ******************************/
 
  import React from 'react';
- import { Database, Protocal, Task } from './Database.js';
+ import { Database, protocol, Task } from './Database.js';
 
 
 /******************************
@@ -45,9 +45,9 @@ export {
   * @param {Database} database - A database object which contains all the protocols
   * @returns {CowCalendar} - A calendar of all the different tasks to be displayed 
   */
- function CalculateProtocalCalendar(protocol, dateOffset, database)
+ function CalculateProtocolCalendar(protocol, dateOffset, database)
  {
-    if(protocal === null)
+    if(protocol === null)
 
     {
         console.log("protocol is null");
@@ -64,7 +64,7 @@ export {
     }
 
     var events = []
-    for(let i = 0; i < protocal.Tasks.length; i++)
+    for(let i = 0; i < protocol.Tasks.length; i++)
 
     {
         let task = database.GetObjectById(protocol.Tasks[i].TaskId, Database.DATABASE_LIST_TYPE.TASKS);
@@ -73,14 +73,14 @@ export {
             return null;
         }
 
-        let startTime = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart);
-        let endTime = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart + task.TaskLength);
+        let startTime = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart);
+        let endTime = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart + task.TaskLength);
         
         events.push({id: i, start:startTime, end:endTime, title:task.Name})
     }
     return events;
 
- } /* CalculateProtocalCalendar() */
+ } /* CalculateprotocolCalendar() */
 
 /**********************************
  *          PUBLIC CLASS          *

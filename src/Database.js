@@ -68,7 +68,7 @@ const DATABASE_LIST_NAME =
  ************************************/
 
 /** class Database
- * A database to handle all the lists of protocals, tasks and input types
+ * A database to handle all the lists of protocols, tasks and input types
  */
 class Database
 {
@@ -177,15 +177,15 @@ class Database
     } /* GetDatabaseList() */
 
     /**
-     * @function GetRecommendedProtocols - Gets a list of protocals filtered by the input types, all null parameters
-     *  will return a list of all the protocals
+     * @function GetRecommendedProtocols - Gets a list of protocols filtered by the input types, all null parameters
+     *  will return a list of all the protocols
      * @param {number} semenId - the id of the semen
      * @param {number} systemTypeId - the id of the system type
      * @param {number} breedId - the id of the breed
      * @param {number} gnrhId - the id of the gonadotropin hormone
      * @param {number} pgId - the id of the prostaglandin
      * @param {number} cattleId - the id of the cattle
-     * @returns {Protocol[]} - a list of all the recommended protocals
+     * @returns {Protocol[]} - a list of all the recommended protocols
      */
     GetRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
@@ -198,14 +198,14 @@ class Database
     } /* GetRecommendedProtocols() */
 
     /**
-     * @function GetRecommendedProtocolNames - Get a list of names of the recommended protocals filtered by inputs
+     * @function GetRecommendedProtocolNames - Get a list of names of the recommended protocols filtered by inputs
      * @param {number} semenId - the id of the semen 
      * @param {number} systemTypeId - the id of the system type 
      * @param {number} breedId - the id of the breed 
      * @param {number} gnrhId - the id of the gonadtropin hormone
      * @param {number} pgId - the id of the prostaglandin
      * @param {number} cattleId - the id of the cattle
-     * @returns {string[]} - A list of the names of the recommended protocals
+     * @returns {string[]} - A list of the names of the recommended protocols
      */
     GetRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
@@ -321,7 +321,7 @@ class ListType
 } /* class ListType */
 
 /** class Task
- * A given task that can be used in protocals
+ * A given task that can be used in protocols
  */
 class Task extends ListType
 {
@@ -356,7 +356,7 @@ class Task extends ListType
 } /* class Task */
 
 /** Class Protocol
- * A given protocal to be executed
+ * A given protocol to be executed
  */
 class Protocol extends ListType
 {
@@ -365,7 +365,7 @@ class Protocol extends ListType
     * @param {number} id - the id of the protocol 
     * @param {string} name - the name of the protocol 
     * @param {string} description - the description of the protocol
-    * @param {ProtocolTask[]} tasks - the protocals tasks to complete 
+    * @param {ProtocolTask[]} tasks - the protocols tasks to complete 
     * @param {ProtocolRecommendation} recommendations - the recommended inputs for this protocol  
     */
     constructor( id, name, description, tasks, recommendations )
@@ -387,8 +387,8 @@ class Protocol extends ListType
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of the protocal
-    * @returns {Protocol} - a copy of the protocal
+    * @function Copy - creates a copy of the protocol
+    * @returns {Protocol} - a copy of the protocol
     */
     Copy()
     {
@@ -403,14 +403,14 @@ class Protocol extends ListType
 } /* class Protocol */
 
 /** class ProtocolTask
- * A task to excecute in a protocal
+ * A task to excecute in a protocol
  */
 class ProtocolTask
 {
     /**
     * Constructs a ProtocolTask
-    * @param {number} taskId - the id of the task in the protocal 
-    * @param {number} secondsSinceStart - the relative seconds since the start of the protocal to begin task 
+    * @param {number} taskId - the id of the task in the protocol 
+    * @param {number} secondsSinceStart - the relative seconds since the start of the protocol to begin task 
     */
     constructor( taskId, secondsSinceStart )
     {
@@ -426,7 +426,7 @@ class ProtocolTask
 
     /**
     * @function Copy - creates a copy of the ProtocolTask
-    * @returns {ProtocolTask} - a copy of the protocal task
+    * @returns {ProtocolTask} - a copy of the protocol task
     */
     Copy()
     {
@@ -435,7 +435,7 @@ class ProtocolTask
 } /* class ProtocolTask */
 
 /** class ProtocolRecommendation
- * An aggregation of all the recommended inputs for a protocal
+ * An aggregation of all the recommended inputs for a protocol
  */
 class ProtocolRecommendation
 {
@@ -680,7 +680,7 @@ function getDatabaseListNames( databaseListType, database )
  * @param {number} pgId - the id of the prostaglandin
  * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to search
- * @returns {Protocol[]} - A list of protocals associated with inputs 
+ * @returns {Protocol[]} - A list of protocols associated with inputs 
  */
 function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
@@ -713,7 +713,7 @@ function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, 
 } /* getRecommendedProtocols() */
 
 /**
- * @function getRecommendedProtocolNames - Generates a list of the recommended protocal names associated with inputs
+ * @function getRecommendedProtocolNames - Generates a list of the recommended protocol names associated with inputs
  * @param {number} semenId - the id of the semen 
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed 
@@ -721,7 +721,7 @@ function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, 
  * @param {number} pgId - the id of the prostaglandin
  * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to traverse
- * @returns {string[]} - A list of the names of the recommended protocals 
+ * @returns {string[]} - A list of the names of the recommended protocols 
  */
 function getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
@@ -862,7 +862,7 @@ function parseJSON( json )
         database.Tasks.push( new Task( task.Id, task.Name, task.Description, task.TaskLength ) );
     }
 
-    // Populate Protocals
+    // Populate protocols
     for( let i = 0; i < json.Protocols.length; i++ )
     {
         let protocol = json.Protocols[i];
@@ -1125,8 +1125,8 @@ function addElementToDatabase( element, list )
  * @param {number} gnrhId - the id of the gonadtropin hormone
  * @param {number} pgId - the id of the prostaglandin
  * @param {number} cattleId - the id of the cattle type
- * @param {ProtocolRecommendation} protocolRecommendation - the protocal recommendation to compare to
- * @returns {boolean} - Whether the protocal is recommended or not
+ * @param {ProtocolRecommendation} protocolRecommendation - the protocol recommendation to compare to
+ * @returns {boolean} - Whether the protocol is recommended or not
  */
 function isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocolRecommendation )
 {
