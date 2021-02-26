@@ -93,9 +93,9 @@ class ProtocolPage extends React.Component
     */
    updateStartDateTime(date)
    {
-    console.log(date);
-    this.setState({startDate:new Date(date)});
-    //this.props.setStartDateTime(date);
+        console.log(date);
+        this.setState({startDate:new Date(date)});
+        this.props.setStartDateTime(new Date(date));
    }
 
    /**

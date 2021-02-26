@@ -21,6 +21,8 @@ import { Link } from 'react-router-dom';
 import {  CalculateProtocalCalendar, CowCalendar, ScheduledEvent } from './CalendarCalc';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import {Database} from './Database'
+
 
 /**
  * A react component to display the steps of the desired protocol 
@@ -33,9 +35,18 @@ class CalendarPage extends React.Component
         super(props);
 
         this.state=
-        {
-
+        {   
+            protocolName:this.props.protocolName,
+            protocolId:this.props.protocolId,
+            startingDate:this.props.startDate,
+            cowlendar: this.props.cowCal,
+            database: new Database()
         }
+    }
+
+    formatArray()
+    {
+
     }
 
     /**
@@ -43,12 +54,28 @@ class CalendarPage extends React.Component
      */
     render()
     {
+        let db = new Database();
+        let results = CalculateProtocalCalendar(db.GetObjectById(0, Database.DATABASE_LIST_TYPE.PROTOCALS),Date.now(),db);
+        if(results === null)
+        {
+            console.log("Uh oh");
+        }
+
+        const INITIAL_EVENTS = results;
         return(
             <div>
                 <br/>
                 <FullCalendar   
                     plugins={[ dayGridPlugin ]}
-                    initialView="dayGridMonth"/>
+                    initialView="dayGridMonth"
+                    headerToolbar={{
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth'
+                      }}
+                    editable={false}
+                    initialEvents={INITIAL_EVENTS}
+                />
                 <br/>
                 <br/>
                 <Button className = "sidebysidebutton" component={Link} to="/protocol" color="defualt" variant="contained" size = "large" >Back</Button>

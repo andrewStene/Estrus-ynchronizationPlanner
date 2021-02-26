@@ -130,7 +130,8 @@ class App extends React.Component
    */
   setStartDateTime(date)
   {
-    this.setState({startDateTime:date});
+    //this.setState({startDateTime:date});
+    console.log(date);
   }
 
   /**
@@ -155,10 +156,11 @@ class App extends React.Component
           <Route path = "/protocol"
           component = {()=><Protocol database = {this.state.database}
           breed = {this.state.breed} systemType = {this.state.systemType} cowType={this.state.cowType} name = {this.state.name} 
-          setProtocol = {this.setProtocol} setStartDateTime = {this.setStartDate}/>}/>
+          setProtocol = {this.setProtocol} setStartDateTime = {this.setStartDateTime}/>}/>
 
           <Route path = "/calendar"
-          component = {()=><CalPage/>}/>
+          component = {()=><CalPage
+          protocolName = {this.state.name} protocolId = {this.state.id} startingDate ={this.state.startDateTime}  database={this.state.database}/>}/>
 
           <Route path = "/" exact component = {HomePage}/>
           <Route path = "/help" component = {Help}/>

@@ -1,12 +1,25 @@
-/************************************************
- * CalendarCalc.js
- * Author: Ben Amos
- * Description: The calendar to be displayed to the user
- ************************************************/
+/**
+ *  CalendarCalc.js
+ *  Copyright (C) 2021  Ben Amos
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /******************************
  *          IMPORTS
  ******************************/
-
+ import React from 'react';
  import { Database, Protocal, Task } from './Database.js';
 
 /******************************
@@ -32,16 +45,21 @@ export {
   */
  function CalculateProtocalCalendar(protocal, dateOffset, database)
  {
-    if(protocal == null || database == null)
+    if(protocal === null)
     {
+        console.log("protocol is null");
         return null;
+    }
+    if(database === null)
+    {
+        console.log("db is null");
     }
 
     if(dateOffset == null)
     {
-        dateOffset = new Date( Date.now() );
+        dateOffset = new Date();
     }
-    let events = []
+    var events = []
     for(let i = 0; i < protocal.Tasks.length; i++)
     {
         let task = database.GetObjectById(protocal.Tasks[i].TaskId, Database.DATABASE_LIST_TYPE.TASKS);
@@ -49,11 +67,12 @@ export {
         {
             return null;
         }
-        let start = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart);
-        let end = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart + task.TaskLength);
-        events.push(new ScheduledEvent(task.Name, task.Description, start, end))
+        let startTime = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart);
+        let endTime = offsetDate(dateOffset, protocal.Tasks[i].SecondsSinceStart + task.TaskLength);
+        
+        events.push({id: i, start:startTime, end:endTime, title:task.Name})
     }
-    return new CowCalendar("Protocal: " + protocal.Name, events);
+    return events;
  } /* CalculateProtocalCalendar() */
 
 /**********************************
@@ -63,17 +82,20 @@ export {
  /**
   * A calendar of scheduled events
   */
- class CowCalendar
+ class CowCalendar extends React.Component
  {
      /**
       * @function constructor - constructs a cow calendar
       * @param {string} name - the name of the calendar / or person 
       * @param {ScheduledEvent[]} events - a list of all the scheduled events 
       */
-     constructor(name, events)
+     constructor(props)
      {
-         this.Name = name;
-         this.Events = events;
+      
+
+         super(props);
+         this.Name = props.name;
+         this.Events = props.events;
      }
  } /* class CowCalendar */
 
@@ -111,5 +133,5 @@ export {
   function offsetDate(date, seconds)
   {
       const SECONDS_TO_MILLISECONDS = 1000;
-      return new Date( date.getTime() + seconds * SECONDS_TO_MILLISECONDS );
+      return new Date( date + seconds * SECONDS_TO_MILLISECONDS );
   }
