@@ -25,6 +25,7 @@ import SelectionPage from './SelectionPage';
 import Help from './Help';
 import Reference from './Reference'
 import Protocol from './ProtocolPage'
+import CalPage from './CalendarPage'
 import { Database } from './Database.js';
 import {
   BrowserRouter as Router,
@@ -38,6 +39,7 @@ class App extends React.Component
 {
     constructor( props )
     {
+
         super( props );
         
         /**
@@ -70,6 +72,7 @@ class App extends React.Component
         this.setStartDateTime = this.setStartDateTime.bind( this );
         this.setProtocol      = this.setProtocol.bind( this );
     } /* end constructor() */
+
 
     /**
     * Sets the name of the protocol plan in the state based on the given Name

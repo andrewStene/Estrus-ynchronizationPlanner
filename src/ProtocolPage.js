@@ -45,6 +45,7 @@ class ProtocolPage extends React.Component
      * Constructor for the ProtocolPage class
      * @param {object} props - Includes the Name, Breed, SystemType and CowType 
      */
+
     constructor( props )
     {
         super( props );
@@ -72,6 +73,7 @@ class ProtocolPage extends React.Component
         this.lookupNameFromLabel = this.lookupNameFromLabel.bind( this );
     } /* end constructor() */
 
+
     /**
      * Sets the state based on the values passed in the props
      * @param {Props} props - the props which contains the parameters
@@ -90,6 +92,7 @@ class ProtocolPage extends React.Component
      * Update the selected protocol
      * @param {event} event
      */
+
     updateProtocolId( event )
     {   
        
@@ -104,6 +107,7 @@ class ProtocolPage extends React.Component
         this.setState( { id: event.target.value } );        
         this.setState( { description: description } );
     } /* updateProtocolId() */
+
 
     /**
      * Updates the starting date and time
@@ -140,6 +144,7 @@ class ProtocolPage extends React.Component
         }
         return name;
     } /* lookupNameFromLabel() */
+
 
     /**
      * Render function for the class
@@ -243,6 +248,7 @@ class ProtocolPage extends React.Component
                     </Button>
                 
                 </form>
+
             </div>
             );
     } /* render() */   
