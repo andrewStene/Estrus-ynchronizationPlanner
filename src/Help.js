@@ -1,6 +1,6 @@
 /**
  *  Help.js
- *  Copyright (C) 2021  Andrew Stene
+ *  Copyright (C) 2021  Andrew Stene, Ben Amos
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Button} from '@material-ui/core'
+import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core'
 
 /**
  * React component that implements the help page
@@ -25,19 +25,25 @@ import {Button} from '@material-ui/core'
 function Help()
 {
     return(
-
         <div>
             <h1>How to use</h1>
             <br></br>
             <p> Space, the final frontier. 
                 These are the voyages of the Starship Enterprise. 
-                Its continuing mission to explore strange new worlds, to seek out new life and new civilization, to boldly go where no one has gone before…</p>
-            <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "small" >Return</Button>
-
+                Its continuing mission to explore strange new worlds, to seek out new life and new civilization, 
+                to boldly go where no one has gone before…
+            </p>
+            <Button 
+                className = "sidebysidebutton" 
+                component = { Link } 
+                to        = "/" 
+                color     = "defualt" 
+                variant   = "contained" 
+                size      = "small" 
+            >
+                Return
+            </Button>
         </div>
-
     );
-
-
-}
+} /* Help() */
 export default Help;

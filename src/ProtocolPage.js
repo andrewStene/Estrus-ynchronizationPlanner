@@ -1,6 +1,6 @@
 /**
  *  ProtocolPage.js
- *  Copyright (C) 2021  Andrew Stene
+ *  Copyright (C) 2021  Andrew Stene, Ben Amos
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,17 +43,19 @@ class ProtocolPage extends React.Component
 {
     /**
      * Constructor for the ProtocolPage class
-     * @param {Includes the Name, Breed, SystemType and CowType} props 
+     * @param {object} props - Includes the Name, Breed, SystemType and CowType 
      */
-   constructor( props )
-   {
-       super( props );
+    constructor( props )
+    {
+        super( props );
 
-       /**
-        * State is used to store previous values to display to the user
-        */
-       this.state =
-       {
+        /**
+         * State is used to store previous values to display to the user
+         */
+        this.state =
+        {
+           /** @type {Database} */ database: this.props.database,
+            
             name:           "",
             breed:          "",
             systemType:     "",
@@ -61,38 +63,37 @@ class ProtocolPage extends React.Component
             semen:          "",
             id:             "",
             description:    "",
+            
             startDate:      new Date(),
-        
-            /** @type {Database} */ database: this.props.database
-       }
+        };
          
-       this.updateProtocolId    = this.updateProtocolId.bind(this); 
-       this.updateStartDateTime = this.updateStartDateTime.bind(this);
-       this.lookupNameFromLabel = this.lookupNameFromLabel.bind(this);
-   }
+        this.updateProtocolId    = this.updateProtocolId.bind( this ); 
+        this.updateStartDateTime = this.updateStartDateTime.bind( this );
+        this.lookupNameFromLabel = this.lookupNameFromLabel.bind( this );
+    } /* end constructor() */
 
     /**
      * Sets the state based on the values passed in the props
      * @param {Props} props - the props which contains the parameters
      * @param {State} state - the state to update
      */
-   static getDerivedStateFromProps( props, state )
-   {
-       return ( { name:          props.name,
+    static getDerivedStateFromProps( props, state )
+    {
+        return ( { name:          props.name,
                   breed:         props.breed,
                   systemType:    props.systemType, 
                   cowType:       props.cowType, 
                   semen:         props.semen } );
-   } /* getDerivedStateFromProps() */
+    } /* getDerivedStateFromProps() */
 
-   /**
-    * Update the selected protocol
-    * @param {event} event
-    */
-   updateProtocolId( event )
-   {   
+    /**
+     * Update the selected protocol
+     * @param {event} event
+     */
+    updateProtocolId( event )
+    {   
        
-        let protocol    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS )
+        let protocol    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
         
         if( protocol != null )
@@ -101,44 +102,44 @@ class ProtocolPage extends React.Component
         }
 
         this.setState( { id: event.target.value } );        
-        this.setState( { description: description } )
-   } /* updateProtocolId() */
+        this.setState( { description: description } );
+    } /* updateProtocolId() */
 
-   /**
-    * Updates the starting date and time
-    * @param {Date} date - the start date 
-    */
-   updateStartDateTime( date )
-   {
+    /**
+     * Updates the starting date and time
+     * @param {Date} date - the start date 
+     */
+    updateStartDateTime( date )
+    {
         console.log( date );
         this.setState( { startDate: new Date( date ) } );
         //this.props.setStartDateTime(date);
-   } /* updateStartDateTime() */
+    } /* updateStartDateTime() */
+
+     /**
+     * Not currently implemented
+     * @param {*} event 
+     */
+    verifyInput( event )
+    {
+        event.preventDefualt();       
+    } /* verifyInput() */
 
     /**
-    * Not currently implemented
-    * @param {*} event 
-    */
-   verifyInput( event )
-   {
-       event.preventDefualt();       
-   } /* verifyInput() */
-
-   /**
-    * Looks up a given name in the database given a label
-    * @param {string} label - the label to look up
-    * @param {DATABASE_LIST_TYPE} databaseListType - the database list to search
-    * @return {string} - the name of the label, or Not Selected if not found
-    */
-   lookupNameFromLabel( label, databaseListType )
-   {
+     * Looks up a given name in the database given a label
+     * @param {string} label - the label to look up
+     * @param {DATABASE_LIST_TYPE} databaseListType - the database list to search
+     * @return {string} - the name of the label, or Not Selected if not found
+     */
+    lookupNameFromLabel( label, databaseListType )
+    {
         let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
         if( name == "" )
         {
             name = <em>Not Selected</em>;
         }
         return name;
-   } /* lookupNameFromLabel() */
+    } /* lookupNameFromLabel() */
 
     /**
      * Render function for the class
@@ -244,9 +245,8 @@ class ProtocolPage extends React.Component
                 </form>
             </div>
             );
-    }
-   
-}
+    } /* render() */   
+} /* end ProtocolPage */
 export default ProtocolPage;
 
 /**

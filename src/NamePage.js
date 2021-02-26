@@ -1,6 +1,6 @@
 /**
  *  NamePage.js
- *  Copyright (C) 2021  Andrew Stene
+ *  Copyright (C) 2021  Andrew Stene, Ben Amos
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
  */
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
-import { Link } from 'react-router-dom'
-import './NamePage.css'
+import { Link } from 'react-router-dom';
+import './NamePage.css';
 
-function validate(name)
+function validate( name )
 {
     return {
-        name : name.length === 0
-    };
+             name: name.length === 0
+           };
 }
 
 /**
@@ -35,69 +35,96 @@ class NamePage extends React.Component
 {
     /**
      * Constructor for the NamePage class
-     * @param {The Name stored in App.js} props 
+     * @param {object} props - the parameters of the NamePage 
      */
-   constructor(props)
-   {
-       super(props);
-       this.state =
-       {
-        name: "",
+    constructor( props )
+    {
+        super( props );
+        this.state =
+        {
+            /** @type {Database} */ database: this.props.database,
+            
+            name: ""            
+        };
 
-        /** @type {Database} */ database: this.props.database
-       }
-       this.updateParent = this.updateParent.bind(this);  
-   }
+        this.updateParent = this.updateParent.bind(this);  
+    } /* end constructor() */
 
     /**
      * Included
      * @param {The Name} props 
      * @param {The State} state 
      */
-   static getDerivedStateFromProps(props,state)
-   {
-       return{name: props.name};
-   }
+    static getDerivedStateFromProps( props, state )
+    {
+       return { name: props.name };
+    }
 
-   /**
-    * Updates both the state of this class as well as the state in App.js
-    * @param {The Name to update the state to} value 
-    */
-   updateParent(value)
-   {   
+    /**
+     * Updates both the state of this class as well as the state in App.js
+     * @param {string} value - the value to set the name to 
+     */
+    updateParent( value )
+    {   
         // if(!this.notBlank())
         // {
         //     value.preventDefault();
         //     return;
         // }
-        this.props.setName(value);
-        this.setState({name:value});
-   }
+        this.props.setName( value );
+        this.setState( { name: value } );
+    } /* updateParent() */
 
-   notBlank()
-   {
-    const errors = validate(this.state.name);
-    const isDisabled = Object.keys(errors).some(x => errors[x]);
-    return !isDisabled;
-   }
+    notBlank()
+    {
+        const errors     = validate( this.state.name );
+        const isDisabled = Object.keys( errors ).some( x => errors[x] );
+        
+        return !isDisabled;
+    } /* notBlank() */
 
-   /**
-    * Render function for NamePage.js
-    */
+    /**
+     * Render function for NamePage.js
+     */
     render()
     {
-        return(
+        return (
             <div>         
-            <h1>Enter a name for the schedule below</h1>
-            <TextField id="outlined-basic" label="Name" variant="outlined" defaultValue = {this.state.name} onBlur = {(event) => this.updateParent(event.target.value)}/>
-            <br/>
-            <br/>
-            <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "large" >Back</Button>
-            <Button className = "sidebysidebutton"component={Link} to="/selectionpage"color="defualt"variant="contained" size = "large">Next</Button>
+                <h1>Enter a name for the schedule below</h1>
+                <TextField 
+                    id           = "outlined-basic" 
+                    label        = "Name" 
+                    variant      = "outlined" 
+                    defaultValue = { this.state.name } 
+                    onBlur       = { ( event ) => this.updateParent( event.target.value ) } 
+                />
+                
+                <br/>
+                <br/>
+
+                <Button 
+                    className = "sidebysidebutton" 
+                    component = { Link } 
+                    to        = "/" 
+                    color     = "defualt" 
+                    variant   = "contained" 
+                    size      = "large" 
+                >
+                    Back
+                </Button>
+                <Button 
+                    className = "sidebysidebutton"
+                    component = { Link } 
+                    to        = "/selectionpage"
+                    color     = "defualt"
+                    variant   = "contained" 
+                    size      = "large"
+                >
+                    Next
+                </Button>
             </div>
             );
-    }
+    } /* render() */
    
-}
+} /* end NamePage */
 export default NamePage;
-
