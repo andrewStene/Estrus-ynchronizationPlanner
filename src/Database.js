@@ -1,8 +1,20 @@
-/**************************************************************
- * Database.js
- * Author: Ben Amos
- * Description: Handles all input and output of the database
- **************************************************************/
+/**
+ *  Database.js
+ *  Copyright (C) 2021  Andrew Stene, Ben Amos
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *   
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
  /*************************************
  *            EXPORTS                *
@@ -12,10 +24,10 @@
           Database, 
           ListType, 
           Task, 
-          Protocal, 
-          ProtocalTask, 
-          ProtocalRecommendation 
-        }; 
+          Protocol, 
+          ProtocolTask, 
+          ProtocolRecommendation 
+        };
 
  /************************************
  *            CONSTANTS              *
@@ -27,12 +39,13 @@
 const DATABASE_LIST_TYPE = 
 {
    TASKS:       1,
-   PROTOCALS:   2,
+   PROTOCOLS:   2,
    SEMEN:       3,
    SYSTEM_TYPE: 4,
    BREED:       5,
    GN_RH:       6,
-   P_G:         7
+   P_G:         7,
+   CATTLE:      8
 };
 
 /** @DATABASE_LIST_TYPE 
@@ -41,49 +54,66 @@ const DATABASE_LIST_TYPE =
 const DATABASE_LIST_NAME = 
 {
   TASKS:       "Tasks",
-  PROTOCALS:   "Protocals",
+  PROTOCOLS:   "Protocols",
   SEMEN:       "Semen",
   SYSTEM_TYPE: "System Type",
   BREED:       "Breed",
   GN_RH:       "Gonadotropin Releasing Hormone",
-  P_G:         "Prostaglandin"
-}
+  P_G:         "Prostaglandin",
+  CATTLE:      "Cattle"
+};
 
 /************************************
  *         DATABASE CLASS           *
  ************************************/
 
 /** class Database
- * A database to handle all the lists of protocals, tasks and input types
+ * A database to handle all the lists of protocols, tasks and input types
  */
 class Database
 {
     constructor()
     {
-      this.database = initializeDatabase(true);
-    }
+        this.database = initializeDatabase( true );
+    } /* end constructor() */
 
     static DATABASE_LIST_TYPE = DATABASE_LIST_TYPE;
     static DATABASE_LIST_NAME = DATABASE_LIST_NAME;
 
     GetJSONData()
     {
-      return getJSONData();
-    }
+        return getJSONData();
+    } /* GetJSONData() */
     
+    /**
+     * @function GetDatabaseName - returns the name of the database given the type
+     * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+     * @returns {string} - the name of the database
+     */
+    GetDatabaseName( databaseListType )
+    {
+        if( checkParameterTypes( [ databaseListType ], 
+                                 [ "number"] ) )
+        {
+            return getDatabaseName( databaseListType );
+        }
+        return "";
+    } /* GetDatabaseName() */
+
     /**
      * @function GetObjectById - Lookup element by its id
      * @param {number} id - the id of the element 
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup in
      * @returns {ListType} - the element 
      */
-    GetObjectById(id, databaseListType)
+    GetObjectById( id, databaseListType )
     {
-      if(checkParameterTypes([id, databaseListType], ["number", "number"]))
-      {
-        return getObjectById(id, databaseListType, this.database);
-      }      
-      return null;
+        if( checkParameterTypes( [ id,       databaseListType ], 
+                                 [ "number", "number" ] ) )
+        {
+            return getObjectById( id, databaseListType, this.database );
+        }      
+        return null;
     } /* GetObjectById() */
 
     /**
@@ -92,13 +122,14 @@ class Database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to look into
      * @returns {ListType} - the object associated with the name 
      */
-    GetObjectByName(name, databaseListType)
+    GetObjectByName( name, databaseListType )
     {
-      if(checkParameterTypes([name, databaseListType], ["string", "number"]))
-      {
-        return getObjectByName(name, databaseListType, this.database);
-      }
-      return null;
+        if( checkParameterTypes( [ name,     databaseListType ], 
+                                 [ "string", "number" ] ) )
+        {
+            return getObjectByName( name, databaseListType, this.database );
+        }
+        return null;
     } /* GetObjectByName() */
 
     /**
@@ -107,13 +138,14 @@ class Database
     * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup in
     * @returns {string} - the name of the element 
     */
-    GetNameById(id, databaseListType)
+    GetNameById( id, databaseListType )
     {
-      if(checkParameterTypes([id, databaseListType], ["number", "number"]))
-      {
-        return getNameById(id, databaseListType, this.database);
-      }
-      return "";
+        if( checkParameterTypes( [ id,       databaseListType ], 
+                                 [ "number", "number" ] ) )
+        {
+            return getNameById( id, databaseListType, this.database );
+        }
+        return "";
     } /* GetNameById() */
 
     /**
@@ -121,13 +153,13 @@ class Database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
      * @returns {ListType[]} - a list of all the elements of a given list
      */
-    GetDatabaseListElements(databaseListType)
+    GetDatabaseListElements( databaseListType )
     {
-      if(checkParameterTypes(databaseListType, "number"))
-      {
-        return getDatabaseListElements(databaseListType, this.database);
-      }
-      return [];
+        if( checkParameterTypes( databaseListType, "number" ) )
+        {
+            return getDatabaseListElements( databaseListType, this.database );
+        }
+        return [];
     } /* GetDatabaseListElements() */
 
     /**
@@ -135,51 +167,55 @@ class Database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
      * @returns {string[]} - A list of the names of a given list  
      */
-    GetDatabaseListNames(databaseListType)
+    GetDatabaseListNames( databaseListType )
     {
-      if(checkParameterTypes(databaseListType, "number"))
-      {
-        return getDatabaseListNames(databaseListType, this.database);
-      }
-      return [];
+        if( checkParameterTypes( databaseListType, "number" ) )
+        {
+            return getDatabaseListNames( databaseListType, this.database );
+        }
+        return [];
     } /* GetDatabaseList() */
 
     /**
-     * @function GetRecommendedProtocals - Gets a list of protocals filtered by the input types, all null parameters
-     *  will return a list of all the protocals
+     * @function GetRecommendedProtocols - Gets a list of protocols filtered by the input types, all null parameters
+     *  will return a list of all the protocols
      * @param {number} semenId - the id of the semen
      * @param {number} systemTypeId - the id of the system type
      * @param {number} breedId - the id of the breed
      * @param {number} gnrhId - the id of the gonadotropin hormone
      * @param {number} pgId - the id of the prostaglandin
-     * @returns {Protocal[]} - a list of all the recommended protocals
+     * @param {number} cattleId - the id of the cattle
+     * @returns {Protocol[]} - a list of all the recommended protocols
      */
-    GetRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId)
+    GetRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
-      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId], ["number", "number", "number", "number", "number"]))
-      {
-        return getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, this.database);
-      }
-      return [];
-    } /* GetRecommendedProtocals() */
+        if(checkNullableParameters( [ semenId,  systemTypeId, breedId,  gnrhId,   pgId,     cattleId ], 
+                                    [ "number", "number",     "number", "number", "number", "number" ] ) )
+        {
+            return getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database );
+        }
+        return [];
+    } /* GetRecommendedProtocols() */
 
     /**
-     * @function GetRecommendedProtocalNames - Get a list of names of the recommended protocals filtered by inputs
+     * @function GetRecommendedProtocolNames - Get a list of names of the recommended protocols filtered by inputs
      * @param {number} semenId - the id of the semen 
      * @param {number} systemTypeId - the id of the system type 
      * @param {number} breedId - the id of the breed 
      * @param {number} gnrhId - the id of the gonadtropin hormone
      * @param {number} pgId - the id of the prostaglandin
-     * @returns {string[]} - A list of the names of the recommended protocals
+     * @param {number} cattleId - the id of the cattle
+     * @returns {string[]} - A list of the names of the recommended protocols
      */
-    GetRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId)
+    GetRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
-      if(checkNullableParameters([semenId, systemTypeId, breedId, gnrhId, pgId], ["number", "number", "number", "number", "number"]))
-      {
-        return getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, this.database);
-      }
-      return [];
-    } /* GetRecommendedProtocalNames() */
+        if(checkNullableParameters( [ semenId,  systemTypeId, breedId,  gnrhId,   pgId,     cattleId ], 
+                                    [ "number", "number",     "number", "number", "number", "number" ] ) )
+        {
+            return getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, this.database );
+        }
+        return [];
+    } /* GetRecommendedProtocolNames() */
 
     /**
      * @function AddListElement - Add a new list element to the database if it doesn't already exist
@@ -187,13 +223,14 @@ class Database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to 
      * @returns {boolean} - whether the element was successfully addded or not
      */
-    AddListElement(elementName, databaseListType)
+    AddListElement( elementName, databaseListType )
     {
-      if(checkParameterTypes([elementName, databaseListType], ["string", "number"]))
-      {
-        return addListElement(databaseListType, elementName, this.database);
-      }
-      return false;
+        if( checkParameterTypes( [ elementName, databaseListType ], 
+                                 [ "string",    "number" ] ) )
+        {
+            return addListElement( databaseListType, elementName, this.database );
+        }
+        return false;
     } /* AddListElement() */
 
     /**
@@ -202,13 +239,14 @@ class Database
      * @param {number} taskLength - the length of the task
      * @returns {boolean} - whether the task was added to the database 
      */
-    AddTask(taskName, taskLength)
+    AddTask( taskName, taskLength )
     {
-      if(checkParameterTypes([taskName, taskLength], ["string", "number"]))
-      {
-        return addTask(taskName, taskLength, this.database);
-      }
-      return false;
+        if( checkParameterTypes( [ taskName, taskLength ], 
+                                 [ "string", "number" ] ) )
+        {
+            return addTask( taskName, taskLength, this.database );
+        }
+        return false;
     } /* AddTask() */
 
     /**
@@ -218,13 +256,14 @@ class Database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to update
      * @returns {boolean} - Whether the element was updated or not
      */
-    UpdateListElementName(elementId, newName, databaseListType)
+    UpdateListElementName( elementId, newName, databaseListType )
     {
-      if(checkParameterTypes([elementId, newName, databaseListType], ["number", "string", "number"]))
-      {
-        return updateListElementName(databaseListType, elementId, newName, this.database);
-      }
-      return false;
+        if( checkParameterTypes( [ elementId, newName,  databaseListType ], 
+                                 [ "number",  "string", "number" ] ) )
+        {
+            return updateListElementName( databaseListType, elementId, newName, this.database );
+        }
+        return false;
     } /* UpdateListElementName() */
 
     /**
@@ -234,15 +273,16 @@ class Database
      * @param {number} newTaskLength - the new length of the task
      * @returns {boolean} - whether the task was updated or not 
      */
-    UpdateTask(taskId, newTaskName, newTaskLength)
+    UpdateTask( taskId, newTaskName, newTaskLength )
     {
-      if(checkNullableParameters([taskId, newTaskName, newTaskLength], ["number", "string", "number"]))
-      {
-        return updateTask(taskId, newTaskName, newTaskLength, this.database);
-      }
-      return false;
+        if( checkNullableParameters( [ taskId,  newTaskName, newTaskLength ],
+                                     ["number", "string",    "number" ] ) )
+        {
+            return updateTask( taskId, newTaskName, newTaskLength, this.database );
+        }
+        return false;
     } /* UpdateTask() */
-}
+} /* end Database */
 
 /**********************************
  *      PUBLIC MODEL CLASSES      *
@@ -258,215 +298,267 @@ class ListType
    * @param {number} id - the id of the element 
    * @param {string} name - the name of the element 
    */
-  constructor(id, name)
-  {
-    if(typeof id == "number")
+    constructor( id, name )
     {
-      this.Id = id;
-    }
-    if(typeof name == "string")
-    {
-      this.Name = name;
-    }    
-  }
+        if( typeof id == "number" )
+        {
+            this.Id = id;
+        }
+        if( typeof name == "string" )
+        {
+            this.Name = name;
+        }    
+    } /* end constructor() */
 
-  /**
-   * @function Copy - creates a copy of current object
-   * @returns {ListType} - a copy of current object
-   */
-  Copy()
-  {
-    return new ListType(this.Id, this.Name);
-  } /* Copy() */
+    /**
+    * @function Copy - creates a copy of current object
+    * @returns {ListType} - a copy of current object
+    */
+    Copy()
+    {
+        return new ListType( this.Id, this.Name );
+    } /* Copy() */
 } /* class ListType */
 
 /** class Task
- * A given task that can be used in protocals
+ * A given task that can be used in protocols
  */
 class Task extends ListType
 {
-  /**
-   * Constructs a task
-   * @param {number} id - the id of the task
-   * @param {string} name - the name of the task
-   * @param {string} description - the description of the task 
-   * @param {number} taskLength - the amount of time to allow for completing the task
-   */
-  constructor(id, name, description, taskLength)
-  {
-    super(id, name);
-    if(typeof description == "string")
+    /**
+    * Constructs a task
+    * @param {number} id - the id of the task
+    * @param {string} name - the name of the task
+    * @param {string} description - the description of the task 
+    * @param {number} taskLength - the amount of time to allow for completing the task
+    */
+    constructor( id, name, description, taskLength )
     {
-      this.Description = description;
-    }
-    if(typeof taskLength == "number")
-    {
-      this.TaskLength = taskLength;
-    }    
-  }
+        super( id, name );
+        if( typeof description == "string" )
+        {
+            this.Description = description;
+        }
+        if( typeof taskLength == "number" )
+        {
+            this.TaskLength = taskLength;
+        }    
+    } /* end constructor() */
 
-  /**
-   * @function Copy - creates a copy of current Task
-   * @returns {Task} - a copy of current Task
-   */
-  Copy()
-  {
-    return new Task(this.Id, this.Name, this.Description, this.TaskLength);
-  } /* Copy() */
+    /**
+    * @function Copy - creates a copy of current Task
+    * @returns {Task} - a copy of current Task
+    */
+    Copy()
+    {
+        return new Task( this.Id, this.Name, this.Description, this.TaskLength );
+    } /* Copy() */
 } /* class Task */
 
-/** Class Protocal
- * A given protocal to be executed
+/** Class Protocol
+ * A given protocol to be executed
  */
-class Protocal extends ListType
+class Protocol extends ListType
 {
-  /**
-   * Constructs a protocal
-   * @param {number} id - the id of the protocal 
-   * @param {string} name - the name of the protocal 
-   * @param {string} description - the description of the protocal
-   * @param {ProtocalTask[]} tasks - the protocals tasks to complete 
-   * @param {ProtocalRecommendation} recommendations - the recommended inputs for this protocal  
-   */
-  constructor(id, name, description, tasks, recommendations)
-  {
-    super(id, name);
-    if(typeof description == "string")
+    /**
+    * Constructs a protocol
+    * @param {number} id - the id of the protocol 
+    * @param {string} name - the name of the protocol 
+    * @param {string} description - the description of the protocol
+    * @param {ProtocolTask[]} tasks - the protocols tasks to complete 
+    * @param {ProtocolRecommendation} recommendations - the recommended inputs for this protocol  
+    */
+    constructor( id, name, description, tasks, recommendations )
     {
-      this.Description = description;
-    }
-    if(typeof tasks == "object")
-    {
-      this.Tasks = tasks;
-    }
-    if(typeof recommendations == "object")
-    {
-      this.Recommendations = recommendations;
-    }
-  }
+        super( id, name );
 
-  /**
-   * @function Copy - creates a copy of the protocal
-   * @returns {Protocal} - a copy of the protocal
-   */
-  Copy()
-  {
-    let tasksCopy = []
-    for(let i = 0; i < this.Tasks.length; i++)
-    {
-      tasksCopy.push( this.Tasks[i].Copy() );
-    }
-    return new Protocal(this.Id, this.Name, this.Description, tasksCopy, this.Recommendations.Copy() );
-  } /* Copy() */
-} /* class Protocal */
+        if( typeof description == "string" )
+        {
+            this.Description = description;
+        }
+        if( typeof tasks == "object" )
+        {
+            this.Tasks = tasks;
+        }
+        if( typeof recommendations == "object" )
+        {
+            this.Recommendations = recommendations;
+        }
+    } /* end constructor() */
 
-/** class ProtocalTask
- * A task to excecute in a protocal
+    /**
+    * @function Copy - creates a copy of the protocol
+    * @returns {Protocol} - a copy of the protocol
+    */
+    Copy()
+    {
+        let tasksCopy = []
+        
+        for( let i = 0; i < this.Tasks.length; i++ )
+        {
+            tasksCopy.push( this.Tasks[i].Copy() );
+        }
+        return new Protocol( this.Id, this.Name, this.Description, tasksCopy, this.Recommendations.Copy() );
+    } /* Copy() */
+} /* class Protocol */
+
+/** class ProtocolTask
+ * A task to excecute in a protocol
  */
-class ProtocalTask
+class ProtocolTask
 {
-  /**
-   * Constructs a ProtocalTask
-   * @param {number} taskId - the id of the task in the protocal 
-   * @param {number} secondsSinceStart - the relative seconds since the start of the protocal to begin task 
-   */
-  constructor(taskId, secondsSinceStart)
-  {
-    if(typeof taskId == "number")
+    /**
+    * Constructs a ProtocolTask
+    * @param {number} taskId - the id of the task in the protocol 
+    * @param {number} secondsSinceStart - the relative seconds since the start of the protocol to begin task 
+    */
+    constructor( taskId, secondsSinceStart )
     {
-      this.TaskId = taskId;
-    }
-    if(typeof secondsSinceStart == "number")
+        if( typeof taskId == "number" )
+        {
+            this.TaskId = taskId;
+        }
+        if( typeof secondsSinceStart == "number" )
+        {
+            this.SecondsSinceStart = secondsSinceStart;
+        }    
+    } /* end constructor() */
+
+    /**
+    * @function Copy - creates a copy of the ProtocolTask
+    * @returns {ProtocolTask} - a copy of the protocol task
+    */
+    Copy()
     {
-      this.SecondsSinceStart = secondsSinceStart;
-    }    
-  }
+        return new ProtocolTask( this.TaskId, this.SecondsSinceStart );
+    } /* Copy() */
+} /* class ProtocolTask */
 
-  /**
-   * @function Copy - creates a copy of the ProtocalTask
-   * @returns {ProtocalTask} - a copy of the protocal task
-   */
-  Copy()
-  {
-    return new ProtocalTask(this.TaskId, this.SecondsSinceStart);
-  } /* Copy() */
-} /* class ProtocalTask */
-
-/** class ProtocalRecommendation
- * An aggregation of all the recommended inputs for a protocal
+/** class ProtocolRecommendation
+ * An aggregation of all the recommended inputs for a protocol
  */
-class ProtocalRecommendation
+class ProtocolRecommendation
 {
-  /**
-   * Constructs a ProtocalRecommendation
-   * @param {number[]} systemType - a list of recommended system type id's 
-   * @param {number[]} semen - a list of recommended semen id's
-   * @param {number[]} breed - a list of recommended breed id's
-   * @param {number[]} gnRH - a list of recommended GnRH id's 
-   * @param {number[]} pG - a list of recommended PG id's 
-   */
-  constructor(systemType, semen, breed, gnRH, pG)
-  {
-    if(typeof systemType == "object")
+    /**
+    * Constructs a ProtocolRecommendation
+    * @param {number[]} systemType - a list of recommended system type id's 
+    * @param {number[]} semen - a list of recommended semen id's
+    * @param {number[]} breed - a list of recommended breed id's
+    * @param {number[]} gnRH - a list of recommended GnRH id's 
+    * @param {number[]} pG - a list of recommended PG id's 
+    * @param {number[]} cattle - a list of recommended cattle id's
+    */
+    constructor( systemType, semen, breed, gnRH, pG, cattle )
     {
-      this.SystemType = systemType;
-    }
-    if(typeof semen == "object")
-    {
-      this.Semen = semen;
-    }
-    if(typeof breed == "object")
-    {
-      this.Breed = breed;
-    }
-    if(typeof gnRH == "object")
-    {
-      this.GnRH = gnRH;
-    }
-    if(typeof pG == "object")
-    {
-      this.PG = pG;
-    }    
-  }
+        if( typeof systemType == "object" )
+        {
+            this.SystemType = systemType;
+        }
+        if( typeof semen == "object" )
+        {
+            this.Semen = semen;
+        }
+        if( typeof breed == "object" )
+        {
+            this.Breed = breed;
+        }
+        if( typeof gnRH == "object" )
+        {
+            this.GnRH = gnRH;
+        }
+        if( typeof pG == "object" )
+        {
+            this.PG = pG;
+        }    
+        if( typeof cattle == "object" )
+        {
+            this.Cattle = cattle;
+        }
+    } /* end constructor() */
 
-  /**
-   * @function Copy - creates a copy of the ProtocalRecommendation
-   * @returns {ProtocalRecommendation} - a copy of the ProtocalRecommendation
-   */
-  Copy()
-  {
-    let systemTypeCopy = [];
-    let semenCopy = [];
-    let breedCopy = [];
-    let gnRHCopy = [];
-    let pgCopy = [];
-    for(let i = 0; i < this.SystemType.length; i++)
+    /**
+    * @function Copy - creates a copy of the ProtocolRecommendation
+    * @returns {ProtocolRecommendation} - a copy of the ProtocolRecommendation
+    */
+    Copy()
     {
-      systemTypeCopy.push( this.SystemType[i] );
-    }
-    for(let i = 0; i < this.Semen.length; i++)
-    {
-      semenCopy.push( this.Semen[i] ); 
-    }
-    for(let i = 0; i < this.Breed.length; i++)
-    {
-      breedCopy.push( this.Breed[i] );
-    }
-    for(let i = 0; i < this.GnRH.length; i++)
-    {
-      gnRHCopy.push( this.GnRH[i] );
-    }
-    for(let i = 0; i < this.PG.length; i++)
-    {
-      pgCopy.push( this.PG[i] );
-    }
-    return new ProtocalRecommendation(systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy);
-  } /* Copy() */
-} /* class ProtocalRecommendation */
+        let systemTypeCopy = [];
+        let semenCopy      = [];
+        let breedCopy      = [];
+        let gnRHCopy       = [];
+        let pgCopy         = [];
+        let cattleCopy     = [];
+
+        for( let i = 0; i < this.SystemType.length; i++ )
+        {
+            systemTypeCopy.push( this.SystemType[i] );
+        }
+        for( let i = 0; i < this.Semen.length; i++ )
+        {
+            semenCopy.push( this.Semen[i] ); 
+        }
+        for( let i = 0; i < this.Breed.length; i++ )
+        {
+            breedCopy.push( this.Breed[i] );
+        }
+        for( let i = 0; i < this.GnRH.length; i++ )
+        {
+            gnRHCopy.push( this.GnRH[i] );
+        }
+        for( let i = 0; i < this.PG.length; i++ )
+        {
+            pgCopy.push( this.PG[i] );
+        }
+        for( let i = 0; i < this.Cattle.length; i++ )
+        {
+            cattleCopy.push( this.Cattle[i] );
+        }
+
+        return new ProtocolRecommendation( systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy );
+    } /* Copy() */
+} /* class ProtocolRecommendation */
 
 /************************************
  *          PUBLIC FUNCTIONS        *
  ************************************/
+
+/**
+ * @function getDatabaseName - get the database list name given a type
+ * @param {DATABASE_LIST_TYPE} databaseListType - the database type
+ * @returns {string} - the name of the database
+ */
+function getDatabaseName( databaseListType )
+{
+    switch( databaseListType )
+    {
+        case DATABASE_LIST_TYPE.TASKS:
+            return DATABASE_LIST_NAME.TASKS;
+      
+        case DATABASE_LIST_TYPE.PROTOCOLS:
+            return DATABASE_LIST_NAME.PROTOCOLS;
+
+        case DATABASE_LIST_TYPE.SEMEN:
+            return DATABASE_LIST_NAME.SEMEN;
+
+        case DATABASE_LIST_TYPE.SYSTEM_TYPE:
+            return DATABASE_LIST_NAME.SYSTEM_TYPE;
+
+        case DATABASE_LIST_TYPE.BREED:
+            return DATABASE_LIST_NAME.BREED;
+
+        case DATABASE_LIST_TYPE.GN_RH:
+            return DATABASE_LIST_NAME.GN_RH;
+
+        case DATABASE_LIST_TYPE.P_G:
+            return DATABASE_LIST_NAME.P_G;
+
+        case DATABASE_LIST_TYPE.CATTLE:
+            return DATABASE_LIST_NAME.CATTLE;
+
+        default:
+            return "";
+    }
+} /* getDatabaseName() */
 
 /** @function getObjectById
  * Look up a given object by its id
@@ -475,17 +567,18 @@ class ProtocalRecommendation
  * @param {object} database - The database to search
  * @returns {ListType} - The object with the id if found; null if not found
  */
-function getObjectById(id, databaseListType, database)
+function getObjectById( id, databaseListType, database )
 {
-    let list = findDatabaseList(databaseListType, database);
+    let list    = findDatabaseList( databaseListType, database );
     let findObj = null;
-    if(list != null)
+
+    if( list != null )
     {
-      findObj = findByIndexInList(id, list, 0, list.length);
-      if(findObj != null)
-      {
-        findObj = findObj.Copy();
-      }
+        findObj = findByIndexInList( id, list, 0, list.length );
+        if( findObj != null )
+        {
+            findObj = findObj.Copy();
+        }
     }    
     return findObj;
 } /* getObjectById() */
@@ -497,19 +590,20 @@ function getObjectById(id, databaseListType, database)
  * @param {object} database - the database to traverse
  * @returns {ListType} - the object associated with the name
  */
-function getObjectByName(name, databaseListType, database)
+function getObjectByName( name, databaseListType, database )
 {
-  let list = findDatabaseList(databaseListType, database);
-  let findObj = null;
-  if(list != null)
-  {
-    findObj = findByNameInList(name, list);
-    if(findObj != null)
+    let list    = findDatabaseList( databaseListType, database );
+    let findObj = null;
+    
+    if( list != null )
     {
-      findObj = findObj.Copy();
-    }
-  }
-  return findObj;
+        findObj = findByNameInList( name, list );
+        if( findObj != null )
+        {
+            findObj = findObj.Copy();
+        }
+    }    
+    return findObj;
 } /* getObjectByName() */
 
 /** @function getNameById
@@ -519,17 +613,17 @@ function getObjectByName(name, databaseListType, database)
  * @param {object} database - The database to search
  * @returns {string} - The name of the object with the id if found; empty string if not found
  */
-function getNameById(id, databaseListType, database)
+function getNameById( id, databaseListType, database )
 {
-    let tempObject = getObjectById(id, databaseListType, database);
+    let tempObject = getObjectById( id, databaseListType, database );
 
-    if(tempObject != null)
+    if( tempObject != null )
     {
-      return tempObject.Name;
+        return tempObject.Name;
     }
     else
     {
-      return "";
+        return "";
     }
 } /* getNameById() */
 
@@ -539,21 +633,22 @@ function getNameById(id, databaseListType, database)
  * @param {object} database - the database to search
  * @returns {ListType[]} - A list of elements with their
  */
-function getDatabaseListElements(databaseListType, database)
+function getDatabaseListElements( databaseListType, database )
 {
-  let newList = [];
-  let list = findDatabaseList(databaseListType, database);
-  if(list == null)
-  {
-    return [];
-  }
+    let newList = [];
+    let list    = findDatabaseList( databaseListType, database );
+  
+    if( list == null )
+    {
+        return [];
+    }
 
-  for(let i = 0; i < list.length; i++)
-  {
-    newList.push( list[i].Copy() );
-  }  
-  return newList;
-}
+    for( let i = 0; i < list.length; i++ )
+    {
+        newList.push( list[i].Copy() );
+    }  
+    return newList;
+} /* getDatabaseListElements() */
 
 /** @function getDatabaseList
  * Get the list of names to display
@@ -561,75 +656,84 @@ function getDatabaseListElements(databaseListType, database)
  * @param {object} database - The database to search
  * @returns {string[]} - the list of names in the database list
  */
-function getDatabaseListNames(databaseListType, database)
+function getDatabaseListNames( databaseListType, database )
 {
-  let newList = [];
-  let list = findDatabaseList(databaseListType, database);
+    let newList = [];
+    let list    = findDatabaseList( databaseListType, database );
 
-  if(list != null)
-  {
-    for(let i = 0; i < list.length; i++)
+    if( list != null )
     {
-      newList.push( databaseElementToString(list[i]) );
+        for( let i = 0; i < list.length; i++ )
+        {
+            newList.push( databaseElementToString(list[i]) );
+        }
     }
-  }
-  return newList;
+    return newList;
 } /* getDatabaseList() */
 
 /**
- * @function getRecommendedProtocals - Get the list of protocals which are recommended for the given inputs
+ * @function getRecommendedProtocols - Get the list of protocols which are recommended for the given inputs
  * @param {number} semenId - the id of the semen input 
  * @param {number} systemTypeId - the id of the system type 
  * @param {number} breedId - the id of the breed 
  * @param {number} gnrhId - the id of the gonadtropin hormone
- * @param {number} pgId - the id of the prostaglandin 
+ * @param {number} pgId - the id of the prostaglandin
+ * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to search
- * @returns {Protocal[]} - A list of protocals associated with inputs 
+ * @returns {Protocol[]} - A list of protocols associated with inputs 
  */
-function getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, database)
+function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
-  let protocals = database.Protocals;
-  let newList = [];
-  if(semenId == null && systemTypeId == null && breedId == null && gnrhId == null && pgId == null)
-  {
-    for(let i = 0; i < protocals.length; i++)
+    let protocols = database.Protocols;
+    let newList   = [];
+    
+    if( semenId         == null 
+        && systemTypeId == null 
+        && breedId      == null 
+        && gnrhId       == null 
+        && pgId         == null 
+        && cattleId     == null )
     {
-      newList.push(protocals[i].Copy());
+        for( let i = 0; i < protocols.length; i++ )
+        {
+            newList.push( protocols[i].Copy() );
+        }
     }
-  }
-  else
-  {
-    for(let i = 0; i < protocals.length; i++)
+    else
     {
-      if(isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, protocals[i].Recommendations))
-      {
-        newList.push(protocals[i].Copy());
-      }
-    }
-  }  
-  return newList;
-} /* getRecommendedProtocals() */
+        for( let i = 0; i < protocols.length; i++ )
+        {
+            if( isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocols[i].Recommendations ) )
+            {
+                newList.push( protocols[i].Copy() );
+            }
+        }
+    }  
+    return newList;
+} /* getRecommendedProtocols() */
 
 /**
- * @function getRecommendedProtocalNames - Generates a list of the recommended protocal names associated with inputs
+ * @function getRecommendedProtocolNames - Generates a list of the recommended protocol names associated with inputs
  * @param {number} semenId - the id of the semen 
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed 
  * @param {number} gnrhId - the id of the gonadatropin hormone
- * @param {number} pgId - the id of the prostaglandin 
+ * @param {number} pgId - the id of the prostaglandin
+ * @param {number} cattleId - the id of the cattle
  * @param {object} database - the database to traverse
- * @returns {string[]} - A list of the names of the recommended protocals 
+ * @returns {string[]} - A list of the names of the recommended protocols 
  */
-function getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgId, database)
+function getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
-  let protocals = getRecommendedProtocals(semenId, systemTypeId, breedId, gnrhId, pgId, database);
-  let newList = [];  
-  for(let i = 0; i < protocals.length; i++)
-  {
-    newList.push(protocals[i].Name);
-  }  
-  return newList;
-} /* getRecommendedProtocalNames() */
+    let protocols = getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database );
+    let newList   = [];
+
+    for( let i = 0; i < protocols.length; i++ )
+    {
+        newList.push( protocols[i].Name );
+    }  
+    return newList;
+} /* getRecommendedProtocolNames() */
 
 /** @function addListElement
  * Add a list element to a database list if it doesn't already exist
@@ -638,16 +742,16 @@ function getRecommendedProtocalNames(semenId, systemTypeId, breedId, gnrhId, pgI
  * @param {object} database - the database object
  * @returns {boolean} - whether the element was added or not
  */
-function addListElement(databaseListType, elementName, database)
+function addListElement( databaseListType, elementName, database )
 {
-  let list = findDatabaseInputList(databaseListType, database);
+    let list = findDatabaseInputList( databaseListType, database );
 
-  if(list != null)
-  {
-    let newId = list[list.length - 1].Id + 1; // Take last id and add 1
-    return addElementToDatabase(new ListType(newId, elementName), list);
-  }
-  return false;
+    if( list != null )
+    {
+        let newId = list[ list.length - 1 ].Id + 1; // Take last id and add 1
+        return addElementToDatabase( new ListType( newId, elementName ), list );
+    }
+    return false;
 } /* addListElement() */
 
 /**
@@ -657,15 +761,17 @@ function addListElement(databaseListType, elementName, database)
  * @param {object} database - the database to add to
  * @returns {boolean} - whether the task was added or not
  */
-function addTask(taskName, taskLength, database)
+function addTask( taskName, taskLength, database )
 {
-  let list = database.Tasks;
-  if( taskName == null || taskLength == null )
-  {
-    return false;
-  }
-  let newId = list[list.length - 1].Id + 1; // Take last id and add 1
-  return addElementToDatabase(new Task(newId, taskName, taskLength), list);
+    let list = database.Tasks;
+
+    if( taskName == null || taskLength == null )
+    {
+        return false;
+    }
+    
+    let newId = list[ list.length - 1 ].Id + 1; // Take last id and add 1
+    return addElementToDatabase( new Task( newId, taskName, taskLength ), list );
 } /* addTask() */
 
 /**
@@ -676,26 +782,28 @@ function addTask(taskName, taskLength, database)
  * @param {object} database - the database to traverse
  * @returns {boolean} - Whether the name was updated in the database
  */
-function updateListElementName(databaseListType, elementId, newName, database)
+function updateListElementName( databaseListType, elementId, newName, database )
 {
-  if(newName == null)
-  {
-    return false;
-  }
+    if( newName == null )
+    {
+        return false;
+    }
 
-  let list = findDatabaseInputList(databaseListType, database);
-  if(list == null)
-  {
-    return false;
-  }
-  let oldElement = findByIndexInList(elementId, list, 0, list.length);
+    let list = findDatabaseInputList( databaseListType, database );
+    if( list == null )
+    {
+        return false;
+    }
 
-  if(oldElement == null)
-  {
-    return false;
-  }
-  oldElement.Name = newName;
-  return true;
+    let oldElement = findByIndexInList( elementId, list, 0, list.length );
+
+    if( oldElement == null )
+    {
+        return false;
+    }
+    oldElement.Name = newName;
+
+    return true;
 } /* updateListElementName() */
 
 /**
@@ -706,124 +814,133 @@ function updateListElementName(databaseListType, elementId, newName, database)
  * @param {object} database - the database to update
  * @returns {boolean} - whether the task was updated or not
  */
-function updateTask(taskId, newTaskName, newTaskLength, database)
+function updateTask( taskId, newTaskName, newTaskLength, database )
 {
-  let list = database.Tasks;
-  if(taskId == null || newTaskName == null && newTaskLength == null)
-  {
-    return false;
-  }
-  let oldTask = findByIndexInList(taskId, list, 0, list.length);
-  if(oldTask == null)
-  {
-    return false;
-  }
-  if(newTaskName != null)
-  {
-    oldTask.Name = newTaskName;
-  }
-  if(newTaskLength != null)
-  {
-    oldTask.TaskLength = newTaskLength;
-  }
-  return true;
+    let list = database.Tasks;
+    if( taskId == null 
+        || newTaskName == null && newTaskLength == null )
+    {
+        return false;
+    }
+
+    let oldTask = findByIndexInList( taskId, list, 0, list.length );
+    
+    if( oldTask == null )
+    {
+        return false;
+    }
+    if( newTaskName != null )
+    {
+        oldTask.Name = newTaskName;
+    }
+    if( newTaskLength != null )
+    {
+        oldTask.TaskLength = newTaskLength;
+    }
+    return true;
 } /* updateTask() */
 
-function parseJSON(json)
+function parseJSON( json )
 {
-  let database =
-  {
-    Tasks: [],
-    Protocals: [],
-    Semen: [],
-    SystemType: [],
-    Breed: [],
-    GnRH: [],
-    PG: []
-  };
-
-  console.log(json)
-  
-  // Populate Tasks
-  for(let i = 0; i < json.Tasks.length; i++)
-  {
-    let task = json.Tasks[i];
-    database.Tasks.push( new Task(task.Id, task.Name, task.Description, task.TaskLength) );
-  }
-
-  // Populate Protocals
-  for(let i = 0; i < json.Protocals.length; i++ )
-  {
-    let protocal = json.Protocals[i];
-    let tasks = [];
-    for(let j = 0; j < protocal.Tasks.length; j++)
+    let database =
     {
-      let task = protocal.Tasks[j]
-      tasks.push( new ProtocalTask(task.TaskId, task.SecondsSinceStart) )
+        Tasks:      [],
+        Protocols:  [],
+        Semen:      [],
+        SystemType: [],
+        Breed:      [],
+        GnRH:       [],
+        PG:         []
+    };
+
+    console.log( json )
+  
+    // Populate Tasks
+    for( let i = 0; i < json.Tasks.length; i++ )
+    {
+        let task = json.Tasks[i];
+        database.Tasks.push( new Task( task.Id, task.Name, task.Description, task.TaskLength ) );
     }
-    let recommendation = new ProtocalRecommendation(protocal.Recommendations.SystemType, protocal.Recommendations.Semen,
-      protocal.Recommendations.Breed, protocal.Recommendations.GnRH, protocal.Recommendations.PG )
-    database.Protocals.push(new Protocal(protocal.Id, protocal.Name, protocal.Description, tasks, recommendation));
-  }
 
-  // Populate Semen
-  for(let i = 0; i < json.Semen.length; i++)
-  {
-    let semen = json.Semen[i];
-    database.Semen.push(new ListType(semen.Id, semen.Name))
-  }
+    // Populate protocols
+    for( let i = 0; i < json.Protocols.length; i++ )
+    {
+        let protocol = json.Protocols[i];
+        let tasks    = [];
+        
+        for( let j = 0; j < protocol.Tasks.length; j++ )
+        {
+            let task = protocol.Tasks[j]
+            tasks.push( new ProtocolTask( task.TaskId, task.SecondsSinceStart ) )
+        }
 
-  // Populate SystemType
-  for(let i = 0; i < json.SystemType.length; i++)
-  {
-    let systemType = json.SystemType[i];
-    database.SystemType.push(new ListType(systemType.Id, systemType.Name));
-  }
+        let recommendation = new ProtocolRecommendation( protocol.Recommendations.SystemType, 
+                                                         protocol.Recommendations.Semen,
+                                                         protocol.Recommendations.Breed, 
+                                                         protocol.Recommendations.GnRH, 
+                                                         protocol.Recommendations.PG,
+                                                         protocol.Recommendations.Cattle );
+        
+        database.Protocols.push( new Protocol( protocol.Id, protocol.Name, protocol.Description, tasks, recommendation ) );
+    }
 
-  // Populate Breed
-  for(let i = 0; i < json.Breed.length; i++)
-  {
-    let breed = json.Breed[i];
-    database.Breed.push(new ListType(breed.Id, breed.Name));
-  }
+    // Populate Semen
+    for( let i = 0; i < json.Semen.length; i++ )
+    {
+        let semen = json.Semen[i];
+        database.Semen.push( new ListType( semen.Id, semen.Name ) )
+    }
 
-  // Populate GnRH
-  for(let i = 0; i < json.GnRH.length; i++)
-  {
-    let gnrh = json.GnRH[i];
-    database.GnRH.push(new ListType(gnrh.Id, gnrh.Name));
-  }
+    // Populate SystemType
+    for( let i = 0; i < json.SystemType.length; i++ )
+    {
+        let systemType = json.SystemType[i];
+        database.SystemType.push( new ListType( systemType.Id, systemType.Name ) );
+    }
 
-  // Populate PG
-  for(let i = 0; i < json.PG.length; i++)
-  {
-    let pg = json.PG[i];
-    database.PG.push(new ListType(pg.Id, pg.Name));
-  }
-  return database;
-}
+    // Populate Breed
+    for( let i = 0; i < json.Breed.length; i++ )
+    {
+        let breed = json.Breed[i];
+        database.Breed.push( new ListType( breed.Id, breed.Name ) );
+    }
+
+    // Populate GnRH
+    for( let i = 0; i < json.GnRH.length; i++ )
+    {
+        let gnrh = json.GnRH[i];
+        database.GnRH.push( new ListType( gnrh.Id, gnrh.Name ) );
+    }
+
+    // Populate PG
+    for( let i = 0; i < json.PG.length; i++ )
+    {
+        let pg = json.PG[i];
+        database.PG.push( new ListType( pg.Id, pg.Name ) );
+    }
+    return database;
+} /* parseJSON() */
 
 async function getJSONData()
 {
-  let json;
-  fetch('./data.json',
-  {
-    headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-     }
-  }
-  )
-    .then(function(res){
-      console.log(res);
-      return res.json();
-      }).then(function(dataobj){
-        json = dataobj
-      })
-  
-  console.log(await json);
-  return (await json);
-}
+    let json;
+    fetch('./data.json',
+    {
+        headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        }
+    }
+        )
+        .then( function( res ) {
+            console.log( res );
+            return res.json();
+        }    ).then( function( dataobj ) {
+                  json = dataobj
+              }    )
+    
+  return ( await json );
+} /* getJSONData() */
 
 /*************************************
  *         PRIVATE FUNCTIONS         *
@@ -832,16 +949,16 @@ async function getJSONData()
 /** @function initializeDatabase
  * Initialize the database by reading from a json file
  */
-function initializeDatabase(useTesting)
+function initializeDatabase( useTesting )
 {
     // TESTING DATABASE OBJECT
-    if(useTesting)
+    if( useTesting )
     {
-      return testingData;
+        return testingData;
     }
     else
     {
-      return parseJSON( getJSONData() );
+        return parseJSON( getJSONData() );
     }
     return null;
 } /* intializeDatabase() */
@@ -852,24 +969,26 @@ function initializeDatabase(useTesting)
  * @param {object} database - the database to traverse
  * @returns {ListType[]} - the database list 
  */
-function findDatabaseList(databaseListType, database)
+function findDatabaseList( databaseListType, database )
 {
-  let list = findDatabaseInputList(databaseListType, database)
-  if(list != null)
-  {
-    return list;
-  }
-  switch(databaseListType)
-  {
-    case DATABASE_LIST_TYPE.TASKS:
-      return database.Tasks;
+    let list = findDatabaseInputList( databaseListType, database )
+    
+    if( list != null )
+    {
+        return list;
+    }
 
-    case DATABASE_LIST_TYPE.PROTOCALS:
-      return database.Protocals;
+    switch( databaseListType )
+    {
+        case DATABASE_LIST_TYPE.TASKS:
+            return database.Tasks;
 
-    default:
-      return null;
-  }
+        case DATABASE_LIST_TYPE.PROTOCOLS:
+            return database.Protocols;
+
+        default:
+            return null;
+    }
 } /* findDatabaseList() */
 
 /**
@@ -878,28 +997,31 @@ function findDatabaseList(databaseListType, database)
  * @param {object} database - the database to traverse
  * @returns {ListType[]} - the input database list
  */
-function findDatabaseInputList(databaseListType, database)
+function findDatabaseInputList( databaseListType, database )
 {
-  switch(databaseListType)
-  {
-    case DATABASE_LIST_TYPE.SYSTEM_TYPE:
-      return database.SystemType;
+    switch( databaseListType )
+    {
+        case DATABASE_LIST_TYPE.SYSTEM_TYPE:
+            return database.SystemType;
 
-    case DATABASE_LIST_TYPE.SEMEN:
-      return database.Semen;
+        case DATABASE_LIST_TYPE.SEMEN:
+            return database.Semen;
     
-    case DATABASE_LIST_TYPE.BREED:
-      return database.Breed;
+        case DATABASE_LIST_TYPE.BREED:
+            return database.Breed;
 
-    case DATABASE_LIST_TYPE.P_G:
-      return database.PG;
+        case DATABASE_LIST_TYPE.P_G:
+            return database.PG;
 
-    case DATABASE_LIST_TYPE.GN_RH:
-      return database.GnRH;
+        case DATABASE_LIST_TYPE.GN_RH:
+            return database.GnRH;
 
-    default:
-      return null;
-  }
+        case DATABASE_LIST_TYPE.CATTLE:
+            return database.Cattle;
+
+        default:
+            return null;
+    }
 } /* findDatabaseInputList() */
 
 /** @function findByIdInList 
@@ -910,28 +1032,30 @@ function findDatabaseInputList(databaseListType, database)
  * @param {number} length - The length of the list to search
  * @returns - The object with the given id, null otherwise
  */
-function findByIndexInList(id, list, start, length)
+function findByIndexInList( id, list, start, length )
 {
-    if(id == null || list == null)
+    if( id == null || list == null )
     {
-      return null;
+        return null;
     }
+
     let end = length;
-    while(start < end)
+    
+    while( start < end )
     {
-      let mid = Math.trunc((start + end) / 2);
-      if( id < list[mid].Id )
-      {
-        end = mid;
-      }
-      else if( id > list[mid].Id )
-      {
-        start = mid + 1;
-      }
-      else
-      {
-        return list[mid];
-      }
+        let mid = Math.trunc( ( start + end ) / 2 );
+        if( id < list[ mid ].Id )
+        {
+            end = mid;
+        }
+        else if( id > list[ mid ].Id )
+        {
+            start = mid + 1;
+        }
+        else
+        {
+            return list[ mid ];
+        }
     }
     return null;
 } /* findByIdInList() */
@@ -942,20 +1066,20 @@ function findByIndexInList(id, list, start, length)
  * @param {ListType[]} list - the list of elements to check
  * @returns {ListType} - the element with the given name 
  */
-function findByNameInList(name, list)
+function findByNameInList( name, list )
 {
-  if(name == null || list == null)
-  {
-    return null;
-  }
-  for(let i = 0; i < list.length; i++)
-  {
-    if( list[i].Name.toUpperCase() === name.toUpperCase() )
+    if( name == null || list == null )
     {
-      return list[i];
+        return null;
     }
-  }
-  return null;
+    for( let i = 0; i < list.length; i++ )
+    {
+        if( list[i].Name.toUpperCase() === name.toUpperCase() )
+        {
+            return list[i];
+        }
+    }
+    return null;
 } /* findByNameInList() */
 
 /** @function databaseElementToString
@@ -963,15 +1087,15 @@ function findByNameInList(name, list)
  * @param {object} element - The element to represent as a string
  * @returns {string} - The string representation of the element
  */
-function databaseElementToString(element)
+function databaseElementToString( element )
 {  
-  let newString = "";  
-  if(element != null)
-  {
-    //FORMAT - "ID - NAME" 
-    newString = element.Name;
-  }
-  return newString;
+    let newString = "";  
+    if( element != null )
+    {
+        //FORMAT - "ID - NAME" 
+        newString = element.Name;
+    }
+    return newString;
 } /* databaseElementToString() */
 
 /** @function addElementToDatabase
@@ -980,68 +1104,76 @@ function databaseElementToString(element)
  * @param {ListType[]} list - the list to add to
  * @returns {boolean} - Whether the element was added to the list
  */
-function addElementToDatabase(element, list)
+function addElementToDatabase( element, list )
 {
-  // check for duplicates
-  if(findByIndexInList(element.Id, list, 0, list.length) || findByNameInList(element.Name, list))
-  {
-    return false;
-  }
+    // check for duplicates
+    if( findByIndexInList( element.Id, list, 0, list.length ) || findByNameInList( element.Name, list ) )
+    {
+        return false;
+    }
 
-  list.push( element );
-  return true;
+    list.push( element );
+    return true;
 } /* addElementToDatabase() */
 
 
 /**
- * @function isRecommendedProtocal - Checks whether a protocal is recommended or not
+ * @function isRecommendedProtocol - Checks whether a protocol is recommended or not
  * @param {number} semenId - the id of the semen
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed
  * @param {number} gnrhId - the id of the gonadtropin hormone
  * @param {number} pgId - the id of the prostaglandin
- * @param {ProtocalRecommendation} protocalRecommendation - the protocal recommendation to compare to
- * @returns {boolean} - Whether the protocal is recommended or not
+ * @param {number} cattleId - the id of the cattle type
+ * @param {ProtocolRecommendation} protocolRecommendation - the protocol recommendation to compare to
+ * @returns {boolean} - Whether the protocol is recommended or not
  */
-function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, protocalRecommendation)
+function isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocolRecommendation )
 {
-  if(semenId != null)
-  {
-    if(!isContainedInList(semenId, protocalRecommendation.Semen, isEqualNum))
+    if( semenId != null )
     {
-      return false;
+        if( !isContainedInList( semenId, protocolRecommendation.Semen, isEqualNum ) )
+        {
+            return false;
+        }
     }
-  }
-  if(systemTypeId != null)
-  {
-    if(!isContainedInList(systemTypeId, protocalRecommendation.SystemType, isEqualNum))
+    if( systemTypeId != null )
     {
-      return false;
+        if( !isContainedInList( systemTypeId, protocolRecommendation.SystemType, isEqualNum ) )
+        {
+            return false;
+        }
     }
-  }
-  if(breedId != null)
-  {
-    if(!isContainedInList(breedId, protocalRecommendation.Breed, isEqualNum))
+    if( breedId != null )
     {
-      return false;
+        if( !isContainedInList( breedId, protocolRecommendation.Breed, isEqualNum ) )
+        {
+            return false;
+        }
     }
-  }
-  if(gnrhId != null)
-  {
-    if(!isContainedInList(gnrhId, protocalRecommendation.GnRH, isEqualNum))
+    if( gnrhId != null )
     {
-      return false;
+        if( !isContainedInList( gnrhId, protocolRecommendation.GnRH, isEqualNum ) )
+        {
+            return false;
+        }
     }
-  }
-  if(pgId != null)
-  {
-    if(!isContainedInList(pgId, protocalRecommendation.PG, isEqualNum))
+    if( pgId != null )
     {
-      return false;
+        if( !isContainedInList( pgId, protocolRecommendation.PG, isEqualNum ) )
+        {
+            return false;
+        }
     }
-  }
-  return true;
-} /* isRecommendedProtocal() */
+    if( cattleId != null )
+    {
+        if( !isContainedInList( cattleId, protocolRecommendation.Cattle, isEqualNum ) )
+        {
+            return false;
+        }
+    }
+    return true;
+} /* isRecommendedProtocol() */
 
 /**
  * @function isEqualNum - Checks whether two numbers are equal
@@ -1049,9 +1181,9 @@ function isRecommendedProtocal(semenId, systemTypeId, breedId, gnrhId, pgId, pro
  * @param {number} num2 - the second number to check
  * @returns {boolean} - whether the two numbers are equal
  */
-function isEqualNum(num1, num2)
+function isEqualNum( num1, num2 )
 {
-  return num1 == num2;
+    return num1 == num2;
 } /* isEqualNum() */
 
 /**
@@ -1061,16 +1193,16 @@ function isEqualNum(num1, num2)
  * @param {function} isEqualFunc - the compare function to check equality
  * @returns {boolean} - whether the element is contained in the list
  */
-function isContainedInList(element, list, isEqualFunc)
+function isContainedInList( element, list, isEqualFunc )
 {
-  for(let i = 0; i < list.length; i++)
-  {
-    if( isEqualFunc( list[i], element) )
+    for( let i = 0; i < list.length; i++ )
     {
-      return true;
+        if( isEqualFunc( list[i], element ) )
+        {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 } /* isContainedInList() */
 
 /**
@@ -1079,36 +1211,38 @@ function isContainedInList(element, list, isEqualFunc)
  * @param {string[]} types - the list of types to match with parameters - order matters
  * @returns {boolean} - whether all the parameter types match 
  */
-function checkParameterTypes(parameters, types)
+function checkParameterTypes( parameters, types )
 {
-  if(types != null && parameters != null)
-  {
-    if(typeof types == "string")
+    if( types != null && parameters != null )
     {
-      return typeof parameters == types;
-    }
-    else if(typeof types == "object" && typeof parameters == "object")
-    {
-      let end = Math.min(types.length, parameters.length);
-      let i = 0;
-      for(i = 0; i < end; i++)
-      {
-        if(typeof parameters[i] != types[i])
+        if( typeof types == "string" )
         {
-          return false;
+            return typeof parameters == types;
         }
-      }
-      if(i < parameters.length || i < types.length)
-      {
-        return false;
-      }
+        else if( typeof types == "object" && typeof parameters == "object" )
+        {
+            let end = Math.min( types.length, parameters.length );
+            let i   = 0;
+
+            for( i = 0; i < end; i++ )
+            {
+                if( typeof parameters[i] != types[i] )
+                {
+                    return false;
+                }
+            }
+        
+            if( i < parameters.length || i < types.length )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }    
     }
-    else
-    {
-      return false;
-    }    
-  }
-  return true;
+    return true;
 } /* checkParameterTypes() */
 
 /**
@@ -1117,36 +1251,37 @@ function checkParameterTypes(parameters, types)
  * @param {string[]} types - the list of types for the parameters
  * @returns {boolean} - Whether the parameters are of the correct type
  */
-function checkNullableParameters(parameters, types)
+function checkNullableParameters( parameters, types )
 {
-  if(types != null && parameters != null)
-  {
-    if(typeof types == "string")
+    if( types != null && parameters != null )
     {
-      return typeof parameters == types;
-    }
-    else if(typeof types == "object" && typeof parameters == "object")
-    {
-      let end = Math.min(types.length, parameters.length);
-      let i = 0;
-      for(i = 0; i < end; i++)
-      {
-        if(parameters[i] != null && typeof parameters[i] != types[i])
+        if( typeof types == "string" )
         {
-          return false;
+            return typeof parameters == types;
         }
-      }
-      if(i < parameters.length || i < types.length)
-      {
-        return false;
-      }
+        else if( typeof types == "object" && typeof parameters == "object" )
+        {
+            let end = Math.min( types.length, parameters.length );
+            let i = 0;
+            
+            for( i = 0; i < end; i++ )
+            {
+                if( parameters[i] != null && typeof parameters[i] != types[i] )
+                {
+                    return false;
+                }
+            }
+            if( i < parameters.length || i < types.length )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }    
     }
-    else
-    {
-      return false;
-    }    
-  }
-  return true;
+    return true;
 } /* checkNullableParameters() */
 
 /*******************
@@ -1162,53 +1297,63 @@ var testingData =
     new Task( 4, "Clean up", "...", 50 ),
     new Task( 5, "New Cycle", "...", 0 ),
         ],
- Protocals: [
-     new Protocal(0, 
+ Protocols: [
+     new Protocol( 0, 
        "1 Injection Prostaglandin Prior Estrus",               
-       "...", 
-       [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
-         new ProtocalTask(2, 950400), new ProtocalTask(3, 0),
-         new ProtocalTask(4, 950400), new ProtocalTask(5, 2332800)
+       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+       + "At varius vel pharetra vel turpis nunc eget lorem. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. "
+       + "Sed odio morbi quis commodo odio. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus. "
+       + "Eget nullam non nisi est. Tincidunt arcu non sodales neque sodales ut.", 
+       [ new ProtocolTask( 0, 0 ), new ProtocolTask( 1, 345600 ),
+         new ProtocolTask( 2, 950400 ), new ProtocolTask( 3, 0 ),
+         new ProtocolTask( 4, 950400 ), new ProtocolTask( 5, 2332800 )
        ],
-       new ProtocalRecommendation([0],[0],[0],[1],[5])
+       new ProtocolRecommendation( [0], [0], [0], [1], [5], [1] )
        ),
-     new Protocal(1, 
+     new Protocol( 1, 
        "1 Injection Prostaglandin No Prior Estrus",               
-       "...", 
-         [ new ProtocalTask(0, 0), new ProtocalTask(1, 345600),
-           new ProtocalTask(2, 432000), new ProtocalTask(3, 0),
-           new ProtocalTask(4, 950400), new ProtocalTask(5, 1987200)
+       "Vitae suscipit tellus mauris a diam maecenas sed enim ut. Ridiculus mus mauris vitae ultricies. "
+       + "Integer malesuada nunc vel risus commodo viverra maecenas. Ornare arcu dui vivamus arcu felis. "
+       + "Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Elementum facilisis leo vel fringilla"
+       + " est ullamcorper eget nulla facilisi.", 
+         [ new ProtocolTask( 0, 0 ), new ProtocolTask( 1, 345600 ),
+           new ProtocolTask( 2, 432000 ), new ProtocolTask( 3, 0 ),
+           new ProtocolTask( 4, 950400 ), new ProtocolTask( 5, 1987200 )
          ],
-         new ProtocalRecommendation([0],[0],[1],[1],[5])
+         new ProtocolRecommendation( [0], [0], [1], [1], [5], [0] )
        )
      ],
  Semen: [
-     new ListType(0, "Conventional"),
-     new ListType(1, "Sexed")
+     new ListType( 0, "Conventional" ),
+     new ListType( 1, "Sexed" )
     ],
  SystemType: [
-     new ListType(0, "Estrus AI"),
-     new ListType(1, "Estrus AI & Clean-up AI"),
-     new ListType(2, "Fixed-Time AI")
+     new ListType( 0, "Estrus AI" ),
+     new ListType( 1, "Estrus AI & Clean-up AI" ),
+     new ListType( 2, "Fixed-Time AI" )
         ],
  Breed: [
-     new ListType(0, "Bos Taurus"),
-     new ListType(1, "Bos Indicus Influence")
+     new ListType( 0, "Bos Taurus" ),
+     new ListType( 1, "Bos Indicus Influence" )
         ],
  GnRH: [
-     new ListType(0, "Cystorelin"),
-     new ListType(1, "Factrel"),
-     new ListType(2, "Fertagyl"),
-     new ListType(3, "OvaCyst"),
-     new ListType(4, "GONAbreed"),
+     new ListType( 0, "Cystorelin" ),
+     new ListType( 1, "Factrel" ),
+     new ListType( 2, "Fertagyl" ),
+     new ListType( 3, "OvaCyst" ),
+     new ListType( 4, "GONAbreed" ),
       ],
  PG: [
-     new ListType(0, "Estrumate"),
-     new ListType(1, "EstroPLAN"),
-     new ListType(2, "InSynch"),
-     new ListType(3, "Lutalyse"),
-     new ListType(4, "ProstaMate"),
-     new ListType(5, "HiConc. Lut"),
-     new ListType(6, "Synchsure"),
-    ]
+     new ListType( 0, "Estrumate" ),
+     new ListType( 1, "EstroPLAN" ),
+     new ListType( 2, "InSynch" ),
+     new ListType( 3, "Lutalyse" ),
+     new ListType( 4, "ProstaMate" ),
+     new ListType( 5, "HiConc. Lut" ),
+     new ListType( 6, "Synchsure" ),
+    ],
+  Cattle: [
+    new ListType( 0, "Cow" ),
+    new ListType( 1, "Heifer" )
+  ]
 }

@@ -1,6 +1,6 @@
 /**
  *  Reference.js
- *  Copyright (C) 2021  Andrew Stene
+ *  Copyright (C) 2021  Andrew Stene, Ben Amos
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Button} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 import bp from './bp.png';
 import hp from './hp.png';
 
@@ -29,12 +29,20 @@ function Reference()
     return(
         <div>
             <h1>Reference Information</h1>
-            <img src= {bp} alt="bp" />
-            <img src= {hp} alt="hp" />
+            <img src = { bp } alt = "bp" />
+            <img src = { hp } alt = "hp" />
             <br/>
-            <Button className = "sidebysidebutton" component={Link} to="/" color="defualt" variant="contained" size = "small" >Home</Button>            
+            <Button 
+                className = "sidebysidebutton" 
+                component = { Link } 
+                to        = "/" 
+                color     = "defualt" 
+                variant   = "contained" 
+                size      = "small" 
+            >
+                Home
+            </Button>            
         </div>
     );
-}
-
+}/* Reference() */
 export default Reference;
