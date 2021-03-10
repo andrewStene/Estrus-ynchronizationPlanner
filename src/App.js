@@ -49,7 +49,6 @@ class App extends React.Component
         this.state = 
         {
             database:   new Database(),
-          
             name:          "",
             breed:         "",
             cowType:       "",
@@ -58,7 +57,8 @@ class App extends React.Component
             systemType:    "",
             gnrh:          "",
             pg:            "",
-            startDateTime: ""
+            startDateTime: new Date(),
+            prevPage: "",
         }
       
         /**
@@ -71,6 +71,7 @@ class App extends React.Component
         this.setSemen         = this.setSemen.bind( this );
         this.setStartDateTime = this.setStartDateTime.bind( this );
         this.setProtocol      = this.setProtocol.bind( this );
+        this.updateLastVistedPage = this.updateLastVistedPage.bind(this);
     } /* end constructor() */
 
 
@@ -146,8 +147,19 @@ class App extends React.Component
     */
     setStartDateTime( date )
     {
-        this.setState( { startDateTime: date } );
+        console.log("In App.js")
+        this.setState( { startDateTime: new Date (date) } );
+        console.log(this.state.startDateTime)
     } /* setStartDateTime() */
+
+    /**
+     * Used to allow the user to return to the page they visted the help page from
+     * @param {The last page the user was on} page 
+     */
+    updateLastVistedPage(page)
+    {
+        this.setState({prevPage:page});
+    }
 
     /**
     * Render function for the class which includes all of the routes
@@ -166,6 +178,7 @@ class App extends React.Component
                                             database = { this.state.database } 
                                             name     = { this.state.name }
                                             setName  = { this.setName }
+                                            lastPage = {this.updateLastVistedPage}
                                         />
                                   }
                   />          
@@ -182,6 +195,7 @@ class App extends React.Component
                                             setCowType    = { this.setCowType } 
                                             semen         = { this.state.semen }
                                             setSemen      = { this.setSemen } 
+                                            lastPage = {this.updateLastVistedPage}
                                         />
                                   }
                   />
@@ -194,13 +208,14 @@ class App extends React.Component
                                             systemType        = { this.state.systemType } 
                                             cowType           = { this.state.cowType } 
                                             name              = { this.state.name } 
-                                            semen             = { this.state.semen }
+                                            semen             = { this.state.semen } startDate = {this.state.startDateTime}
                                             setProtocol       = { this.setProtocol } 
-                                            setStartDateTime  = { this.setStartDate }
+                                            setStartDateTime  = { this.setStartDateTime }
+                                            lastPage = {this.updateLastVistedPage}
                                         />
                                   }
                   />
-                  <Route path = "/calendar" component = {CalPage}/>
+                  <Route path = "/calendar" component = {()=><CalPage lastPage = {this.updateLastVistedPage}/>}/>
 
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />
