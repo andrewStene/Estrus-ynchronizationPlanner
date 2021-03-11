@@ -1,0 +1,101 @@
+{
+    "Tasks": 
+    [            
+        { "Id": 0, "Name": "Start Heat Detection", "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt", "TaskLength": 0 },
+        { "Id": 1, "Name": "Inject PG to Females", "Description": "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "TaskLength": 30 },
+        { "Id": 2, "Name": "Stop Heat Detection", "Description": "At varius vel pharetra vel turpis nunc eget lorem.", "TaskLength": 0 },
+        { "Id": 3, "Name": "Detect Estrus and Breed", "Description": "Vitae suscipit tellus mauris a diam maecenas sed enim ut.", "TaskLength": 0 },
+        { "Id": 4, "Name": "Clean up", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
+        { "Id": 5, "Name": "New Cycle", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 }        
+    ],
+    "Protocols": 
+    [
+        {   
+            "Id": 0,
+            "Name": "1 Injection Prostaglandin Prior Estrus",
+            "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At varius vel pharetra vel turpis nunc eget lorem. In fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Sed odio morbi quis commodo odio. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus. Eget nullam non nisi est. Tincidunt arcu non sodales neque sodales ut.",
+            "Tasks": 
+            [
+                { "TaskId": 0, "SecondsSinceStart": 0 },
+                { "TaskId": 1, "SecondsSinceStart": 345600 },
+                { "TaskId": 2, "SecondsSinceStart": 950400 },
+                { "TaskId": 3, "SecondsSinceStart": 0 },
+                { "TaskId": 4, "SecondsSinceStart": 950400 },
+                { "TaskId": 5, "SecondsSinceStart": 2332800 }
+            ],
+
+            "Recommendations": 
+            {
+                "SystemType": [0],
+                "Semen": [0],
+                "Breed": [0],
+                "GnRH": [1],
+                "PG": [5],
+                "Cattle": [0]
+            } 
+        },
+        {   
+            "Id": 1,
+            "Name": "1 Injection Prostaglandin No Prior Estrus",
+            "Description": "Vitae suscipit tellus mauris a diam maecenas sed enim ut. Ridiculus mus mauris vitae ultricies. Integer malesuada nunc vel risus commodo viverra maecenas. Ornare arcu dui vivamus arcu felis. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Elementum facilisis leo vel fringilla est ullamcorper eget nulla facilisi.",
+            "Tasks": 
+            [
+                { "TaskId": 0, "SecondsSinceStart": 0 },
+                { "TaskId": 1, "SecondsSinceStart": 345600 },
+                { "TaskId": 2, "SecondsSinceStart": 432000 },
+                { "TaskId": 3, "SecondsSinceStart": 0 },
+                { "TaskId": 4, "SecondsSinceStart": 950400 },
+                { "TaskId": 5, "SecondsSinceStart": 1987200 }
+            ],
+            
+            "Recommendations": 
+            {
+                "SystemType": [0],
+                "Semen": [0],
+                "Breed": [1],
+                "GnRH": [1],
+                "PG": [5],
+                "Cattle": [1]
+            } 
+        }
+    ],
+     "Semen": 
+    [
+        { "Id": 0, "Name": "Conventional" },
+        { "Id": 1, "Name": "Sexed" }         
+    ],
+     "SystemType": 
+    [
+        { "Id": 0, "Name": "Estrus AI" },
+        { "Id": 1, "Name": "Estrus AI & Clean-up AI" },
+        { "Id": 2, "Name": "Fixed-Time AI" }
+    ],
+     "Breed": 
+    [
+        { "Id": 0, "Name": "Bos Taurus" },
+        { "Id": 1, "Name": "Bos Indicus Influence" }         
+    ],
+     "GnRH":
+    [
+        { "Id": 0, "Name": "Cystorelin" },
+        { "Id": 1, "Name": "Factrel" },
+        { "Id": 2, "Name": "Fertagyl" },
+        { "Id": 3, "Name": "OvaCyst" },
+        { "Id": 4, "Name": "GONAbreed" }
+    ],
+     "PG": 
+    [
+        { "Id": 0, "Name": "Estrumate" },
+        { "Id": 1, "Name": "EstroPLAN" },
+        { "Id": 2, "Name": "InSynch" },
+        { "Id": 3, "Name": "Lutalyse" },
+        { "Id": 4, "Name": "ProstaMate" },
+        { "Id": 5, "Name": "HiConc. Lut" },
+        { "Id": 6, "Name": "Synchsure" }
+    ],
+    "Cattle": 
+    [
+        { "Id": 0, "Name": "Cow" },
+        { "Id": 1, "Name": "Heifer" }
+    ]
+}

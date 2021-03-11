@@ -48,7 +48,8 @@ class App extends React.Component
         */
         this.state = 
         {
-            database:   new Database(),
+            waitToRender:  true,
+            database:      new Database(),
           
             name:          "",
             breed:         "",
@@ -154,62 +155,70 @@ class App extends React.Component
     */
     render()
     {
-        return(
-            <Router>
-                <div className = "App" >
-                  <Header/>
-
-                  <Route 
-                      path      = "/namepage" 
-                      component = { () => 
-                                        <NamePage 
-                                            database = { this.state.database } 
-                                            name     = { this.state.name }
-                                            setName  = { this.setName }
-                                        />
-                                  }
-                  />          
-                  <Route 
-                      path      = "/selectionpage" 
-                      component = { () =>
-                                        <SelectionPage 
-                                            database      = { this.state.database }
-                                            breed         = { this.state.breed } 
-                                            setBreed      = { this.setBreed }
-                                            systemType    = { this.state.systemType } 
-                                            setSystemType = { this.setSystemType }
-                                            cowType       = { this.state.cowType }                                       
-                                            setCowType    = { this.setCowType } 
-                                            semen         = { this.state.semen }
-                                            setSemen      = { this.setSemen } 
-                                        />
-                                  }
-                  />
-                  <Route 
-                      path      = "/protocol"
-                      component = { () => 
-                                        <Protocol 
-                                            database          = { this.state.database }
-                                            breed             = { this.state.breed } 
-                                            systemType        = { this.state.systemType } 
-                                            cowType           = { this.state.cowType } 
-                                            name              = { this.state.name } 
-                                            semen             = { this.state.semen }
-                                            setProtocol       = { this.setProtocol } 
-                                            setStartDateTime  = { this.setStartDate }
-                                        />
-                                  }
-                  />
-                  <Route path = "/calendar" component = {CalPage}/>
-
-                  <Route path = "/" exact    component = { HomePage } />
-                  <Route path = "/help"      component = { Help } />
-                  <Route path = "/reference" component = { Reference } />
-                  
-                  <Footer/>
-              </div>
-          </Router>
-        );
+        if( this.state.waitToRender )
+        {
+            Database.GetJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
+            return( <div></div> );
+        }
+        else
+        {
+            return(
+                <Router>
+                    <div className = "App" >
+                      <Header/>
+    
+                      <Route 
+                          path      = "/namepage" 
+                          component = { () => 
+                                            <NamePage 
+                                                database = { this.state.database } 
+                                                name     = { this.state.name }
+                                                setName  = { this.setName }
+                                            />
+                                      }
+                      />          
+                      <Route 
+                          path      = "/selectionpage" 
+                          component = { () =>
+                                            <SelectionPage 
+                                                database      = { this.state.database }
+                                                breed         = { this.state.breed } 
+                                                setBreed      = { this.setBreed }
+                                                systemType    = { this.state.systemType } 
+                                                setSystemType = { this.setSystemType }
+                                                cowType       = { this.state.cowType }                                       
+                                                setCowType    = { this.setCowType } 
+                                                semen         = { this.state.semen }
+                                                setSemen      = { this.setSemen } 
+                                            />
+                                      }
+                      />
+                      <Route 
+                          path      = "/protocol"
+                          component = { () => 
+                                            <Protocol 
+                                                database          = { this.state.database }
+                                                breed             = { this.state.breed } 
+                                                systemType        = { this.state.systemType } 
+                                                cowType           = { this.state.cowType } 
+                                                name              = { this.state.name } 
+                                                semen             = { this.state.semen }
+                                                setProtocol       = { this.setProtocol } 
+                                                setStartDateTime  = { this.setStartDate }
+                                            />
+                                      }
+                      />
+                      <Route path = "/calendar" component = {CalPage}/>
+    
+                      <Route path = "/" exact    component = { HomePage } />
+                      <Route path = "/help"      component = { Help } />
+                      <Route path = "/reference" component = { Reference } />
+                      
+                      <Footer/>
+                  </div>
+              </Router>
+            );
+        }        
     } /* render() */
 } /* end App */
 export default App;
