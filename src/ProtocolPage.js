@@ -16,12 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
-import { Button, TextField } from '@material-ui/core';
-import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
+import { Button} from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
@@ -49,7 +47,6 @@ class ProtocolPage extends React.Component
     constructor( props )
     {
         super( props );
-
         /**
          * State is used to store previous values to display to the user
          */
@@ -57,55 +54,53 @@ class ProtocolPage extends React.Component
         {
            /** @type {Database} */ database: this.props.database,
             
-            name:           "",
-            breed:          "",
-            systemType:     "",
-            cowType:        "",
-            semen:          "",
-            id:             "",
-            description:    "",
-            
-            startDate:      new Date(),
+            name: this.props.name,
+            breed: this.props.breed,
+            systemType: this.props.systemType,
+            cowType: this.props.cowType,
+            semen: this.props.semen,
+            id: this.props.protocolId,
+            protocolString: "",
+            description:    this.props.description,
+            startDate:      this.props.startDate,
         };
          
         this.updateProtocolId    = this.updateProtocolId.bind( this ); 
         this.updateStartDateTime = this.updateStartDateTime.bind( this );
         this.lookupNameFromLabel = this.lookupNameFromLabel.bind( this );
+        this.updateParentStartDate = this.updateParentStartDate.bind(this);
+        this.updateParentId = this.updateParentId.bind(this);
     } /* end constructor() */
 
-
-    /**
-     * Sets the state based on the values passed in the props
-     * @param {Props} props - the props which contains the parameters
-     * @param {State} state - the state to update
-     */
-    static getDerivedStateFromProps( props, state )
-    {
-        return ( { name:          props.name,
-                  breed:         props.breed,
-                  systemType:    props.systemType, 
-                  cowType:       props.cowType, 
-                  semen:         props.semen } );
-    } /* getDerivedStateFromProps() */
 
     /**
      * Update the selected protocol
      * @param {event} event
      */
-
     updateProtocolId( event )
     {   
-       
-        let protocol    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        console.log("type: " + typeof(event.target.value));
+    
+        let protocol    = this.state.database.GetObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
+        let name;
+        let id;
         
+        console.log(protocol.Name);
         if( protocol != null )
         {
             description = protocol.Description;
+            name = protocol.Name;
+            id = protocol.Id;
         }
 
-        this.setState( { id: event.target.value } );        
+        
+        
+
+        this.setState( { protocolString: name } );        
         this.setState( { description: description } );
+        this.props.setProtocol(id);
+        this.props.setDescription(description);
     } /* updateProtocolId() */
 
 
@@ -115,10 +110,33 @@ class ProtocolPage extends React.Component
      */
     updateStartDateTime( date )
     {
-        console.log( date );
-        this.setState( { startDate: new Date( date ) } );
-        //this.props.setStartDateTime(date);
+        console.log( "In updateStartDateTime" );
+        console.log( "Prop:" + date );
+        this.setState( { startDate: new Date(date) } );
+        console.log( "State:" + this.state.startDate );
+        console.log( "Exiting updateStartDateTime" );
     } /* updateStartDateTime() */
+
+    /**
+     * 
+     */
+    updateParentStartDate()
+    {   
+        console.log("In updateParentStartDate");
+        this.props.setStartDateTime(this.state.startDate);
+        console.log("Exiting updateParentStartDate");
+
+    }
+    /**
+     * 
+     */
+        updateParentId()
+        {   
+            //console.log("In updateParentStartDate");
+            this.props.setProtocol(this.state.id);
+            //console.log("Exiting updateParentStartDate");
+    
+        }
 
      /**
      * Not currently implemented
@@ -138,7 +156,7 @@ class ProtocolPage extends React.Component
     lookupNameFromLabel( label, databaseListType )
     {
         let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
-        if( name == "" )
+        if( name === "" )
         {
             name = <em>Not Selected</em>;
         }
@@ -159,7 +177,7 @@ class ProtocolPage extends React.Component
                                      null,
                                      null ).map(
                                      ( protocol ) => < MenuItem 
-                                       value = { protocol.Name } > { protocol.Name } </ MenuItem > );
+                                       value = { protocol.Id } > { protocol.Name } </ MenuItem > );
         
         let styles = { width:  400,
                        height: 55 };
@@ -196,9 +214,11 @@ class ProtocolPage extends React.Component
                         <Select 
                             style    = { styles }
                             id       = "protocol"                    
-                            onChange = { this.updateProtocolId }
+                            onChange = { (child) => this.updateProtocolId(child) }
+                           // onClose = {()=>this.updateParentId()}
                             label    = "Protocol"
-                        >
+                            value = {this.state.id}>
+
                             <MenuItem value = "" ><em>None</em></MenuItem>
                             { recommendedProtocols }                        
                         </Select>
@@ -209,19 +229,19 @@ class ProtocolPage extends React.Component
                     
                     <br/>
                     <br/>
-                    
+              
                     <MuiPickersUtilsProvider utils = { DateFnsUtils } >
-
                     <KeyboardDateTimePicker
                         variant     = "inline"
-                        label       = "With keyboard"
+                        label       = "Select Intended Start Date"
                         value       = { this.state.startDate }
-                        onChange    = { ( value ) => this.updateStartDateTime( value ) }
-                        onError     = { console.log }
-                        disablePast
-                        format      = "MM/dd/yyyy hh:mm aa"
-                    />
+                        onChange = { (value)=> this.updateStartDateTime(value ) }
+                        onClose = {()=>this.updateParentStartDate()}
+                        //onError     = { console.log }
+                        format      = "MM/dd/yyyy hh:mm aa"/>
                     </MuiPickersUtilsProvider>
+                  
+                 
                     
                     <br/>
                     <br/>
@@ -230,7 +250,6 @@ class ProtocolPage extends React.Component
                         className = "sidebysidebutton" 
                         component = { Link } 
                         to        = "/selectionpage" 
-                        color     = "defualt" 
                         variant   = "contained" 
                         size      = "large" 
                     >
@@ -240,12 +259,8 @@ class ProtocolPage extends React.Component
                         className = "sidebysidebutton"
                         component = { Link } 
                         to        = "/calendar"
-                        color     = "defualt"
                         variant   = "contained" 
-                        size      = "large"
-                    >
-                        Next
-                    </Button>
+                        size      = "large" > Next </Button>
                 
                 </form>
 

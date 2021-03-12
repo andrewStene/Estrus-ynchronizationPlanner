@@ -39,8 +39,7 @@ class CalendarPage extends React.Component
             protocolName:this.props.protocolName,
             protocolId:this.props.protocolId,
             startingDate:this.props.startDate,
-            cowlendar: this.props.cowCal,
-            database: new Database()
+            database: this.props.db
         }
     }
 
@@ -49,10 +48,11 @@ class CalendarPage extends React.Component
      */
     render()
     {
-        let db = new Database();
-        let results = CalculateProtocolCalendar(db.GetObjectById(0, Database.DATABASE_LIST_TYPE.PROTOCOLS),Date.now(),db);
+        
+        let results = CalculateProtocolCalendar(this.state.database.GetObjectById(this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS), this.state.startingDate, this.state.database);
         if(results === null)
         {
+            //alert("An error occured");
             console.log("Uh oh");
         }
 
