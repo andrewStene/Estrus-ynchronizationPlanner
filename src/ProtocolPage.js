@@ -47,7 +47,6 @@ class ProtocolPage extends React.Component
     constructor( props )
     {
         super( props );
-        this.wrapper = React.createRef();
         /**
          * State is used to store previous values to display to the user
          */
@@ -55,20 +54,22 @@ class ProtocolPage extends React.Component
         {
            /** @type {Database} */ database: this.props.database,
             
-            name: "",
-            breed:          "",
-            systemType:     "",
-            cowType:        "",
-            semen:          "",
-            id:             "",
-            description:    "",
-            startDate:      new Date(),
+            name: this.props.name,
+            breed: this.props.breed,
+            systemType: this.props.systemType,
+            cowType: this.props.cowType,
+            semen: this.props.semen,
+            id: this.props.protocolId,
+            protocolString: "",
+            description:    this.props.description,
+            startDate:      this.props.startDate,
         };
          
         this.updateProtocolId    = this.updateProtocolId.bind( this ); 
         this.updateStartDateTime = this.updateStartDateTime.bind( this );
         this.lookupNameFromLabel = this.lookupNameFromLabel.bind( this );
         this.updateParentStartDate = this.updateParentStartDate.bind(this);
+        this.updateParentId = this.updateParentId.bind(this);
     } /* end constructor() */
 
 
@@ -78,18 +79,28 @@ class ProtocolPage extends React.Component
      */
     updateProtocolId( event )
     {   
-       
-        let protocol    = this.state.database.GetObjectByName( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        console.log("type: " + typeof(event.target.value));
+    
+        let protocol    = this.state.database.GetObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
+        let name;
+        let id;
         
+        console.log(protocol.Name);
         if( protocol != null )
         {
             description = protocol.Description;
+            name = protocol.Name;
+            id = protocol.Id;
         }
 
-        this.setState( { id: event.target.value } );        
+        
+        
+
+        this.setState( { protocolString: name } );        
         this.setState( { description: description } );
-        this.props.setProtocol(event.target.value);
+        this.props.setProtocol(id);
+        this.props.setDescription(description);
     } /* updateProtocolId() */
 
 
@@ -116,6 +127,16 @@ class ProtocolPage extends React.Component
         console.log("Exiting updateParentStartDate");
 
     }
+    /**
+     * 
+     */
+        updateParentId()
+        {   
+            //console.log("In updateParentStartDate");
+            this.props.setProtocol(this.state.id);
+            //console.log("Exiting updateParentStartDate");
+    
+        }
 
      /**
      * Not currently implemented
@@ -156,7 +177,7 @@ class ProtocolPage extends React.Component
                                      null,
                                      null ).map(
                                      ( protocol ) => < MenuItem 
-                                       value = { protocol.Name } > { protocol.Name } </ MenuItem > );
+                                       value = { protocol.Id } > { protocol.Name } </ MenuItem > );
         
         let styles = { width:  400,
                        height: 55 };
@@ -193,8 +214,10 @@ class ProtocolPage extends React.Component
                         <Select 
                             style    = { styles }
                             id       = "protocol"                    
-                            onChange = { this.updateProtocolId }
-                            label    = "Protocol">
+                            onChange = { (child) => this.updateProtocolId(child) }
+                           // onClose = {()=>this.updateParentId()}
+                            label    = "Protocol"
+                            value = {this.state.id}>
 
                             <MenuItem value = "" ><em>None</em></MenuItem>
                             { recommendedProtocols }                        
@@ -212,7 +235,7 @@ class ProtocolPage extends React.Component
                         variant     = "inline"
                         label       = "Select Intended Start Date"
                         value       = { this.state.startDate }
-                        onChange = { ( value ) => this.updateStartDateTime( value ) }
+                        onChange = { (value)=> this.updateStartDateTime(value ) }
                         onClose = {()=>this.updateParentStartDate()}
                         //onError     = { console.log }
                         format      = "MM/dd/yyyy hh:mm aa"/>
