@@ -48,7 +48,9 @@ class App extends React.Component
         */
         this.state = 
         {
-            database:   new Database(),
+            waitToRender:  true,
+            database:      new Database(),
+          
             name:          "",
             breed:         "",
             cowType:       "",
@@ -192,7 +194,16 @@ class App extends React.Component
     */
     render()
     {
-        let idString = this.getProtocolStringFromState();
+
+
+        if( this.state.waitToRender )
+        {
+            Database.GetJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
+            return( <div></div> );
+        }
+        else
+        {
+            let idString = this.getProtocolStringFromState();
         return(
             <Router>
                 <div className = "App" >
@@ -257,6 +268,8 @@ class App extends React.Component
               </div>
           </Router>
         );
+        }        
+
     } /* render() */
 } /* end App */
 export default App;
