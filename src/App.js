@@ -48,7 +48,8 @@ class App extends React.Component
         */
         this.state = 
         {
-            database:   new Database(),
+            waitToRender:  true,
+            database:      new Database(),
           
             name:          "",
             breed:         "",
@@ -58,7 +59,9 @@ class App extends React.Component
             systemType:    "",
             gnrh:          "",
             pg:            "",
-            startDateTime: ""
+            startDateTime: new Date(),
+            prevPage: "",
+            description:"",
         }
       
         /**
@@ -71,6 +74,9 @@ class App extends React.Component
         this.setSemen         = this.setSemen.bind( this );
         this.setStartDateTime = this.setStartDateTime.bind( this );
         this.setProtocol      = this.setProtocol.bind( this );
+        this.updateLastVistedPage = this.updateLastVistedPage.bind(this);
+        this.getProtocolStringFromState = this.getProtocolStringFromState.bind(this);
+        this.setProtocolDescription = this.setProtocolDescription.bind(this);
     } /* end constructor() */
 
 
@@ -135,6 +141,7 @@ class App extends React.Component
     */
     setProtocol( protocol )
     {
+        
         this.setState( { id: protocol } );
         console.log( protocol );
     } /* setProtocol() */
@@ -146,14 +153,57 @@ class App extends React.Component
     */
     setStartDateTime( date )
     {
-        this.setState( { startDateTime: date } );
+        console.log("In App.js")
+        this.setState( { startDateTime: new Date (date) } );
+        console.log(this.state.startDateTime)
     } /* setStartDateTime() */
+
+    /**
+     * 
+     * @param {*} desc 
+     */
+    setProtocolDescription(desc)
+    {
+        this.setState({description: desc});
+    }
+
+    /**
+     * Used to allow the user to return to the page they visted the help page from
+     * @param {The last page the user was on} page 
+     */
+    updateLastVistedPage(page)
+    {
+        this.setState({prevPage:page});
+    }
+    /**
+     * 
+     * @returns 
+     */
+    getProtocolStringFromState()
+    {
+        let string = this.state.database.GetObjectById(this.state.id, Database.DATABASE_LIST_NAME.PROTOCOLS);
+        if(string === null)
+        {
+            return "";
+        }
+        return string.Name;
+    }
 
     /**
     * Render function for the class which includes all of the routes
     */
     render()
     {
+
+
+        if( this.state.waitToRender )
+        {
+            Database.GetJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
+            return( <div></div> );
+        }
+        else
+        {
+            let idString = this.getProtocolStringFromState();
         return(
             <Router>
                 <div className = "App" >
@@ -166,6 +216,7 @@ class App extends React.Component
                                             database = { this.state.database } 
                                             name     = { this.state.name }
                                             setName  = { this.setName }
+                                            lastPage = {this.updateLastVistedPage}
                                         />
                                   }
                   />          
@@ -182,6 +233,7 @@ class App extends React.Component
                                             setCowType    = { this.setCowType } 
                                             semen         = { this.state.semen }
                                             setSemen      = { this.setSemen } 
+                                            lastPage = {this.updateLastVistedPage}
                                         />
                                   }
                   />
@@ -194,13 +246,19 @@ class App extends React.Component
                                             systemType        = { this.state.systemType } 
                                             cowType           = { this.state.cowType } 
                                             name              = { this.state.name } 
-                                            semen             = { this.state.semen }
+                                            semen             = { this.state.semen } startDate = {this.state.startDateTime}
+                                            protocolId = {this.state.id}
+                                            description = {this.state.description}
                                             setProtocol       = { this.setProtocol } 
-                                            setStartDateTime  = { this.setStartDate }
+                                            setStartDateTime  = { this.setStartDateTime }
+                                            lastPage = {this.updateLastVistedPage}
+                                            setDescription = {this.setProtocolDescription}
                                         />
                                   }
                   />
-                  <Route path = "/calendar" component = {CalPage}/>
+                  <Route path = "/calendar" component = {()=><CalPage 
+                  protocolName = {this.state.name} protocolId = {this.state.id} startDate = {this.state.startDateTime} db = {this.state.database}
+                  lastPage = {this.updateLastVistedPage}/>}/>
 
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />
@@ -210,6 +268,8 @@ class App extends React.Component
               </div>
           </Router>
         );
+        }        
+
     } /* render() */
 } /* end App */
 export default App;
