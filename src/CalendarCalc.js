@@ -43,9 +43,10 @@ export {
   * @param {Protocol} protocol - the protocol to create the calendar from
   * @param {Date} dateOffset - the date to start the calendar
   * @param {Database} database - A database object which contains all the protocols
+  * @param {String} name name of the group
   * @returns {CowCalendar} - A calendar of all the different tasks to be displayed 
   */
- function CalculateProtocolCalendar(protocol, dateOffset, database)
+ function CalculateProtocolCalendar(protocol, dateOffset, database, name)
  {
     if(protocol === null)
 
@@ -75,8 +76,9 @@ export {
 
         let startTime = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart);
         let endTime = offsetDate(dateOffset, protocol.Tasks[i].SecondsSinceStart + task.TaskLength);
+        let groupTitle = "[GROUP: " + name.toUpperCase() + "] " + task.Name; 
         
-        events.push({id: i, start:startTime, end:endTime, title:task.Name})
+        events.push({id: i, start:startTime, end:endTime, title:groupTitle})
     }
     return events;
 

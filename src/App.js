@@ -257,8 +257,8 @@ class App extends React.Component
                                   }
                   />
                   <Route path = "/calendar" component = {()=><CalPage 
-                  protocolName = {this.state.name} protocolId = {this.state.id} startDate = {this.state.startDateTime} db = {this.state.database}
-                  lastPage = {this.updateLastVistedPage}/>}/>
+                        protocolName = {this.state.name} protocolId = {this.state.id} startDate = {this.state.startDateTime} db = {this.state.database}
+                        lastPage = {this.updateLastVistedPage}/>}/>
 
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />

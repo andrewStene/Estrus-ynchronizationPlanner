@@ -49,7 +49,8 @@ class CalendarPage extends React.Component
     render()
     {
         
-        let results = CalculateProtocolCalendar(this.state.database.GetObjectById(this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS), this.state.startingDate, this.state.database);
+        let results = 
+        CalculateProtocolCalendar(this.state.database.GetObjectById(this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS), this.state.startingDate, this.state.database, this.state.protocolName);
         if(results === null)
         {
             //alert("An error occured");
