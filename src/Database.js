@@ -2250,21 +2250,16 @@ function adjustHormoneTaskName( task, database )
 {
     let pg = getObjectById( database.SelectedPGId, DATABASE_LIST_TYPE.P_G, database );
     let gnrh = getObjectById( database.SelectedGnRHId, DATABASE_LIST_TYPE.GN_RH, database );
-    if( pg != null )
-    {
-        task.Name = formatHormoneString( task.Name, pg, VAR_NAME.P_G );
-    }
-    if( gnrh != null )
-    {
-        task.Name = formatHormoneString( task.Name, gnrh, VAR_NAME.GN_RH );
-    }
+    
+    task.Name = formatHormoneString( task.Name, pg, VAR_NAME.P_G );    
+    task.Name = formatHormoneString( task.Name, gnrh, VAR_NAME.GN_RH );    
 } /* adjustHormoneTaskName() */
 
 /**
  * @function formatHormoneString - formats a string by inserting the dosage of a given hormone into each placeholder in the format $variableName
  * @param {string} s - the string to split on
  * @param {HormoneProduct} hormone - the hormone to insert into the string
- * @param {VAR_NAME} variableName - the "variable" name to split the string and map the hormone to that location ${variableName}
+ * @param {VAR_NAME} variableName - the "variable" name to split the string and map the hormone to that location $variableName - if null, just print variableName 
  * @returns {string} - a new formated string
  */
 function formatHormoneString( s, hormone, variableName )
@@ -2272,10 +2267,22 @@ function formatHormoneString( s, hormone, variableName )
     let s_split = s.split( "$" + variableName );    
 
     let newString = s_split[0];
-    for( let i = 1; i < s_split.length; i++ )
+    // format normally
+    if( hormone != null )
     {
-        newString = `${ newString }${ hormone.DefaultCCs }cc of ${ hormone.Name } (${ variableName })${ s_split[i] }`
+        for( let i = 1; i < s_split.length; i++ )
+        {
+            newString = `${ newString }${ hormone.DefaultCCs }cc of ${ hormone.Name } (${ variableName })${ s_split[i] }`
+        }
     }
+    // hormone doesn't exist so... remove '$', and show variable name instead
+    else
+    {
+        for( let i = 1; i < s_split.length; i++ )
+        {
+            newString = `${ newString }${ variableName }${ s_split[i] }`
+        }
+    }    
     return newString; 
 } /* formatHormoneTask() */
 
