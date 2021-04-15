@@ -59,9 +59,10 @@ class App extends React.Component
             systemType:    "",
             gnrh:          "",
             pg:            "",
-            startDateTime: new Date(),
-            prevPage: "",
-            description:"",
+            prevPage:      "",
+            description:   "",
+
+            startDateTime: new Date(),            
         }
       
         /**
@@ -72,11 +73,14 @@ class App extends React.Component
         this.setBreed         = this.setBreed.bind( this );
         this.setSystemType    = this.setSystemType.bind( this );
         this.setSemen         = this.setSemen.bind( this );
+        this.setPG            = this.setPG.bind( this );
+        this.setGnRH          = this.setGnRH.bind( this );
         this.setStartDateTime = this.setStartDateTime.bind( this );
         this.setProtocol      = this.setProtocol.bind( this );
-        this.updateLastVistedPage = this.updateLastVistedPage.bind(this);
-        this.getProtocolStringFromState = this.getProtocolStringFromState.bind(this);
-        this.setProtocolDescription = this.setProtocolDescription.bind(this);
+
+        this.updateLastVistedPage       = this.updateLastVistedPage.bind( this );
+        this.getProtocolStringFromState = this.getProtocolStringFromState.bind( this );
+        this.setProtocolDescription     = this.setProtocolDescription.bind( this );
     } /* end constructor() */
 
 
@@ -132,7 +136,31 @@ class App extends React.Component
     {
         this.setState( { semen: semen } );
         console.log( this.state.semen );
-    } /* setSemen() */ 
+    } /* setSemen() */
+
+    /**
+    * Updates the state to the proper pg
+    * based on what is given in the SelectionPage
+    * @param {string} pg - The pg being used to be stored in the state 
+    */
+    setPG( pg )
+    {
+        this.setState( { pg: pg } );
+        this.state.database.SelectHormoneId( parseInt( pg ), Database.DATABASE_LIST_TYPE.P_G );
+        console.log( this.state.pg );
+    } /* setPG() */
+
+     /**
+    * Updates the state to the proper pg
+    * based on what is given in the SelectionPage
+    * @param {string} gnrh - The pg being used to be stored in the state 
+    */
+    setGnRH( gnrh )
+    {
+        this.setState( { gnrh: gnrh } );
+        this.state.database.SelectHormoneId( parseInt( gnrh ), Database.DATABASE_LIST_TYPE.GN_RH );
+        console.log( this.state.gnrh );
+    } /* setGnRH() */ 
 
     /**
     * Updates the state to the selected breeding protocol
@@ -216,7 +244,7 @@ class App extends React.Component
                                             database = { this.state.database } 
                                             name     = { this.state.name }
                                             setName  = { this.setName }
-                                            lastPage = {this.updateLastVistedPage}
+                                            lastPage = { this.updateLastVistedPage }
                                         />
                                   }
                   />          
@@ -232,8 +260,12 @@ class App extends React.Component
                                             cowType       = { this.state.cowType }                                       
                                             setCowType    = { this.setCowType } 
                                             semen         = { this.state.semen }
-                                            setSemen      = { this.setSemen } 
-                                            lastPage = {this.updateLastVistedPage}
+                                            setSemen      = { this.setSemen }
+                                            pg            = { this.state.pg }
+                                            setPG         = { this.setPG }
+                                            gnrh          = { this.state.gnrh }
+                                            setGnRH       = { this.setGnRH }
+                                            lastPage      = { this.updateLastVistedPage }
                                         />
                                   }
                   />
@@ -246,20 +278,29 @@ class App extends React.Component
                                             systemType        = { this.state.systemType } 
                                             cowType           = { this.state.cowType } 
                                             name              = { this.state.name } 
-                                            semen             = { this.state.semen } startDate = {this.state.startDateTime}
-                                            protocolId = {this.state.id}
-                                            description = {this.state.description}
+                                            semen             = { this.state.semen } 
+                                            startDate         = { this.state.startDateTime }
+                                            protocolId        = { this.state.id }
+                                            description       = { this.state.description }
                                             setProtocol       = { this.setProtocol } 
                                             setStartDateTime  = { this.setStartDateTime }
-                                            lastPage = {this.updateLastVistedPage}
-                                            setDescription = {this.setProtocolDescription}
+                                            lastPage          = { this.updateLastVistedPage }
+                                            setDescription    = { this.setProtocolDescription }
                                         />
                                   }
                   />
-                  <Route path = "/calendar" component = {()=><CalPage 
-                        protocolName = {this.state.name} protocolId = {this.state.id} startDate = {this.state.startDateTime} db = {this.state.database}
-                        lastPage = {this.updateLastVistedPage}/>}/>
-
+                  <Route 
+                      path      = "/calendar" 
+                      component = { () => 
+                                        <CalPage 
+                                            protocolName = { this.state.name } 
+                                            protocolId   = { this.state.id } 
+                                            startDate    = { this.state.startDateTime } 
+                                            db           = { this.state.database }
+                                            lastPage     = { this.updateLastVistedPage } 
+                                        /> 
+                                   } 
+                  />
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />
                   <Route path = "/reference" component = { Reference } />
