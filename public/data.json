@@ -2,13 +2,12 @@
     "Tasks": 
     [            
         { "Id": 0, "Name": "Start Heat Detection", "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt", "TaskLength": 0 },
-        { "Id": 1, "Name": "Inject PG to Females", "Description": "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "TaskLength": 30 },
+        { "Id": 1, "Name": "Inject $PG into females", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
         { "Id": 2, "Name": "Stop Heat Detection", "Description": "At varius vel pharetra vel turpis nunc eget lorem.", "TaskLength": 0 },
         { "Id": 3, "Name": "Detect Estrus and Breed", "Description": "Vitae suscipit tellus mauris a diam maecenas sed enim ut.", "TaskLength": 0 },
         { "Id": 4, "Name": "Clean up", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
-        { "Id": 5, "Name": "New Cycle", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 },
-        { "Id": 6, "Name": "Inject $PG into females", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
-        { "Id": 7, "Name": "Inject $GnRH to all females", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 }            
+        { "Id": 5, "Name": "New Cycle", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 },        
+        { "Id": 6, "Name": "Inject $GnRH to all females", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 }            
     ],
     "Protocols": 
     [
@@ -45,8 +44,7 @@
             [
                 { "TaskId": 0, "SecondsSinceStart": 0 },
                 { "TaskId": 3, "SecondsSinceStart": 0 },
-                { "TaskId": 1, "SecondsSinceStart": 345600 },
-                { "TaskId": 7, "SecondsSinceStart": 345600 },
+                { "TaskId": 1, "SecondsSinceStart": 345600 },                
                 { "TaskId": 2, "SecondsSinceStart": 432000 },                
                 { "TaskId": 4, "SecondsSinceStart": 950400 },
                 { "TaskId": 5, "SecondsSinceStart": 1987200 }

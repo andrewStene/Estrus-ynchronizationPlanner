@@ -53,12 +53,7 @@ export {
         console.log("protocol is null");
         return null;
     }
-    if(database === null)
-    {
-        console.log("db is null");
-        database = new Database();
-    }
-
+    
     if(dateOffset == null)
     {
         dateOffset = new Date();
@@ -68,7 +63,7 @@ export {
     for(let i = 0; i < protocol.Tasks.length; i++)
 
     {
-        let task = database.GetObjectById(protocol.Tasks[i].TaskId, Database.DATABASE_LIST_TYPE.TASKS);
+        let task = database.GetUserTaskById(protocol.Tasks[i].TaskId );
         if(task == null)
         {
             return null;

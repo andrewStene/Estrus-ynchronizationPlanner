@@ -146,6 +146,7 @@ class App extends React.Component
     setPG( pg )
     {
         this.setState( { pg: pg } );
+        this.state.database.SelectHormoneId( parseInt( pg ), Database.DATABASE_LIST_TYPE.P_G );
         console.log( this.state.pg );
     } /* setPG() */
 
@@ -157,6 +158,7 @@ class App extends React.Component
     setGnRH( gnrh )
     {
         this.setState( { gnrh: gnrh } );
+        this.state.database.SelectHormoneId( parseInt( gnrh ), Database.DATABASE_LIST_TYPE.GN_RH );
         console.log( this.state.gnrh );
     } /* setGnRH() */ 
 
