@@ -24,7 +24,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import {Database} from './Database'
 import ReactToPrint from 'react-to-print';
 import adaptivePlugin from '@fullcalendar/adaptive';
-import CalendarOptions, {ICalendar} from 'datebook';
+import {ICalendar} from 'datebook';
+import ListView from './ListView';
 import './CalendarPage.css';
 
 
@@ -48,6 +49,7 @@ class CalendarPage extends React.Component
 
         this.exportCalendar = this.exportCalendar.bind(this);
     }
+    
     /**
      * Converts and downloads the calenders array into an ics file
      * fires when the 'Download Calendar' button is clicked
@@ -92,6 +94,7 @@ class CalendarPage extends React.Component
         console.log(INITIAL_EVENTS);
         return(
             <div>
+                
                 <br/>
                 <ReactToPrint
                 trigger={() => <Button className = "sidebysidebutton" variant="contained">Print this out</Button>}
