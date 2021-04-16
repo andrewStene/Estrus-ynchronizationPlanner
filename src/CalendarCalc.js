@@ -79,7 +79,7 @@ export {
         let groupTitle = `[GROUP: ${name.toUpperCase()}] ${task.Name}`; 
         console.log("Start Time:" + startTime + "\nEnd Time: " + endTime);
         
-        events.push({id: i, start:startTime, end:endTime, title:groupTitle})
+        events.push({id: i, start:startTime, end:endTime, title:groupTitle, description:task.description})
     }
     return events;
 
