@@ -2,11 +2,12 @@
     "Tasks": 
     [            
         { "Id": 0, "Name": "Start Heat Detection", "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt", "TaskLength": 0 },
-        { "Id": 1, "Name": "Inject PG to Females", "Description": "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "TaskLength": 30 },
+        { "Id": 1, "Name": "Inject $PG into females", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
         { "Id": 2, "Name": "Stop Heat Detection", "Description": "At varius vel pharetra vel turpis nunc eget lorem.", "TaskLength": 0 },
         { "Id": 3, "Name": "Detect Estrus and Breed", "Description": "Vitae suscipit tellus mauris a diam maecenas sed enim ut.", "TaskLength": 0 },
         { "Id": 4, "Name": "Clean up", "Description": "Ridiculus mus mauris vitae ultricies.", "TaskLength": 50 },
-        { "Id": 5, "Name": "New Cycle", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 }        
+        { "Id": 5, "Name": "New Cycle", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 },        
+        { "Id": 6, "Name": "Inject $GnRH to all females", "Description": "Integer malesuada nunc vel risus commodo viverra maecenas.", "TaskLength": 0 }            
     ],
     "Protocols": 
     [
@@ -17,9 +18,10 @@
             "Tasks": 
             [
                 { "TaskId": 0, "SecondsSinceStart": 0 },
-                { "TaskId": 1, "SecondsSinceStart": 345600 },
-                { "TaskId": 2, "SecondsSinceStart": 950400 },
                 { "TaskId": 3, "SecondsSinceStart": 0 },
+                { "TaskId": 1, "SecondsSinceStart": 345600 },
+                { "TaskId": 6, "SecondsSinceStart": 345600 },
+                { "TaskId": 2, "SecondsSinceStart": 950400 },                
                 { "TaskId": 4, "SecondsSinceStart": 950400 },
                 { "TaskId": 5, "SecondsSinceStart": 2332800 }
             ],
@@ -32,7 +34,7 @@
                 "GnRH": [1],
                 "PG": [5],
                 "Cattle": [0]
-            } 
+            }
         },
         {   
             "Id": 1,
@@ -41,9 +43,9 @@
             "Tasks": 
             [
                 { "TaskId": 0, "SecondsSinceStart": 0 },
-                { "TaskId": 1, "SecondsSinceStart": 345600 },
-                { "TaskId": 2, "SecondsSinceStart": 432000 },
                 { "TaskId": 3, "SecondsSinceStart": 0 },
+                { "TaskId": 1, "SecondsSinceStart": 345600 },                
+                { "TaskId": 2, "SecondsSinceStart": 432000 },                
                 { "TaskId": 4, "SecondsSinceStart": 950400 },
                 { "TaskId": 5, "SecondsSinceStart": 1987200 }
             ],
@@ -53,8 +55,8 @@
                 "SystemType": [0],
                 "Semen": [0],
                 "Breed": [1],
-                "GnRH": [1],
-                "PG": [5],
+                "GnRH": [1, 2, 4],
+                "PG": [0, 3, 5],
                 "Cattle": [1]
             } 
         }
@@ -77,21 +79,21 @@
     ],
      "GnRH":
     [
-        { "Id": 0, "Name": "Cystorelin" },
-        { "Id": 1, "Name": "Factrel" },
-        { "Id": 2, "Name": "Fertagyl" },
-        { "Id": 3, "Name": "OvaCyst" },
-        { "Id": 4, "Name": "GONAbreed" }
+        { "Id": 0, "Name": "Cystorelin", "DefaultCCs": 2 },
+        { "Id": 1, "Name": "Factrel", "DefaultCCs": 2 },
+        { "Id": 2, "Name": "Fertagyl", "DefaultCCs": 3 },
+        { "Id": 3, "Name": "OvaCyst", "DefaultCCs": 2 },
+        { "Id": 4, "Name": "GONAbreed", "DefaultCCs": 2 }
     ],
      "PG": 
     [
-        { "Id": 0, "Name": "Estrumate" },
-        { "Id": 1, "Name": "EstroPLAN" },
-        { "Id": 2, "Name": "InSynch" },
-        { "Id": 3, "Name": "Lutalyse" },
-        { "Id": 4, "Name": "ProstaMate" },
-        { "Id": 5, "Name": "HiConc. Lut" },
-        { "Id": 6, "Name": "Synchsure" }
+        { "Id": 0, "Name": "Estrumate", "DefaultCCs": 2 },
+        { "Id": 1, "Name": "EstroPLAN", "DefaultCCs": 2 },
+        { "Id": 2, "Name": "InSynch", "DefaultCCs": 5 },
+        { "Id": 3, "Name": "Lutalyse", "DefaultCCs": 5 },
+        { "Id": 4, "Name": "ProstaMate", "DefaultCCs": 5 },
+        { "Id": 5, "Name": "HiConc. Lut", "DefaultCCs": 2 },
+        { "Id": 6, "Name": "Synchsure", "DefaultCCs": 2 }
     ],
     "Cattle": 
     [
