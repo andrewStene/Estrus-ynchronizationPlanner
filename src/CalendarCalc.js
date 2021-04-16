@@ -74,7 +74,9 @@ export {
 
         console.log("Start Time:" + startTime + "\nEnd Time: " + endTime);
 
+
         events.push( new ScheduledEvent( i, groupTitle, startTime, endTime ) );        
+
     }
     return events;
 
