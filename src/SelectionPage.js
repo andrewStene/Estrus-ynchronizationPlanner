@@ -45,13 +45,17 @@ class SelectionPage extends React.Component
             breed:      props.breed,
             systemType: props.systemType,
             cowType:    props.cowType,
-            semen:      props.semen
+            semen:      props.semen,
+            pg:         props.pg,
+            gnrh:       props.gnrh
         };
    
         this.updateParentCowType    = this.updateParentCowType.bind( this );
         this.updateParentBreed      = this.updateParentBreed.bind( this );
         this.updateParentSystemType = this.updateParentSystemType.bind( this );
         this.updateParentSemen      = this.updateParentSemen.bind( this );
+        this.updateParentPG         = this.updateParentPG.bind( this );
+        this.updateParentGnRH       = this.updateParentGnRH.bind( this );
         this.verifyInput            = this.verifyInput.bind( this );
         this.mapListToMenuItems     = this.mapListToMenuItems.bind( this );
     } /* end constructor() */
@@ -115,6 +119,28 @@ class SelectionPage extends React.Component
         this.setState( { semen: semen } );
         this.props.setSemen( semen );
     } /* updateParentSemen() */
+
+    /**
+     * @function updateParentPG updates both state of the selection type
+     * as well as the state contained in App.js of the PG to use
+     * @param {string} pg - the pg to use
+     */
+    updateParentPG( pg )
+    {
+        this.setState( { pg: pg } );
+        this.props.setPG( pg );
+    } /* updateParentPG() */
+
+    /**
+     * @function - updates both state of the selection type
+     * as well as the state contained in App.js of the GnRH to use
+     * @param {string} gnrh - the gnrh to use
+     */
+     updateParentGnRH( gnrh )
+     {
+         this.setState( { gnrh: gnrh } );
+         this.props.setGnRH( gnrh );
+     } /* updateParentGnRH() */
 
     /**
     * Ensures that all inputs on a page contain some value
@@ -218,7 +244,40 @@ class SelectionPage extends React.Component
                 
                 <br/>
                 <br/>
+
+                <h2>Select Products (optional)</h2>
+                <FormControl variant = "outlined" >
+                    <InputLabel> { Database.DATABASE_LIST_NAME.P_G } </InputLabel>
+                    <Select 
+                        style    = { styles }
+                        name     = { Database.DATABASE_LIST_NAME.P_G } 
+                        value    = { this.state.pg } 
+                        onChange = { ( event ) => this.updateParentPG( event.target.value ) } 
+                    >
+                        <MenuItem value = "" ><em>None</em></MenuItem>
+                        { this.mapListToMenuItems( Database.DATABASE_LIST_TYPE.P_G ) }                
+                    </Select>
+                </FormControl>
                 
+                <br/>
+                <br/>
+
+                <FormControl variant = "outlined" >
+                    <InputLabel> { Database.DATABASE_LIST_NAME.GN_RH } </InputLabel>
+                    <Select 
+                        style    = { styles } 
+                        name     = { Database.DATABASE_LIST_NAME.GN_RH } 
+                        value    = { this.state.gnrh } 
+                        onChange = { ( event ) => this.updateParentGnRH( event.target.value ) } 
+                    >
+                        <MenuItem value = "" ><em>None</em></MenuItem>
+                        { this.mapListToMenuItems( Database.DATABASE_LIST_TYPE.GN_RH ) }                
+                    </Select>
+                </FormControl>
+                
+                <br/>
+                <br/>
+
                 <Button 
                     className = "sidebysidebutton" 
                     component = { Link } 

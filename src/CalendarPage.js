@@ -16,12 +16,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import React from 'react';
-import { Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import {  CalculateProtocolCalendar} from './CalendarCalc';
+import {  CalculateProtocolCalendar } from './CalendarCalc';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import {Database} from './Database'
+import { Database } from './Database'
+import ReactToPrint from 'react-to-print';
+import adaptivePlugin from '@fullcalendar/adaptive';
+import { ICalendar } from 'datebook';
+import ListView from './ListView';
+import './CalendarPage.css';
 
 
 /**
@@ -30,52 +35,154 @@ import {Database} from './Database'
  */
 class CalendarPage extends React.Component
 {
-    constructor(props)
+    constructor( props )
     {
-        super(props);
+        super( props );
 
-        this.state=
+        this.state =
         {   
-            protocolName:this.props.protocolName,
-            protocolId:this.props.protocolId,
-            startingDate:this.props.startDate,
-            database: this.props.db
+            protocolName: this.props.protocolName,
+            protocolId:   this.props.protocolId,
+            startingDate: this.props.startDate,
+            database:     this.props.db
         }
-    }
+
+        this.exportCalendar = this.exportCalendar.bind( this );
+    } /* end constructor() */
+    
+    /**
+     * Converts and downloads the calenders array into an ics file
+     * fires when the 'Download Calendar' button is clicked
+     * @param {array} events 
+     */
+    exportCalendar( events )
+    {
+        let first;
+        if( events[0] !== null )
+        {
+            first = events[0];
+        }
+       
+        const config = { 
+                          title: first.title, 
+                          start: first.start, 
+                          end:   first.end 
+                       };
+        const icalendar = new ICalendar( config );
+        if( events.length > 1 )
+        {
+            for( let i = 1; i < events.length; i++ )
+            {
+                let cal = new ICalendar( { 
+                                            title: events[i].title, 
+                                            start: events[i].start, 
+                                            end:   events[i].end 
+                                         } );
+                
+                icalendar.addEvent( cal );
+            }
+        }
+        icalendar.download();
+    } /* exportCalendar() */
 
     /**
      * Render function for the class
      */
     render()
     {
+        let protocol = this.state.database.GetObjectById( this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let results  = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.database, this.state.protocolName );
         
-        let results = CalculateProtocolCalendar(this.state.database.GetObjectById(this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS), this.state.startingDate, this.state.database);
-        if(results === null)
+        // if CalculateProtocolCalendar returns null for some reason 
+        // Fills the array with placeholder data
+        if( results === null || results.length === 0 )
         {
-            //alert("An error occured");
-            console.log("Uh oh");
+            results = { 
+                         id:        0, 
+                         startDate: Date.now(), 
+                         title:     'empty' 
+                      };
         }
-
         const INITIAL_EVENTS = results;
-        return(
+        console.log( INITIAL_EVENTS );
+
+        return (
             <div>
+
                 <br/>
-                <FullCalendar   
-                    plugins={[ dayGridPlugin ]}
-                    initialView="dayGridMonth"
-                    headerToolbar={{
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth'
-                      }}
-                    editable={false}
-                    initialEvents={INITIAL_EVENTS}
+
+                <ReactToPrint
+                    trigger = { () => 
+                                    <Button 
+                                        className = "sidebysidebutton" 
+                                        variant   = "contained" 
+                                    >
+                                            Print this out
+                                    </Button>
+                              }
+                    content = { () => this.componentRef}    
                 />
+                <Button 
+                    className = "sidebysidebutton"   
+                    variant   = "contained"  
+                    onClick   = { () => this.exportCalendar(INITIAL_EVENTS) } 
+                > 
+                    Download Calendar
+                </Button>
+                <Button 
+                    className = "sidebysidebutton" 
+                    component = { Link } 
+                    to        = "/listview" 
+                    color     = "default" 
+                    variant   = "contained" 
+                    size      = "large"
+                >
+                    List View
+                </Button>
+
+                <div className = "toPrint">
+                    <FullCalendar   
+                        plugins             = { [ dayGridPlugin, adaptivePlugin ] }
+                        schedulerLicenseKey = { 'GPL-My-Project-Is-Open-Source' } 
+                        initialView         = "dayGridMonth"
+                        headerToolbar       = { {
+                                                    left:   'prev,next today',
+                                                    center: 'title',
+                                                    right:  'dayGridMonth'
+                                                } }
+                        editable      = { false }
+                        initialEvents = { INITIAL_EVENTS }
+                        height        = { "auto" }
+                        aspectRatio   = { 1 }
+                        ref           = { ( el ) => ( this.componentRef = el ) }
+                        style         = { {} }
+                    />
+                </div>
+
                 <br/>
                 <br/>
-                <Button className = "sidebysidebutton" component={Link} to="/protocol" color="defualt" variant="contained" size = "large" >Back</Button>
-                <Button className = "sidebysidebutton" component={Link} to="/"color="defualt"variant="contained" size = "large">Next</Button>
+
+                <Button 
+                    className = "sidebysidebutton" 
+                    component = { Link } 
+                    to        = "/protocol" 
+                    color     = "defualt" 
+                    variant   = "contained" 
+                    size      = "large" 
+                >
+                    Back
+                </Button>
+                <Button 
+                    className = "sidebysidebutton" 
+                    component = { Link } 
+                    to        = "/"
+                    color     = "defualt"
+                    variant   = "contained" 
+                    size      = "large"
+                >
+                    Next
+                </Button>
             </div>
-        )
-    }
-}export default CalendarPage
+        );
+    } /* redner() */
+} export default CalendarPage
