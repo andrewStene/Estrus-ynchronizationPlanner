@@ -26,6 +26,7 @@ import Help from './Help';
 import Reference from './Reference'
 import Protocol from './ProtocolPage'
 import CalPage from './CalendarPage'
+import ListView from './ListView.js'
 import { Database } from './Database.js';
 import {
   BrowserRouter as Router,
@@ -300,6 +301,17 @@ class App extends React.Component
                                             lastPage     = { this.updateLastVistedPage } 
                                         /> 
                                    } 
+                  />
+                  <Route
+                    path      = "/listview"
+                    component = { () =>
+                                    <ListView
+                                        protocolName = { this.state.name } 
+                                        protocolId   = { this.state.id } 
+                                        startDate    = { this.state.startDateTime } 
+                                        db           = { this.state.database }
+                                    />
+                                }
                   />
                   <Route path = "/" exact    component = { HomePage } />
                   <Route path = "/help"      component = { Help } />

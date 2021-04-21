@@ -18,7 +18,11 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import ListItemText from '@material-ui/core/ListItemText';
+import { CalculateProtocolCalendar } from './CalendarCalc';
+import { Database } from './Database.js';
 import Divider from '@material-ui/core/Divider';
 
 /**
@@ -31,8 +35,10 @@ class ListView extends React.Component
         super(props)
         this.state = 
         {
-            db: this.props.db,
-            taskList: this.props.taskList,
+            protocolName: this.props.protocolName,
+            protocolId:   this.props.protocolId,
+            startingDate: this.props.startDate,
+            db:           this.props.db
         }
         this.generateTaskComponents = this.generateTaskComponents.bind(this);
     }
@@ -43,11 +49,17 @@ class ListView extends React.Component
      */
     generateTaskComponents()
     {
-        var taskComponents = [];
-        for(let i = 0; i < this.state.taskList.length; i++)
+        let taskComponents = [];
+        let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        if( protocol != null )
         {
-            taskComponents.push(<ListItem task = {this.state.taskList[i].description} />);
+            let tasks          = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
+            for(let i = 0; i < tasks.length; i++)
+            {
+                taskComponents.push(<ListItem task = {tasks[i].description} />);
+            }
         }
+        return taskComponents;
     }
 
     /**
@@ -57,25 +69,34 @@ class ListView extends React.Component
     render()
     {
         const taskComponents = this.generateTaskComponents();
-        return(
+        return (
             <div>
-                {this.state.taskList.map(
-                   (task)=>
-                   <>
-                   <h1><b>{task.title}</b></h1>
+                
                    <List>
                        <ListItem>
-                           <ListItemText 
-                           primary = "Start:"
-                           secondary = {task.startDate}
-                           />
+                           
                        </ListItem>
                    </List>
-                  </>
-
-                )}
+                   <Button 
+                        className = "sidebysidebutton" 
+                        component = { Link } 
+                        to        = "/calendar" 
+                        variant   = "contained" 
+                        size      = "large" 
+                    >
+                        Calendar View
+                    </Button>                    
+                    <Button 
+                        className = "sidebysidebutton"
+                        component = { Link } 
+                        to        = "/"
+                        variant   = "contained" 
+                        size      = "large" 
+                    > 
+                        Home 
+                    </Button>
             </div>
-        )
+        );
     }
 }
 
