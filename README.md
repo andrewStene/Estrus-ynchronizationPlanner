@@ -5,7 +5,7 @@ http://www.iowabeefcenter.org/estrussynch.html
 
 Developed using React
 
-See dev.md for details on setting up the development environment
+See dev/dev.md for details on setting up the development environment
 
 
 

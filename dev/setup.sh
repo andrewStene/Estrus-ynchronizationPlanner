@@ -8,5 +8,4 @@ apt update
 apt upgrade 
 apt install npm
 
-npm install react 
-npm install serve
+npm install
