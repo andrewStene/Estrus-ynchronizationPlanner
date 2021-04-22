@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { CalculateProtocolCalendar } from './CalendarCalc';
 import { Database } from './Database.js';
 import Divider from '@material-ui/core/Divider';
+import './index.css';
 
 const daysOfWeek = 
 {
@@ -77,13 +78,14 @@ class ListView extends React.Component
     generateTaskComponents()
     {
         let taskComponents = [];
+        let styles = { paddingLeft:  700 };
         let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
         if( protocol != null )
         {
             let events          = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
             for( let i = 0; i < events.length; i++ )
             {
-                taskComponents.push(<ListItem> { `${ this.formatDate( events[i].start ) } - ${ events[i].title }` } </ListItem>);
+                taskComponents.push(<ListItem style={styles}> { `${ this.formatDate( events[i].start ) } > ${ events[i].title }` } </ListItem>);
             }
         }
         return taskComponents;
@@ -96,7 +98,7 @@ class ListView extends React.Component
      */
     formatDate( date )
     {
-        return `${ this.formatDayOfWeek( date.getDay() ) } ${ this.formatMonth( date.getMonth() ) } ${ date.getDate() } ${ this.formatTime( date.getHours(), date.getMinutes() ) }`;
+        return `${ this.formatDayOfWeek( date.getDay() ) } - ${ this.formatMonth( date.getMonth() ) } ${ date.getDate() } @ ${ this.formatTime( date.getHours(), date.getMinutes() ) }`;
     } /* formatDate() */
 
     /**
@@ -159,7 +161,8 @@ class ListView extends React.Component
     {
         const taskComponents = this.generateTaskComponents();
         return (
-            <div>                
+            <div>               
+                <h1>Protocol - { this.state.db.GetNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
                    <List>
                        { taskComponents }
                    </List>
@@ -185,38 +188,5 @@ class ListView extends React.Component
         );
     } /* render() */
 }
-
-/**
- * Component that represents a single task 
- * that will be used to display the list
- */
-// class ListItem extends React.Component
-// {
-//     constructor(props)
-//     {
-//         super(props)
-//         this.state = 
-//         {
-//             task: this.props.task,
-//             start: this.props.start,
-//             end: this.props.end,
-//             description: this.props.desc
-//         }
-//     }
-
-//     render()
-//     {
-//         return(
-//             <>
-//                 <h1>Task: {this.state.task}</h1>
-//             <ul>
-//                 <li>Start Date and Time: {this.state.start}</li>
-//                 <li>End Date and Time: {this.state.end}</li>
-//                 <li>Description of Task: {this.state.description}</li>
-//             </ul>
-//             </> 
-//         )
-//     }
-// }
 
 export default ListView;
