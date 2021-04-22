@@ -25,6 +25,33 @@ import { CalculateProtocolCalendar } from './CalendarCalc';
 import { Database } from './Database.js';
 import Divider from '@material-ui/core/Divider';
 
+const daysOfWeek = 
+{
+    0: "Sunday",
+    1: "Monday",
+    2: "Tuesday",
+    3: "Wednesday",
+    4: "Thursday",
+    5: "Friday",
+    6: "Saturday",
+};
+
+const months = 
+{
+    0: "January",
+    1: "February",
+    2: "March",
+    3: "April",
+    4: "May",
+    5: "June",
+    6: "July",
+    7: "August",
+    8: "September",
+    9: "October",
+    10: "November",
+    11: "December"
+};
+
 /**
  * Component that represents the entire
  */
@@ -53,14 +80,76 @@ class ListView extends React.Component
         let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
         if( protocol != null )
         {
-            let tasks          = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
-            for(let i = 0; i < tasks.length; i++)
+            let events          = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
+            for( let i = 0; i < events.length; i++ )
             {
-                taskComponents.push(<ListItem task = {tasks[i].description} />);
+                taskComponents.push(<ListItem> { `${ this.formatDate( events[i].start ) } - ${ events[i].title }` } </ListItem>);
             }
         }
         return taskComponents;
-    }
+    } /* generateTaskComponents */
+
+    /**
+     * @function formatDate - formats a date object into a date in form: "DayofWeek Month Day Hour Minute AM/PM"
+     * @param {Date} date - the time to format
+     * @returns {string} - the formated time
+     */
+    formatDate( date )
+    {
+        return `${ this.formatDayOfWeek( date.getDay() ) } ${ this.formatMonth( date.getMonth() ) } ${ date.getDate() } ${ this.formatTime( date.getHours(), date.getMinutes() ) }`;
+    } /* formatDate() */
+
+    /**
+     * @function formatDayOfWeek - formats a number representing the day of the week to a string representation
+     * @param {number} numDayOfWeek - the number to convert
+     * @returns {string} - the day of the week
+     */
+    formatDayOfWeek( numDayOfWeek )
+    {
+        if( numDayOfWeek < 0 || numDayOfWeek > 6 )
+        {
+            return "Invalid";
+        }        
+        return daysOfWeek[numDayOfWeek];
+    } /* formatDayOfWeek() */
+
+    /**
+     * @function formatMonth - formats the a numeric month to its string
+     * @param {number} numMonth - the numeric month to format
+     * @returns {string} - the month 
+     */
+    formatMonth ( numMonth )
+    {
+        if( numMonth < 0 || numMonth > 11 )
+        {
+            return "Invalid";
+        }        
+        return months[ numMonth ];
+    } /* formatMonth() */
+
+    /**
+     * @function formatTime - formats a time into AM and PM
+     * @param {number} hours - the hours to format
+     * @param {number} minutes - the minutes to format
+     */
+    formatTime ( hours, minutes )
+    {
+        let AM_or_PM = hours < 12 ? "AM" : "PM";
+        if( hours > 12 )
+        {
+            hours -= 12;
+        }
+        else if( hours == 0 )
+        {
+            hours = 12; // 12 AM
+        }
+        let strMinutes = minutes + "";
+        if( minutes < 10 )
+        {
+            strMinutes = "0" + strMinutes;
+        }
+        return `${ hours }:${ strMinutes } ${ AM_or_PM }`;
+    } /* formatTime() */
 
     /**
      * Render function for the class
@@ -70,12 +159,9 @@ class ListView extends React.Component
     {
         const taskComponents = this.generateTaskComponents();
         return (
-            <div>
-                
+            <div>                
                    <List>
-                       <ListItem>
-                           
-                       </ListItem>
+                       { taskComponents }
                    </List>
                    <Button 
                         className = "sidebysidebutton" 
@@ -97,7 +183,7 @@ class ListView extends React.Component
                     </Button>
             </div>
         );
-    }
+    } /* render() */
 }
 
 /**
