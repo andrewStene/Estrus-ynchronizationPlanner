@@ -17,8 +17,8 @@ This application uses react router to emulate having multiple "pages" while actu
 
 To add a new page 
 1. In 'App.js' make sure to import the component that is to be your new page
-2. Inside the '<Router>' JSX tags in the render() function add a new <Route> tag
-3. Inside of this <Route> tag include both the path and component prop. The path is the desired route for this 'page' and the component should be the react component that has been created for this 'page'
+2. Inside the 'Router' JSX tags in the render() function add a new 'Route' tag
+3. Inside of this 'Route' tag include both the path and component prop. The path is the desired route for this 'page' and the component should be the react component that has been created for this 'page'
 
 # Handling state
 Each of the seperate pages uses the values stored in the state of 'App.js' when determining what values to display to the user.
