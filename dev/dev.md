@@ -27,3 +27,13 @@ To make sure that all the state is properly maintianed across the application
 1. In the state of any new class that is created set the value to be based on the props
 2. Create or use a function in 'App.js' that is passed down to the new component as a prop that updates the state of 'App.js'
 3. Make sure to call this function that is passed down as a prop whenever the state is updated in the child component
+
+# Third-party libraries used 
+The following libraries are used in this project
+1. Material-ui https://material-ui.com/
+2. Fullcalendar https://fullcalendar.io/
+3. ReactToPrint https://www.npmjs.com/package/react-to-print 
+4. datebook https://datebook.dev
+5. React Router https://reactrouter.com/ 
+
+

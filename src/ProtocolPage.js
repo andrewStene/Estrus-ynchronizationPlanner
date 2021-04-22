@@ -23,11 +23,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
-import centering from './ProtocolPage.css';
 import 'date-fns';
-import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -94,9 +91,6 @@ class ProtocolPage extends React.Component
             id = protocol.Id;
         }
 
-        
-        
-
         this.setState( { protocolString: name } );        
         this.setState( { description: description } );
         this.props.setProtocol(id);
@@ -109,43 +103,27 @@ class ProtocolPage extends React.Component
      * @param {Date} date - the start date 
      */
     updateStartDateTime( date )
-    {
-        console.log( "In updateStartDateTime" );
-        console.log( "Prop:" + date );
+    {      
         this.setState( { startDate: new Date(date) } );
-        console.log( "State:" + this.state.startDate );
-        console.log( "Exiting updateStartDateTime" );
     } /* updateStartDateTime() */
 
     /**
-     * 
+     * Updates the state of the parent component to the Starting Time selected
+     * by the user in this class
      */
     updateParentStartDate()
     {   
-        console.log("In updateParentStartDate");
         this.props.setStartDateTime(this.state.startDate);
-        console.log("Exiting updateParentStartDate");
-
     }
-    /**
-     * 
-     */
-        updateParentId()
-        {   
-            //console.log("In updateParentStartDate");
-            this.props.setProtocol(this.state.id);
-            //console.log("Exiting updateParentStartDate");
-    
-        }
 
-     /**
-     * Not currently implemented
-     * @param {*} event 
+    /**
+     * Updates the state of the parent component to the ID of the protocol
+     * selected by the user in this class
      */
-    verifyInput( event )
-    {
-        event.preventDefualt();       
-    } /* verifyInput() */
+    updateParentId()
+    {   
+         this.props.setProtocol(this.state.id);
+    }
 
     /**
      * Looks up a given name in the database given a label
@@ -240,9 +218,7 @@ class ProtocolPage extends React.Component
                         //onError     = { console.log }
                         format      = "MM/dd/yyyy hh:mm aa"/>
                     </MuiPickersUtilsProvider>
-                  
-                 
-                    
+   
                     <br/>
                     <br/>
 

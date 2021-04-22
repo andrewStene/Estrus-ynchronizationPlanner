@@ -25,7 +25,6 @@ import {Database} from './Database'
 import ReactToPrint from 'react-to-print';
 import adaptivePlugin from '@fullcalendar/adaptive';
 import {ICalendar} from 'datebook';
-import ListView from './ListView';
 import './CalendarPage.css';
 
 
