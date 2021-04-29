@@ -23,11 +23,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
-import centering from './ProtocolPage.css';
 import 'date-fns';
-import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -40,10 +37,9 @@ import './ProtocolPage.css';
 class ProtocolPage extends React.Component
 {
     /**
-     * Constructor for the ProtocolPage class
+     * @function constructor - Constructor for the ProtocolPage class
      * @param {object} props - Includes the Name, Breed, SystemType and CowType 
      */
-
     constructor( props )
     {
         super( props );
@@ -54,98 +50,98 @@ class ProtocolPage extends React.Component
         {
            /** @type {Database} */ database: this.props.database,
             
-            name: this.props.name,
-            breed: this.props.breed,
-            systemType: this.props.systemType,
-            cowType: this.props.cowType,
-            semen: this.props.semen,
-            id: this.props.protocolId,
+            name:           this.props.name,
+            breed:          this.props.breed,
+            systemType:     this.props.systemType,
+            cowType:        this.props.cowType,
+            semen:          this.props.semen,
+            id:             this.props.protocolId,
             protocolString: "",
             description:    this.props.description,
             startDate:      this.props.startDate,
         };
          
-        this.updateProtocolId    = this.updateProtocolId.bind( this ); 
-        this.updateStartDateTime = this.updateStartDateTime.bind( this );
-        this.lookupNameFromLabel = this.lookupNameFromLabel.bind( this );
-        this.updateParentStartDate = this.updateParentStartDate.bind(this);
-        this.updateParentId = this.updateParentId.bind(this);
+        this.updateProtocolId      = this.updateProtocolId.bind( this ); 
+        this.updateStartDateTime   = this.updateStartDateTime.bind( this );
+        this.lookupNameFromLabel   = this.lookupNameFromLabel.bind( this );
+        this.updateParentStartDate = this.updateParentStartDate.bind( this );
+        this.updateParentId        = this.updateParentId.bind( this );
     } /* end constructor() */
 
 
     /**
-     * Update the selected protocol
+     * @function updateProtocolId - Update the selected protocol
      * @param {event} event
      */
     updateProtocolId( event )
     {   
-        console.log("type: " + typeof(event.target.value));
+        console.log( "type: " + typeof( event.target.value ) );
     
-        let protocol    = this.state.database.GetObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let protocol    = this.state.database.getObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
         let name;
-        let id;
+        let id;        
         
-        console.log(protocol.Name);
         if( protocol != null )
         {
-            description = protocol.Description;
-            name = protocol.Name;
-            id = protocol.Id;
-        }
+            console.log( protocol.name );
 
-        
-        
-
+            description = protocol.description;
+            name        = protocol.name;
+            id          = protocol.id;
+        }       
+      
         this.setState( { protocolString: name } );        
         this.setState( { description: description } );
-        this.props.setProtocol(id);
-        this.props.setDescription(description);
+        this.props.setProtocol( id );
+        this.props.setDescription( description );
     } /* updateProtocolId() */
 
-
     /**
-     * Updates the starting date and time
+     * @function updateStartDateTime - Updates the starting date and time
      * @param {Date} date - the start date 
      */
     updateStartDateTime( date )
     {
         console.log( "In updateStartDateTime" );
         console.log( "Prop:" + date );
-        this.setState( { startDate: new Date(date) } );
+
+        this.setState( { startDate: new Date( date ) } );
+
         console.log( "State:" + this.state.startDate );
         console.log( "Exiting updateStartDateTime" );
     } /* updateStartDateTime() */
 
     /**
-     * 
+     * @function updateParentStartDate - updates the parent app state
      */
     updateParentStartDate()
     {   
         console.log("In updateParentStartDate");
-        this.props.setStartDateTime(this.state.startDate);
+
+        this.props.setStartDateTime( this.state.startDate );
+
         console.log("Exiting updateParentStartDate");
+    } /* updateParentStartDate() */
 
-    }
     /**
-     * 
+     * Updates the state of the parent component to the Starting Time selected
+     * by the user in this class
      */
-        updateParentId()
-        {   
-            //console.log("In updateParentStartDate");
-            this.props.setProtocol(this.state.id);
-            //console.log("Exiting updateParentStartDate");
-    
-        }
+    updateParentStartDate()
+    {   
+        this.props.setStartDateTime( this.state.startDate );
+    }
 
-     /**
-     * Not currently implemented
-     * @param {*} event 
+
+    /**
+     * Updates the state of the parent component to the ID of the protocol
+     * selected by the user in this class
      */
-    verifyInput( event )
-    {
-        event.preventDefualt();       
-    } /* verifyInput() */
+    updateParentId()
+    {   
+         this.props.setProtocol(this.state.id);
+    }
 
     /**
      * Looks up a given name in the database given a label
@@ -155,7 +151,7 @@ class ProtocolPage extends React.Component
      */
     lookupNameFromLabel( label, databaseListType )
     {
-        let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
+        let name = this.state.database.getNameById( parseIdFromLabel( label ), databaseListType );
         if( name === "" )
         {
             name = <em>Not Selected</em>;
@@ -165,19 +161,20 @@ class ProtocolPage extends React.Component
 
 
     /**
-     * Render function for the class
+     * @function render - Render function for the class
+     * @returns {jsx} - a jsx compenent of protocol page
      */
     render()
     {        
-        const recommendedProtocols = this.state.database.GetRecommendedProtocols(
+        const recommendedProtocols = this.state.database.getRecommendedProtocols(
                                      parseIdFromLabel( this.state.semen ),
                                      parseIdFromLabel( this.state.systemType ),
                                      parseIdFromLabel( this.state.breed ),
                                      null,
                                      null,
-                                     null ).map(
-                                     ( protocol ) => < MenuItem 
-                                       value = { protocol.Id } > { protocol.Name } </ MenuItem > );
+                                     parseIdFromLabel( this.state.cowType ) ).map(
+                                     ( protocol ) => 
+                                        < MenuItem value = { protocol.id } > { protocol.name } </ MenuItem > );
         
         let styles = { width:  400,
                        height: 55 };
@@ -214,10 +211,10 @@ class ProtocolPage extends React.Component
                         <Select 
                             style    = { styles }
                             id       = "protocol"                    
-                            onChange = { (child) => this.updateProtocolId(child) }
+                            onChange = { ( child ) => this.updateProtocolId( child ) }
                            // onClose = {()=>this.updateParentId()}
                             label    = "Protocol"
-                            value = {this.state.id}>
+                            value = { this.state.id }>
 
                             <MenuItem value = "" ><em>None</em></MenuItem>
                             { recommendedProtocols }                        
@@ -235,14 +232,12 @@ class ProtocolPage extends React.Component
                         variant     = "inline"
                         label       = "Select Intended Start Date"
                         value       = { this.state.startDate }
-                        onChange = { (value)=> this.updateStartDateTime(value ) }
-                        onClose = {()=>this.updateParentStartDate()}
-                        //onError     = { console.log }
+                        onChange    = { ( value )=> this.updateStartDateTime( value ) }
+                        onClose     = { () => this.updateParentStartDate() }
+                        //onError   = { console.log }
                         format      = "MM/dd/yyyy hh:mm aa"/>
                     </MuiPickersUtilsProvider>
-                  
-                 
-                    
+   
                     <br/>
                     <br/>
 
@@ -263,7 +258,6 @@ class ProtocolPage extends React.Component
                         size      = "large" > Next </Button>
                 
                 </form>
-
             </div>
             );
     } /* render() */   
