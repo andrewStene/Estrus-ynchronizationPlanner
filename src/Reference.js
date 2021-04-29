@@ -22,7 +22,7 @@ import bp from './bp.png';
 import hp from './hp.png';
 
 /**
- * React component that represents a refernce type page
+ * @function Reference - React component that represents a refernce type page
  */
 function Reference()
 {
