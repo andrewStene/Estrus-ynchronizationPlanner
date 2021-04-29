@@ -169,7 +169,7 @@ class ListView extends React.Component
                 <br/>              
                 <h1>Protocol - { this.state.db.GetNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
 
-                   <List ref = { ( el ) => ( this.componentRef = el ) } style ={}>
+                   <List ref = { ( el ) => ( this.componentRef = el ) } >
                        { taskComponents }
                    </List>
                    <br/>
