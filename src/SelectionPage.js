@@ -61,7 +61,7 @@ class SelectionPage extends React.Component
     } /* end constructor() */
 
     /**
-    * Default
+    * @function getDerivedStateFromProps
     * @param {*} props 
     * @param {*} state 
     */
@@ -73,9 +73,9 @@ class SelectionPage extends React.Component
     } /* getDerivedStateFromProps() */
 
     /**
-    *  Function to update both the state of the SelectionType
-    *  as well as the state contained in App.js
-    *  if the system being used is for cows or heifers
+    * @function updateParentCowType - Function to update both the state of the SelectionType
+    * as well as the state contained in App.js
+    * if the system being used is for cows or heifers
     * @param {string} cowType - Either a cow or heifer 
     */
     updateParentCowType( cowType )
@@ -85,9 +85,9 @@ class SelectionPage extends React.Component
     } /* updateParentCowType() */
 
     /**
-    *  Function to update both the state of the SelectionType
-    *  as well as the state contained in App.js
-    *  of the breed of cattle being used
+    * @function updateParentBreed - Function to update both the state of the SelectionType
+    * as well as the state contained in App.js
+    * of the breed of cattle being used
     * @param {string} breed - The breed of cattle the user has selected 
     */
     updateParentBreed( breed )
@@ -97,9 +97,9 @@ class SelectionPage extends React.Component
     } /* updateParentBreed() */  
 
     /**
-    *  Function to update both the state of the SelectionType
-    *  as well as the state contained in App.js
-    *  of the System to be used
+    * @function updateParentSystemType - Function to update both the state of the SelectionType
+    * as well as the state contained in App.js
+    * of the System to be used
     * @param {string} sys - The System to update the state to 
     */
     updateParentSystemType( sys )
@@ -109,9 +109,9 @@ class SelectionPage extends React.Component
     } /* updateParentSystemType() */
 
     /**
-    *  Function to update both the state of the SelectionType
-    *  as well as the state contained in App.js
-    *  of the Semen to be used
+    * @function updateParentSemen - Function to update both the state of the SelectionType
+    * as well as the state contained in App.js
+    * of the Semen to be used
     * @param {string} semen - the semen to update to
     */
     updateParentSemen( semen )
@@ -132,7 +132,7 @@ class SelectionPage extends React.Component
     } /* updateParentPG() */
 
     /**
-     * @function - updates both state of the selection type
+     * @function updateParentGnRH - updates both state of the selection type
      * as well as the state contained in App.js of the GnRH to use
      * @param {string} gnrh - the gnrh to use
      */
@@ -157,25 +157,26 @@ class SelectionPage extends React.Component
     * @param {DATABASE_LIST_TYPE} databaseListType - which list to map
     * @return {MenuItem[]} - an array of menu items 
     */
-    mapListToMenuItems(databaseListType)
+    mapListToMenuItems( databaseListType )
     {
         return ( this.state.database.getDatabaseListElements( databaseListType ).map( 
-                 (item) => 
+                 ( item ) => 
                   < MenuItem
-                    key   = { item.Name }
-                    value = { this.state.database.getDatabaseName( databaseListType ) + "-" + item.Id }
+                    key   = { item.name }
+                    value = { this.state.database.getDatabaseName( databaseListType ) + "-" + item.id }
                   > 
-                    { item.Name } 
+                    { item.name } 
                   </MenuItem > ));
     } /* mapListToMenuItems() */
 
     /**
-    * The render function for the SelectionPage class
+    * @function render - The render function for the SelectionPage class
+    * @returns {jsx} - a jsx component of the selection page
     */
     render()
     {
         let styles = { width:  400,
-                     height: 55 };
+                       height: 55 };
     
         return (
             <div>

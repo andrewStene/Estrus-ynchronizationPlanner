@@ -28,7 +28,8 @@ import { Link } from 'react-router-dom'
 class HomePage extends React.Component
 {
     /**
-     * Render function for the class
+     * @function render - Render function for the class
+     * @returns {jsx} - a jsx component of the home page
      */
     render()
     {

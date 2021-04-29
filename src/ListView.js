@@ -58,9 +58,13 @@ const months =
  */
 class ListView extends React.Component
 {
-    constructor(props)
+    /**
+     * @function constructor - constructs a list view of the calendar
+     * @param {object} props - the protocol to populate
+     */
+    constructor( props )
     {
-        super(props)
+        super( props )
         this.state = 
         {
             protocolName: this.props.protocolName,
@@ -68,8 +72,8 @@ class ListView extends React.Component
             startingDate: this.props.startDate,
             db:           this.props.db
         }
-        this.generateTaskComponents = this.generateTaskComponents.bind(this);
-    }
+        this.generateTaskComponents = this.generateTaskComponents.bind( this );
+    } /* constructor() */
 
     /**
      * Converts each of the tasks in the task list to a ListItem component
@@ -112,7 +116,7 @@ class ListView extends React.Component
         {
             return "Invalid";
         }        
-        return daysOfWeek[numDayOfWeek];
+        return daysOfWeek[ numDayOfWeek ];
     } /* formatDayOfWeek() */
 
     /**
@@ -187,6 +191,6 @@ class ListView extends React.Component
             </div>
         );
     } /* render() */
-}
+} /* end ListView */
 
 export default ListView;

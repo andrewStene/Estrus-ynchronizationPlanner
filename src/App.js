@@ -184,47 +184,47 @@ class App extends React.Component
     {
         console.log("In App.js")
         this.setState( { startDateTime: new Date (date) } );
-        console.log(this.state.startDateTime)
+        console.log( this.state.startDateTime )
     } /* setStartDateTime() */
 
     /**
-     * 
-     * @param {*} desc 
+     * @function setProtocolDescription - set the description of the protocol
+     * @param {string} desc - the description
      */
-    setProtocolDescription(desc)
+    setProtocolDescription( desc )
     {
-        this.setState({description: desc});
-    }
+        this.setState( { description: desc } );
+    } /* setProtocolDescription() */
 
     /**
-     * Used to allow the user to return to the page they visted the help page from
+     * @function updateLastVistedPage - Used to allow the user to return to the page they visted the help page from
      * @param {The last page the user was on} page 
      */
-    updateLastVistedPage(page)
+    updateLastVistedPage( page )
     {
         this.setState({prevPage:page});
-    }
+    } /* updateLastVisitedPage() */
+
     /**
-     * 
-     * @returns 
+     * @function getProtocolStringFromState - gets the name of the protocol
+     * @returns {string} the name of the protocol
      */
     getProtocolStringFromState()
     {
-        let string = this.state.database.getObjectById(this.state.id, Database.DATABASE_LIST_NAME.PROTOCOLS);
-        if(string === null)
+        let string = this.state.database.getObjectById( this.state.id, Database.DATABASE_LIST_NAME.PROTOCOLS );
+        if( string === null )
         {
             return "";
         }
-        return string.Name;
-    }
+        return string.name;
+    } /* getProtocolStringFromState() */
 
     /**
-    * Render function for the class which includes all of the routes
+    * @function render - Render function for the class which includes all of the routes
+    * @returns {jsx} - jsx object of the application
     */
     render()
     {
-
-
         if( this.state.waitToRender )
         {
             Database.getJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
@@ -233,7 +233,7 @@ class App extends React.Component
         else
         {
             let idString = this.getProtocolStringFromState();
-        return(
+            return(
             <Router>
                 <div className = "App" >
                   <Header/>

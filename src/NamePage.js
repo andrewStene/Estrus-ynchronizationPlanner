@@ -58,7 +58,7 @@ class NamePage extends React.Component
     static getDerivedStateFromProps( props, state )
     {
        return { name: props.name };
-    }
+    } /* getDerivedStateFromProps() */
 
     /**
      * Updates both the state of this class as well as the state in App.js
@@ -75,6 +75,10 @@ class NamePage extends React.Component
         this.setState( { name: value } );
     } /* updateParent() */
 
+    /**
+     * @function notBlank
+     * @returns 
+     */
     notBlank()
     {
         const errors     = validate( this.state.name );

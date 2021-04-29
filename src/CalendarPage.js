@@ -120,12 +120,12 @@ class CalendarPage extends React.Component
                                             Print this out
                                     </Button>
                               }
-                    content = { () => this.componentRef}    
+                    content = { () => this.componentRef }    
                 />
                 <Button 
                     className = "sidebysidebutton"   
                     variant   = "contained"  
-                    onClick   = { () => this.exportCalendar(INITIAL_EVENTS) } 
+                    onClick   = { () => this.exportCalendar( INITIAL_EVENTS ) } 
                 > 
                     Download Calendar
                 </Button>

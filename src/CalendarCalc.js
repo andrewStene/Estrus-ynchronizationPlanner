@@ -60,17 +60,17 @@ export {
         dateOffset = new Date();
     }
 
-    for( let i = 0; i < protocol.Tasks.length; i++ )
+    for( let i = 0; i < protocol.tasks.length; i++ )
     {
-        let task = database.getUserTaskById( protocol.Tasks[i].TaskId );
+        let task = database.getUserTaskById( protocol.tasks[i].taskId );
         if( task == null )
         {
             return null;
         }
 
-        let startTime  = offsetDate( dateOffset, protocol.Tasks[i].SecondsSinceStart );
-        let endTime    = offsetDate( dateOffset, protocol.Tasks[i].SecondsSinceStart + task.TaskLength );
-        let groupTitle = `[GROUP: ${ name.toUpperCase() }] ${ task.Name }`;
+        let startTime  = offsetDate( dateOffset, protocol.tasks[i].secondsSinceStart );
+        let endTime    = offsetDate( dateOffset, protocol.tasks[i].secondsSinceStart + task.taskLength );
+        let groupTitle = `[GROUP: ${ name.toUpperCase() }] ${ task.name }`;
 
         console.log("Start Time:" + startTime + "\nEnd Time: " + endTime);
 
