@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { calculateProtocolCalendar } from './CalendarCalc';
 import { Database } from './Database.js';
 import Divider from '@material-ui/core/Divider';
+import ReactToPrint from 'react-to-print';
 import './index.css';
 
 const daysOfWeek = 
@@ -82,8 +83,10 @@ class ListView extends React.Component
     generateTaskComponents()
     {
         let taskComponents = [];
-        let styles   = { paddingLeft:  700 };
-        let protocol = this.state.db.getObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
+
+        let styles = { };
+        let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
+
         if( protocol != null )
         {
             let events = calculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
@@ -163,13 +166,25 @@ class ListView extends React.Component
      */
     render()
     {
+        
         const taskComponents = this.generateTaskComponents();
         return (
-            <div>               
-                <h1>Protocol - { this.state.db.getNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
-                   <List>
+
+            <div> 
+                  
+                <br/>              
+                <h1>Protocol - { this.state.db.GetNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
+
+                   <List ref = { ( el ) => ( this.componentRef = el ) } >
+
                        { taskComponents }
                    </List>
+                   <br/>
+                   <br/>
+                   <ReactToPrint
+                    trigger = { () => <Button  size = "large" className = "sidebysidebutton" variant = "contained">Print this out </Button>}
+                    content = { () => this.componentRef}/>
+              
                    <Button 
                         className = "sidebysidebutton" 
                         component = { Link } 
