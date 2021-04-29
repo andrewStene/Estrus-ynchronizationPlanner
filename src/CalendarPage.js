@@ -116,6 +116,7 @@ class CalendarPage extends React.Component
                                     <Button 
                                         className = "sidebysidebutton" 
                                         variant   = "contained" 
+                                        size      = "large" 
                                     >
                                             Print this out
                                     </Button>
@@ -125,6 +126,7 @@ class CalendarPage extends React.Component
                 <Button 
                     className = "sidebysidebutton"   
                     variant   = "contained"  
+                    size      = "large" 
                     onClick   = { () => this.exportCalendar(INITIAL_EVENTS) } 
                 > 
                     Download Calendar
