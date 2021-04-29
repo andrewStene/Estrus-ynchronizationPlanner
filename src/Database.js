@@ -96,154 +96,154 @@ class DatabaseModel
      */
     constructor( json )
     {
-        this.Tasks      = [];
-        this.Protocols  = [];
-        this.Semen      = [];
-        this.SystemType = [];
-        this.Breed      = [];
-        this.GnRH       = [];
-        this.PG         = [];
-        this.Cattle     = [];
+        this.tasks      = [];
+        this.protocols  = [];
+        this.semen      = [];
+        this.systemType = [];
+        this.breed      = [];
+        this.gnrh       = [];
+        this.pg         = [];
+        this.cattle     = [];
 
-        this.SelectedGnRHId = INVALID_ID;
-        this.SelectedPGId   = INVALID_ID;
+        this.selectedGnRHId = INVALID_ID;
+        this.selectedPGId   = INVALID_ID;
 
         if( json != null )
         {
-            // Populate Tasks
-            if( json.Tasks != null )
+            // Populate tasks
+            if( json.tasks != null )
             {
-                for( let i = 0; i < json.Tasks.length; i++ )
+                for( let i = 0; i < json.tasks.length; i++ )
                 {
-                    let task = json.Tasks[i];
-                    if( task != null && checkParameterTypes( [ task.Id,  task.Name, task.Description, task.TaskLength ], 
+                    let task = json.tasks[i];
+                    if( task != null && checkParameterTypes( [ task.id,  task.name, task.description, task.taskLength ], 
                                                              [ "number", "string",  "string",         "number" ] ) )
                     {
-                        this.Tasks.push( new Task( task.Id, 
-                                                   task.Name, 
-                                                   task.Description, 
-                                                   task.TaskLength ) );
+                        this.tasks.push( new Task( task.id, 
+                                                   task.name, 
+                                                   task.description, 
+                                                   task.taskLength ) );
                     }                    
                 }
             }
             
             // Populate Protocals
-            if( json.Protocols != null )
+            if( json.protocols != null )
             {                
-                for( let i = 0; i < json.Protocols.length; i++ )
+                for( let i = 0; i < json.protocols.length; i++ )
                 {
-                    let protocol = json.Protocols[i];
+                    let protocol = json.protocols[i];
                     let tasks    = [];
                     
-                    if( protocol != null && protocol.Tasks != null && protocol.Recommendations != null)
+                    if( protocol != null && protocol.tasks != null && protocol.recommendations != null)
                     {
-                        for( let j = 0; j < protocol.Tasks.length; j++ )
+                        for( let j = 0; j < protocol.tasks.length; j++ )
                         {
-                            let task = protocol.Tasks[j]
-                            if( task != null && checkParameterTypes( [ task.TaskId, task.SecondsSinceStart ], 
+                            let task = protocol.tasks[j]
+                            if( task != null && checkParameterTypes( [ task.taskId, task.secondsSinceStart ], 
                                                                      [ "number",    "number" ]) )
                             {
-                                tasks.push( new ProtocolTask( task.TaskId, task.SecondsSinceStart ) );
+                                tasks.push( new ProtocolTask( task.taskId, task.secondsSinceStart ) );
                             }
                             
                         }
 
-                        let recommendation = new ProtocolRecommendation( protocol.Recommendations.SystemType, 
-                                                                         protocol.Recommendations.Semen,
-                                                                         protocol.Recommendations.Breed, 
-                                                                         protocol.Recommendations.GnRH, 
-                                                                         protocol.Recommendations.PG,
-                                                                         protocol.Recommendations.Cattle );
+                        let recommendation = new ProtocolRecommendation( protocol.recommendations.systemType, 
+                                                                         protocol.recommendations.semen,
+                                                                         protocol.recommendations.breed, 
+                                                                         protocol.recommendations.gnrh, 
+                                                                         protocol.recommendations.pg,
+                                                                         protocol.recommendations.cattle );
                         
-                        if( checkParameterTypes( [ protocol.Id, protocol.Name, protocol.Description ],
+                        if( checkParameterTypes( [ protocol.id, protocol.name, protocol.description ],
                                                  [ "number",    "string",      "string" ] ))
                         {
-                            this.Protocols.push( new Protocol( protocol.Id, protocol.Name, protocol.Description, tasks, recommendation ) );
+                            this.protocols.push( new Protocol( protocol.id, protocol.name, protocol.description, tasks, recommendation ) );
                         }                  
                     }                    
                 }
             }
             
-            // Populate Semen
-            if( json.Semen != null )
+            // Populate semen
+            if( json.semen != null )
             {                
-                for( let i = 0; i < json.Semen.length; i++ )
+                for( let i = 0; i < json.semen.length; i++ )
                 {
-                    let semen = json.Semen[i];
-                    if( semen != null && checkParameterTypes( [ semen.Id, semen.Name ], 
+                    let semen = json.semen[i];
+                    if( semen != null && checkParameterTypes( [ semen.id, semen.name ], 
                                                               [ "number", "string" ]  ) )
                     {
-                        this.Semen.push( new ListType( semen.Id, semen.Name ) );
+                        this.semen.push( new ListType( semen.id, semen.name ) );
                     }                    
                 }
             }
             
-            // Populate SystemType
-            if( json.SystemType != null )
+            // Populate systemType
+            if( json.systemType != null )
             {                
-                for( let i = 0; i < json.SystemType.length; i++ )
+                for( let i = 0; i < json.systemType.length; i++ )
                 {
-                    let systemType = json.SystemType[i];
-                    if( systemType != null && checkParameterTypes( [ systemType.Id, systemType.Name ], 
+                    let systemType = json.systemType[i];
+                    if( systemType != null && checkParameterTypes( [ systemType.id, systemType.name ], 
                                                                    [ "number",      "string" ] ) )
                     {
-                        this.SystemType.push( new ListType( systemType.Id, systemType.Name ) );
+                        this.systemType.push( new ListType( systemType.id, systemType.name ) );
                     }                    
                 }
             }
             
-            // Populate Breed
-            if( json.Breed != null )
+            // Populate breed
+            if( json.breed != null )
             {                
-                for( let i = 0; i < json.Breed.length; i++ )
+                for( let i = 0; i < json.breed.length; i++ )
                 {
-                    let breed = json.Breed[i];
-                    if( breed != null && checkParameterTypes( [ breed.Id, breed.Name ],
+                    let breed = json.breed[i];
+                    if( breed != null && checkParameterTypes( [ breed.id, breed.name ],
                                                               [ "number", "string" ] ) )
                     {
-                        this.Breed.push( new ListType( breed.Id, breed.Name ) );
+                        this.breed.push( new ListType( breed.id, breed.name ) );
                     }                    
                 }
             }            
 
-            // Populate GnRH
-            if( json.GnRH != null )
+            // Populate gnrh
+            if( json.gnrh != null )
             {                
-                for( let i = 0; i < json.GnRH.length; i++ )
+                for( let i = 0; i < json.gnrh.length; i++ )
                 {
-                    let gnrh = json.GnRH[i];
-                    if( gnrh != null && checkParameterTypes( [ gnrh.Id,  gnrh.Name, gnrh.DefaultCCs ], 
+                    let gnrh = json.gnrh[i];
+                    if( gnrh != null && checkParameterTypes( [ gnrh.id,  gnrh.name, gnrh.defaultCCs ], 
                                                              [ "number", "string",  "number" ] ) ) 
                     {
-                        this.GnRH.push( new HormoneProduct( gnrh.Id, gnrh.Name, gnrh.DefaultCCs ) );
+                        this.gnrh.push( new HormoneProduct( gnrh.id, gnrh.name, gnrh.defaultCCs ) );
                     }                    
                 }
             }
 
-            // Populate PG
-            if( json.PG != null )
+            // Populate pg
+            if( json.pg != null )
             {                
-                for( let i = 0; i < json.PG.length; i++ )
+                for( let i = 0; i < json.pg.length; i++ )
                 {
-                    let pg = json.PG[i];
-                    if( pg != null && checkParameterTypes( [ pg.Id,    pg.Name,  pg.DefaultCCs ],
+                    let pg = json.pg[i];
+                    if( pg != null && checkParameterTypes( [ pg.id,    pg.name,  pg.defaultCCs ],
                                                            [ "number", "string", "number" ] ) )
                     {
-                        this.PG.push( new HormoneProduct( pg.Id, pg.Name, pg.DefaultCCs ) );
+                        this.pg.push( new HormoneProduct( pg.id, pg.name, pg.defaultCCs ) );
                     }                    
                 }
             }
             
-            // Populate Cattle
-            if( json.Cattle != null )
+            // Populate cattle
+            if( json.cattle != null )
             {                
-                for( let i = 0; i < json.Cattle.length; i++ )
+                for( let i = 0; i < json.cattle.length; i++ )
                 {
-                    let cattle = json.Cattle[i];
-                    if( cattle != null && checkParameterTypes( [ cattle.Id, cattle.Name ],
+                    let cattle = json.cattle[i];
+                    if( cattle != null && checkParameterTypes( [ cattle.id, cattle.name ],
                                                                [ "number",  "string" ] ) )
                     {
-                        this.Cattle.push( new ListType( cattle.Id, cattle.Name ) );
+                        this.cattle.push( new ListType( cattle.id, cattle.name ) );
                     }
                 }
             }
@@ -261,33 +261,33 @@ class DatabaseModel
 /**
  * Database Summary of Functions:
  * 
- * GetJSONData
- * GetDatabaseName
- * GetObjectById
- * GetObjectByName
- * GetNameById
- * GetUserTaskById
- * GetDatabaseListElements
- * GetDatabaseListNames
- * GetRecommendedProtocols
- * GetRecommendedProtocolNames
- * AddListElement
- * AddHormoneProduct
- * AddTask
- * UpdateListElementName
- * UpdateHormoneProduct
- * UpdateTask
- * UpdateProtocolText
- * DeleteObject
- * AddRecommendedToProtocol
- * RemoveRecommendedFromProtocol
- * IsRecommendedInProtocol
- * AddTaskToProtocol
- * RemoveTaskFromProtocol
- * UpdateTaskStartInProtocol
- * AddProtocol
- * SelectHormoneId
- * DownloadDatabaseAsJSON
+ * getJSONData
+ * getDatabaseName
+ * getObjectById
+ * getObjectByName
+ * getNameById
+ * getUserTaskById
+ * getDatabaseListElements
+ * getDatabaseListNames
+ * getRecommendedProtocols
+ * getRecommendedProtocolNames
+ * addListElement
+ * addHormoneProduct
+ * addTask
+ * updateListElementName
+ * updateHormoneProduct
+ * updateTask
+ * updateProtocolText
+ * deleteObject
+ * addRecommendedToProtocol
+ * removeRecommendedFromProtocol
+ * isRecommendedInProtocol
+ * addTaskToProtocol
+ * removeTaskFromProtocol
+ * updateTaskStartInProtocol
+ * addProtocol
+ * selectHormoneId
+ * downloadDatabaseAsJSON
  */
 
 /**
@@ -311,7 +311,7 @@ class Database
      */
     constructor( json )
     {
-        this.Id = nextDatabaseId;
+        this.id = nextDatabaseId;
         databaseModels[ nextDatabaseId ] = new DatabaseModel( json );
         nextDatabaseId = 0; // Increment this value to allow more than one database object to exist (for now constrain to 1 -- otherwise need to add a dispose method)
     } /* end constructor() */
@@ -320,104 +320,104 @@ class Database
     static DATABASE_LIST_NAME = DATABASE_LIST_NAME;
 
     /**
-     * @function GetJSONData reads from a json file and returns the associated json object
+     * @function getJSONData reads from a json file and returns the associated json object
      * @param {string} path - the path to the file
      * @returns {object} - a promise while pending, and then a json object
      */
-    static GetJSONData( path )
+    static getJSONData( path )
     {
         if( checkParameterTypes( [ path ],
                                  [ "string" ] ) )
         {
-            return getJSONData( path );
+            return getJSONData_private( path );
         }
         return null;
-    } /* GetJSONData() */
+    } /* getJSONData() */
     
     /**
-     * @function GetDatabaseName - returns the name of the database given the type
+     * @function getDatabaseName - returns the name of the database given the type
      * @param {DATABASE_LIST_TYPE} databaseListType - the database type
      * @returns {string} - the name of the database
      */
-    GetDatabaseName( databaseListType )
+    getDatabaseName( databaseListType )
     {
         if( checkParameterTypes( [ databaseListType ], 
                                  [ "number"] ) )
         {
-            return getDatabaseName( databaseListType );
+            return getDatabaseName_private( databaseListType );
         }
         return "";
-    } /* GetDatabaseName() */
+    } /* getDatabaseName() */
 
     /**
-     * @function GetObjectById - Lookup element by its id
+     * @function getObjectById - Lookup element by its id
      * @param {number} id - the id of the element 
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup in
      * @returns {ListType} - the element 
      */
-    GetObjectById( id, databaseListType )
+    getObjectById( id, databaseListType )
     {
         if( checkParameterTypes( [ id,       databaseListType ], 
                                  [ "number", "number" ] ) )
         {
-            return getObjectById( id, databaseListType, databaseModels[ this.Id ] );
+            return getObjectById_private( id, databaseListType, databaseModels[ this.id ] );
         }      
         return null;
-    } /* GetObjectById() */
+    } /* getObjectById() */
 
     /**
-     * @function GetObjectByName - find the object associated with the name
+     * @function getObjectByName - find the object associated with the name
      * @param {string} name - the name of the object 
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to look into
      * @returns {ListType} - the object associated with the name 
      */
-    GetObjectByName( name, databaseListType )
+    getObjectByName( name, databaseListType )
     {
         if( checkParameterTypes( [ name,     databaseListType ], 
                                  [ "string", "number" ] ) )
         {
-            return getObjectByName( name, databaseListType, databaseModels[ this.Id ] );
+            return getObjectByName_private( name, databaseListType, databaseModels[ this.id ] );
         }
         return null;
-    } /* GetObjectByName() */
+    } /* getObjectByName() */
 
     /**
-    * @function GetNameById - Lookup the name of an element by its id
+    * @function getNameById - Lookup the name of an element by its id
     * @param {number} id - the id of the element 
     * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup in
     * @returns {string} - the name of the element 
     */
-    GetNameById( id, databaseListType )
+    getNameById( id, databaseListType )
     {
         if( checkParameterTypes( [ id,       databaseListType ], 
                                  [ "number", "number" ] ) )
         {
-            return getNameById( id, databaseListType, databaseModels[ this.Id ] );
+            return getNameById_private( id, databaseListType, databaseModels[ this.id ] );
         }
         return "";
-    } /* GetNameById() */
+    } /* getNameById() */
 
     /**
-     * @function GetUserTaskById - Gets the user version of a particular task (name adjusted for hormone task)
+     * @function getUserTaskById - Gets the user version of a particular task (name adjusted for hormone task)
      * @param {number} id - the id of the task to query
      * @returns {Task} - the user task 
      */
-    GetUserTaskById( id )
+    getUserTaskById( id )
     {
         if( checkParameterTypes( [ id ], [ "number" ] ) )
         {
-            return getUserTaskById( id, databaseModels[ this.Id ] );
+            return getUserTaskById_private( id, databaseModels[ this.id ] );
         }
         return null;
-    } /* GetUserTaskById() */
+    } /* getUserTaskById() */
 
     /**
-     * @function GetDatabaseListElements - Lookup the elements of the database list
+     * @function getDatabaseListElements - Lookup the elements of the database list
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
      * @param {boolean} sort - whether to return a sorted list or not
      * @returns {ListType[]} - a list of all the elements of a given list
      */
-    GetDatabaseListElements( databaseListType, sort )
+    getDatabaseListElements( databaseListType, sort )
     {
         if( sort == null )
         {
@@ -427,10 +427,10 @@ class Database
         if( checkParameterTypes( [ databaseListType, sort ], 
                                  [ "number",         "boolean" ] ) )
         {
-            return getDatabaseListElements( databaseListType, sort, databaseModels[ this.Id ] );
+            return getDatabaseListElements_private( databaseListType, sort, databaseModels[ this.id ] );
         }
         return [];
-    } /* GetDatabaseListElements() */
+    } /* getDatabaseListElements() */
 
     /**
      * @function GetDatabaseList - Lookup the names of the elements in the database
@@ -438,7 +438,7 @@ class Database
      * @param {boolean} sort - whether to sort the list or not
      * @returns {string[]} - A list of the names of a given list  
      */
-    GetDatabaseListNames( databaseListType, sort )
+    getDatabaseListNames( databaseListType, sort )
     {
         if( sort == null )
         {
@@ -448,13 +448,13 @@ class Database
         if( checkParameterTypes( [ databaseListType, sort ], 
                                  [ "number",         "boolean" ] ) )
         {
-            return getDatabaseListNames( databaseListType, sort, databaseModels[ this.Id ] );
+            return getDatabaseListNames_private( databaseListType, sort, databaseModels[ this.id ] );
         }
         return [];
     } /* GetDatabaseList() */
 
     /**
-     * @function GetRecommendedProtocols - Gets a list of protocals filtered by the input types, all null parameters
+     * @function getRecommendedProtocols - Gets a list of protocals filtered by the input types, all null parameters
      *  will return a list of all the protocals
      * @param {number} semenId - the id of the semen
      * @param {number} systemTypeId - the id of the system type
@@ -464,18 +464,18 @@ class Database
      * @param {number} cattleId - the id of the cattle
      * @returns {Protocol[]} - a list of all the recommended protocals
      */
-    GetRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
+    getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
         if(checkNullableParameters( [ semenId,  systemTypeId, breedId,  gnrhId,   pgId,     cattleId ], 
                                     [ "number", "number",     "number", "number", "number", "number" ] ) )
         {
-            return getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, databaseModels[ this.Id ] );
+            return getRecommendedProtocols_private( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, databaseModels[ this.id ] );
         }
         return [];
-    } /* GetRecommendedProtocols() */
+    } /* getRecommendedProtocols() */
 
     /**
-     * @function GetRecommendedProtocolNames - Get a list of names of the recommended protocals filtered by inputs
+     * @function getRecommendedProtocolNames - Get a list of names of the recommended protocals filtered by inputs
      * @param {number} semenId - the id of the semen 
      * @param {number} systemTypeId - the id of the system type 
      * @param {number} breedId - the id of the breed 
@@ -484,299 +484,299 @@ class Database
      * @param {number} cattleId - the id of the cattle
      * @returns {string[]} - A list of the names of the recommended protocals
      */
-    GetRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
+    getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId )
     {
         if(checkNullableParameters( [ semenId,  systemTypeId, breedId,  gnrhId,   pgId,     cattleId ], 
                                     [ "number", "number",     "number", "number", "number", "number" ] ) )
         {
-            return getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, databaseModels[ this.Id ] );
+            return getRecommendedProtocolNames_private( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, databaseModels[ this.id ] );
         }
         return [];
-    } /* GetRecommendedProtocolNames() */
+    } /* getRecommendedProtocolNames() */
 
     /**
-     * @function AddListElement - Add a new list element to the database if it doesn't already exist
+     * @function addListElement - Add a new list element to the database if it doesn't already exist
      * @param {string} elementName - the name of the element
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to 
      * @returns {boolean} - whether the element was successfully addded or not
      */
-    AddListElement( elementName, databaseListType )
+    addListElement( elementName, databaseListType )
     {
         if( checkParameterTypes( [ elementName, databaseListType ], 
                                  [ "string",    "number" ] ) )
         {
-            return addListElement( databaseListType, elementName, databaseModels[ this.Id ] );
+            return addListElement_private( databaseListType, elementName, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddListElement() */
+    } /* addListElement() */
 
     /**
-     * @function AddHormoneProduct - Add a new list hormone product to the database if it doesn't already exist
+     * @function addHormoneProduct - Add a new list hormone product to the database if it doesn't already exist
      * @param {string} hormoneName - the name of the product
      * @param {number} defaultCCs - the default dosage for the product
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to 
      * @returns {boolean} - whether the product was successfully addded or not
      */
-    AddHormoneProduct( hormoneName, defaultCCs, databaseListType )
+    addHormoneProduct( hormoneName, defaultCCs, databaseListType )
     {
         if( checkParameterTypes( [ hormoneName, defaultCCs, databaseListType ], 
                                  [ "string",    "number",   "number" ] ) )
         {
-            return addHormoneProduct( hormoneName, defaultCCs, databaseListType, databaseModels[ this.Id ] );
+            return addHormoneProduct_private( hormoneName, defaultCCs, databaseListType, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddHormoneProduct() */
+    } /* addHormoneProduct() */
 
     /**
-     * @function AddTask - Add a new task to the database if it doesn't already exist
+     * @function addTask - Add a new task to the database if it doesn't already exist
      * @param {string} taskName - the name of the task to add
      * @param {string} taskDescription - the description of the task
      * @param {number} taskLength - the length of the task
      * @returns {boolean} - whether the task was added to the database 
      */
-    AddTask( taskName, taskDescription, taskLength )
+    addTask( taskName, taskDescription, taskLength )
     {
         if( checkParameterTypes( [ taskName, taskDescription, taskLength ], 
                                  [ "string", "string",        "number" ] ) )
         {
-            return addTask( taskName, taskDescription, taskLength, databaseModels[ this.Id ] );
+            return addTask_private( taskName, taskDescription, taskLength, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddTask() */
+    } /* addTask() */
 
     /**
-     * @function UpdateListElementName - update a list elements name in the database     *  
+     * @function updateListElementName - update a list elements name in the database     *  
      * @param {number} elementId - the elements id to update 
      * @param {string} newName - the new name of the element to update 
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to update
      * @returns {boolean} - Whether the element was updated or not
      */
-    UpdateListElementName( elementId, newName, databaseListType )
+    updateListElementName( elementId, newName, databaseListType )
     {
         if( checkParameterTypes( [ elementId, newName,  databaseListType ], 
                                  [ "number",  "string", "number" ] ) )
         {
-            return updateListElementName( databaseListType, elementId, newName, databaseModels[ this.Id ] );
+            return updateListElementName_private( databaseListType, elementId, newName, databaseModels[ this.id ] );
         }
         return false;
-    } /* UpdateListElementName() */
+    } /* updateListElementName() */
 
     /**
-     * @function UpdateHormoneProduct - update a product with a new name and/or default dosage
+     * @function updateHormoneProduct - update a product with a new name and/or default dosage
      * @param {number} productId - the id of the product to update 
      * @param {string} newProductName - the new name of the product
      * @param {number} newDefaultCCs - the new default dosage of the product
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to update
      * @returns {boolean} - whether the product was updated or not 
      */
-    UpdateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType )
+    updateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType )
     {
         if( checkNullableParameters( [ productId,  newProductName, newDefaultCCs, databaseListType ],
                                      [ "number",   "string",       "number",      "number" ] ) )
         {
-            return updateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType, databaseModels[ this.Id ] );
+            return updateHormoneProduct_private( productId, newProductName, newDefaultCCs, databaseListType, databaseModels[ this.id ] );
         }        
         return false;
-    } /* UpdateHormoneProduct() */
+    } /* updateHormoneProduct() */
 
     /**
-     * @function UpdateTask - update a task with a new name and/or task length
+     * @function updateTask - update a task with a new name and/or task length
      * @param {number} taskId - the id of the task to update 
      * @param {string} newTaskName - the new name of the task
      * @param {string} newTaskDescription - the new description of the task 
      * @param {number} newTaskLength - the new length of the task
      * @returns {boolean} - whether the task was updated or not 
      */
-    UpdateTask( taskId, newTaskName, newTaskDescription, newTaskLength )
+    updateTask( taskId, newTaskName, newTaskDescription, newTaskLength )
     {
         if( checkNullableParameters( [ taskId,  newTaskName, newTaskDescription, newTaskLength ],
                                      ["number", "string",    "string",           "number" ] ) )
         {
-            return updateTask( taskId, newTaskName, newTaskDescription, newTaskLength, databaseModels[ this.Id ] );
+            return updateTask_private( taskId, newTaskName, newTaskDescription, newTaskLength, databaseModels[ this.id ] );
         }
         return false;
-    } /* UpdateTask() */
+    } /* updateTask() */
 
     /**
-    * @function UpdateProtocolText - update a protocol with a new name and/or description
+    * @function updateProtocolText - update a protocol with a new name and/or description
     * @param {number} protocolId - the id of the protocol to update 
     * @param {string} newProtocolName - the new name of the protocol
     * @param {string} newProtocolDescription - the new description of the protocol
     * @returns {boolean} - whether the protocol was updated or not
     */
-    UpdateProtocolText( protocolId, newProtocolName, newProtocolDescription )
+    updateProtocolText( protocolId, newProtocolName, newProtocolDescription )
     {
         if( checkNullableParameters( [ protocolId,  newProtocolName, newProtocolDescription, ],
                                      [ "number",    "string",        "string", ] ) )
         {
-            return updateProtocolText( protocolId, newProtocolName, newProtocolDescription, databaseModels[ this.Id ] );
+            return updateProtocolText_private( protocolId, newProtocolName, newProtocolDescription, databaseModels[ this.id ] );
         }
         return false;
-    } /* UpdateProtocolText() */
+    } /* updateProtocolText() */
 
     /**
-     * @function DeleteObject - removes an object from the database
+     * @function deleteObject - removes an object from the database
      * @param {number} id - the id of the object to remove
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to remove object from
      * @returns {boolean} - whether the object was deleted or not 
      */
-    DeleteObject( id, databaseListType )
+    deleteObject( id, databaseListType )
     {
         if( checkParameterTypes( [id,       databaseListType],
                                  ["number", "number"] ) )
         {
-            return deleteObject( id, databaseListType, databaseModels[ this.Id ] );
+            return deleteObject_private( id, databaseListType, databaseModels[ this.id ] );
         }
         return false;
-    } /* DeleteObject() */
+    } /* deleteObject() */
 
     /**
-     * @function AddRecommendedToProtocol - adds a given elementId to a given protocols list of recommendations
+     * @function addRecommendedToProtocol - adds a given elementId to a given protocols list of recommendations
      * @param {number} elementId - the id of the element to recommend
      * @param {number} protocolId - the id of the protocol to recommend on
      * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to     
      * @returns {boolean} - whether the item was successfully added or not
      */
-    AddRecommendedToProtocol( elementId, protocolId, databaseListType )
+    addRecommendedToProtocol( elementId, protocolId, databaseListType )
     {
         if( checkParameterTypes( [ elementId, protocolId, databaseListType ],
                                  [ "number",  "number",   "number" ] ) )
         {
-            return addRecommendedToProtocol( elementId, protocolId, databaseListType, databaseModels[ this.Id ] );
+            return addRecommendedToProtocol_private( elementId, protocolId, databaseListType, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddRecommendedToProtocol() */
+    } /* addRecommendedToProtocol() */
 
     /**
-     * @function RemoveRecommendedFromProtocol - removes a given elementId from a given protocols list of recommendations
+     * @function removeRecommendedFromProtocol - removes a given elementId from a given protocols list of recommendations
      * @param {number} elementId - the id of the element to remove
      * @param {number} protocolId - the id of the protocol to remove from
      * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to     
      * @returns {boolean} - whether the item was successfully removed or not
      */
-     RemoveRecommendedFromProtocol( elementId, protocolId, databaseListType )
+     removeRecommendedFromProtocol( elementId, protocolId, databaseListType )
      {
          if( checkParameterTypes( [ elementId, protocolId, databaseListType ],
                                   [ "number",  "number",   "number" ] ) )
          {
-             return removeRecommendedFromProtocol( elementId, protocolId, databaseListType, databaseModels[ this.Id ] );
+             return removeRecommendedFromProtocol_private( elementId, protocolId, databaseListType, databaseModels[ this.id ] );
          }
          return false;
-     } /* RemoveRecommendedFromProtocol() */
+     } /* removeRecommendedFromProtocol() */
 
      /**
-     * @function IsRecommendedInProtocol - check if a given elementId is contained in a given protocols list of recommendations
+     * @function isRecommendedInProtocol - check if a given elementId is contained in a given protocols list of recommendations
      * @param {number} elementId - the id of the element to check
      * @param {number} protocolId - the id of the protocol to check in
      * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to     
      * @returns {boolean} - whether the item is contained
      */
-    IsRecommendedInProtocol( elementId, protocolId, databaseListType )
+    isRecommendedInProtocol( elementId, protocolId, databaseListType )
     {
         if( checkParameterTypes( [ elementId, protocolId, databaseListType ],
                                  [ "number",  "number",   "number" ] ) )
         {
-            return isRecommendedInProtocol( elementId, protocolId, databaseListType, databaseModels[ this.Id ] );
+            return isRecommendedInProtocol_private( elementId, protocolId, databaseListType, databaseModels[ this.id ] );
         }
         return false;
-    } /* IsRecommendedInProtocol() */
+    } /* isRecommendedInProtocol() */
 
     /**
-     * @function AddTaskToProtocol - Adds a given task to a protocol
+     * @function addTaskToProtocol - Adds a given task to a protocol
      * @param {number} taskId - which task to add 
      * @param {number} protocolId - which protocol to add to
      * @param {number} secondsSinceStart - how many seconds since the start of the protocol to start task
      * @returns {boolean} - whether the task was successfully added or not
      */
-    AddTaskToProtocol( taskId, protocolId, secondsSinceStart )
+    addTaskToProtocol( taskId, protocolId, secondsSinceStart )
     {
         if( checkParameterTypes( [ taskId,   protocolId, secondsSinceStart ],
                                  [ "number", "number",   "number"] ) )
         {
-            return addTaskToProtocol( taskId, protocolId, secondsSinceStart, databaseModels[ this.Id ] );
+            return addTaskToProtocol_private( taskId, protocolId, secondsSinceStart, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddTaskToProtocol() */
+    } /* addTaskToProtocol() */
 
     /**
-     * @function RemoveTaskFromProtocol - Removes a given task from the protocol
+     * @function removeTaskFromProtocol - Removes a given task from the protocol
      * @param {ProtocolTask} task - the task to remove
      * @param {number} protocolId - the id of the protocol to remove from
      * @returns {boolean} - whether the task was successfully removed or not
      */
-    RemoveTaskFromProtocol( task, protocolId )
+    removeTaskFromProtocol( task, protocolId )
     {
         if( checkParameterTypes( [ task,     protocolId ],
                                  [ "object", "number" ] ) )
         {
-            return removeTaskFromProtocol( task, protocolId, databaseModels[ this.Id ] );
+            return removeTaskFromProtocol_private( task, protocolId, databaseModels[ this.id ] );
         }
         return false;
-    } /* RemoveTaskFromProtocol() */
+    } /* removeTaskFromProtocol() */
 
     /**
-     * @function UpdateTaskStartInProtocol - Update the start time of a particular task
+     * @function updateTaskStartInProtocol - Update the start time of a particular task
      * @param {ProtocolTask} oldTask - the old task to update
      * @param {number} newSecondsSinceStart - the new time to set the task for
      * @param {number} protocolId - the id of the protocol to update
      * @returns {boolean} - whether the task was updated successfully or not
      */
-    UpdateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId )
+    updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId )
     {
         if( checkParameterTypes( [ oldTask,  newSecondsSinceStart, protocolId ],
                                  [ "object", "number",             "number" ] ) )
         {
-            return updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, databaseModels[ this.Id ] );
+            return updateTaskStartInProtocol_private( oldTask, newSecondsSinceStart, protocolId, databaseModels[ this.id ] );
         }
         return false;
-    } /* UpdateTaskStartInProtocol() */
+    } /* updateTaskStartInProtocol() */
 
     /**
-     * @function AddProtocol - Add a new protocol to the database
+     * @function addProtocol - Add a new protocol to the database
      * @param {string} protocolName - the name of the new protocol
      * @param {string} description - a description of the new protocol
      * @param {ProtocolTask[]} tasks - an array of tasks to add to the new protocol
      * @param {ProtocolRecommendation} recommendations - the recommondations for the new protocol
      * @returns {boolean} - Whether the protocol was successfully added or not
      */
-    AddProtocol( protocolName, description, tasks, recommendations )
+    addProtocol( protocolName, description, tasks, recommendations )
     {
         if( checkParameterTypes( [ protocolName, description, tasks,    recommendations ],
                                  [ "string",     "string",    "object", "object" ] ) )
         {
-            return addProtocol( protocolName, description, tasks, recommendations, databaseModels[ this.Id ] );
+            return addProtocol_private( protocolName, description, tasks, recommendations, databaseModels[ this.id ] );
         }
         return false;
-    } /* AddProtocol() */
+    } /* addProtocol() */
 
     /**
-     * @function SelectHormoneId - Select a hormone product
+     * @function selectHormoneId - Select a hormone product
      * @param {number} id - the id of the hormone product to select 
      * @param {DATABASE_LIST_TYPE} hormoneListType - which hormone to select (P_G or GN_RH)
      * @returns {boolean} - whether the hormone was selected or not 
      */
-    SelectHormoneId( id, hormoneListType )
+    selectHormoneId( id, hormoneListType )
     {
         if( checkParameterTypes( [ id,       hormoneListType ],
                                  [ "number", "number" ] ) )
         {
-            return selectHormoneId( id, hormoneListType, databaseModels[ this.Id ] );
+            return selectHormoneId_private( id, hormoneListType, databaseModels[ this.id ] );
         }
         return false;
-    } /* SelectHormoneId() */
+    } /* selectHormoneId() */
 
     /**
-     * @function DownloadDatabaseAsJSON - initiates a download of the current database object as a json file
+     * @function downloadDatabaseAsJSON - initiates a download of the current database object as a json file
      * @param {string} filename - the name of the file to download (without extension)
      */
-    DownloadDatabaseAsJSON( filename )
+    downloadDatabaseAsJSON( filename )
     {
         if( checkParameterTypes( [ filename ], [ "string" ] ) )
         {
             let newFilename = filename + ".json";
-            downloadDatabaseAsJSON( newFilename, databaseModels[ this.Id ] );
+            downloadDatabaseAsJSON_private( newFilename, databaseModels[ this.id ] );
         }
-    } /* DownloadDatabaseAsJSON */
+    } /* downloadDatabaseAsJSON() */
 } /* end Database */
 
 //#endregion
@@ -800,22 +800,22 @@ class ListType
     {
         if( typeof id == "number" )
         {
-            this.Id = id;
+            this.id = id;
         }
         if( typeof name == "string" )
         {
-            this.Name = name;
+            this.name = name;
         }    
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of current object
+    * @function copy - creates a copy of current object
     * @returns {ListType} - a copy of current object
     */
-    Copy()
+    copy()
     {
-        return new ListType( this.Id, this.Name );
-    } /* Copy() */
+        return new ListType( this.id, this.name );
+    } /* copy() */
 } /* class ListType */
 
 /** class HormoneProduct
@@ -833,21 +833,21 @@ class HormoneProduct extends ListType
     {
         super( id, name );
 
-        this.DefaultCCs = 0;
+        this.defaultCCs = 0;
         if( typeof defaultCCs == "number" && defaultCCs >= 0 )
         {
-            this.DefaultCCs = defaultCCs;
+            this.defaultCCs = defaultCCs;
         }
     } /* end constructor() */
 
     /**
-     * @function Copy - creates a copy of the current object
+     * @function copy - creates a copy of the current object
      * @returns {HormoneProduct} - a copy of the current object
      */
-    Copy()
+    copy()
     {
-        return new HormoneProduct( this.Id, this.Name, this.DefaultCCs );
-    } /* Copy() */
+        return new HormoneProduct( this.id, this.name, this.defaultCCs );
+    } /* copy() */
 } /* class HormoneProduct */
 
 /** class Task
@@ -867,22 +867,22 @@ class Task extends ListType
         super( id, name );        
         if( typeof description == "string" )
         {
-            this.Description = description;
+            this.description = description;
         }
         if( typeof taskLength == "number" && taskLength >= 0 )
         {
-            this.TaskLength = taskLength;
+            this.taskLength = taskLength;
         }        
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of current Task
+    * @function copy - creates a copy of current Task
     * @returns {Task} - a copy of current Task
     */
-    Copy()
+    copy()
     {
-        return new Task( this.Id, this.Name, this.Description, this.TaskLength, this.HormoneType, this.HormoneId );
-    } /* Copy() */
+        return new Task( this.id, this.name, this.description, this.taskLength );
+    } /* copy() */
 } /* class Task */
 
 /** Class Protocol
@@ -901,42 +901,42 @@ class Protocol extends ListType
     constructor( id, name, description, tasks, recommendations )
     {
         super( id, name );
-        this.Tasks = [];
+        this.tasks = [];
         if( typeof description == "string" )
         {
-            this.Description = description;
+            this.description = description;
         }
         if( typeof tasks == "object" )
         {
             for( let i = 0; i < tasks.length; i++ )
             {
-                let task = tasks[i].Copy();
+                let task = tasks[i].copy();
                 if( task != null )
                 {
-                    this.Tasks.push( task )
+                    this.tasks.push( task )
                 }                
             }            
         }
         if( typeof recommendations == "object" )
         {
-            this.Recommendations = recommendations.Copy();
+            this.recommendations = recommendations.copy();
         }
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of the protocal
+    * @function copy - creates a copy of the protocal
     * @returns {Protocol} - a copy of the protocal
     */
-    Copy()
+    copy()
     {
         let tasksCopy = []
         
-        for( let i = 0; i < this.Tasks.length; i++ )
+        for( let i = 0; i < this.tasks.length; i++ )
         {
-            tasksCopy.push( this.Tasks[i].Copy() );
+            tasksCopy.push( this.tasks[i].copy() );
         }
-        return new Protocol( this.Id, this.Name, this.Description, tasksCopy, this.Recommendations.Copy() );
-    } /* Copy() */
+        return new Protocol( this.id, this.name, this.description, tasksCopy, this.recommendations.copy() );
+    } /* copy() */
 } /* class Protocol */
 
 /** class ProtocolTask
@@ -953,22 +953,22 @@ class ProtocolTask
     {        
         if( typeof taskId == "number" )
         {
-            this.TaskId = taskId;
+            this.taskId = taskId;
         }
         if( typeof secondsSinceStart == "number" )
         {
-            this.SecondsSinceStart = secondsSinceStart;
+            this.secondsSinceStart = secondsSinceStart;
         }    
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of the ProtocolTask
+    * @function copy - creates a copy of the ProtocolTask
     * @returns {ProtocolTask} - a copy of the protocal task
     */
-    Copy()
+    copy()
     {
-        return new ProtocolTask( this.TaskId, this.SecondsSinceStart );
-    } /* Copy() */
+        return new ProtocolTask( this.taskId, this.secondsSinceStart );
+    } /* copy() */
 } /* class ProtocolTask */
 
 /** class ProtocolRecommendation
@@ -981,67 +981,67 @@ class ProtocolRecommendation
     * @param {number[]} systemType - a list of recommended system type id's 
     * @param {number[]} semen - a list of recommended semen id's
     * @param {number[]} breed - a list of recommended breed id's
-    * @param {number[]} gnRH - a list of recommended GnRH id's 
-    * @param {number[]} pG - a list of recommended PG id's 
+    * @param {number[]} gnRH - a list of recommended gnrh id's 
+    * @param {number[]} pG - a list of recommended pg id's 
     * @param {number[]} cattle - a list of recommended cattle id's
     */
     constructor( systemType, semen, breed, gnRH, pG, cattle )
     {
-        this.SystemType = [];
-        this.Semen      = [];
-        this.Breed      = [];
-        this.GnRH       = [];
-        this.PG         = [];
-        this.Cattle     = [];
+        this.systemType = [];
+        this.semen      = [];
+        this.breed      = [];
+        this.gnrh       = [];
+        this.pg         = [];
+        this.cattle     = [];
         if( typeof systemType == "object" )
         {            
             for( let i = 0; i < systemType.length; i++ )
             {
-                this.SystemType.push( systemType[i] );
+                this.systemType.push( systemType[i] );
             }
         }
         if( typeof semen == "object" )
         {            
             for( let i = 0; i < semen.length; i++ )
             {
-                this.Semen.push( semen[i] );
+                this.semen.push( semen[i] );
             }
         }
         if( typeof breed == "object" )
         {            
             for( let i = 0; i < breed.length; i++ )
             {
-                this.Breed.push( breed[i] );
+                this.breed.push( breed[i] );
             }
         }
         if( typeof gnRH == "object" )
         {            
             for( let i = 0; i < gnRH.length; i++ )
             {
-                this.GnRH.push( gnRH[i] );
+                this.gnrh.push( gnRH[i] );
             }
         }
         if( typeof pG == "object" )
         {           
             for( let i = 0; i < pG.length; i++ )
             {
-                this.PG.push( pG[i] );
+                this.pg.push( pG[i] );
             }
         }    
         if( typeof cattle == "object" )
         {            
             for( let i = 0; i < cattle.length; i++ )
             {
-                this.Cattle.push( cattle[i] );
+                this.cattle.push( cattle[i] );
             }
         }
     } /* end constructor() */
 
     /**
-    * @function Copy - creates a copy of the ProtocolRecommendation
+    * @function copy - creates a copy of the ProtocolRecommendation
     * @returns {ProtocolRecommendation} - a copy of the ProtocolRecommendation
     */
-    Copy()
+    copy()
     {
         let systemTypeCopy = [];
         let semenCopy      = [];
@@ -1050,47 +1050,47 @@ class ProtocolRecommendation
         let pgCopy         = [];
         let cattleCopy     = [];
 
-        for( let i = 0; i < this.SystemType.length; i++ )
+        for( let i = 0; i < this.systemType.length; i++ )
         {
-            systemTypeCopy.push( this.SystemType[i] );
+            systemTypeCopy.push( this.systemType[i] );
         }
-        for( let i = 0; i < this.Semen.length; i++ )
+        for( let i = 0; i < this.semen.length; i++ )
         {
-            semenCopy.push( this.Semen[i] ); 
+            semenCopy.push( this.semen[i] ); 
         }
-        for( let i = 0; i < this.Breed.length; i++ )
+        for( let i = 0; i < this.breed.length; i++ )
         {
-            breedCopy.push( this.Breed[i] );
+            breedCopy.push( this.breed[i] );
         }
-        for( let i = 0; i < this.GnRH.length; i++ )
+        for( let i = 0; i < this.gnrh.length; i++ )
         {
-            gnRHCopy.push( this.GnRH[i] );
+            gnRHCopy.push( this.gnrh[i] );
         }
-        for( let i = 0; i < this.PG.length; i++ )
+        for( let i = 0; i < this.pg.length; i++ )
         {
-            pgCopy.push( this.PG[i] );
+            pgCopy.push( this.pg[i] );
         }
-        for( let i = 0; i < this.Cattle.length; i++ )
+        for( let i = 0; i < this.cattle.length; i++ )
         {
-            cattleCopy.push( this.Cattle[i] );
+            cattleCopy.push( this.cattle[i] );
         }
         return new ProtocolRecommendation( systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy );
-    } /* Copy() */
+    } /* copy() */
 } /* class ProtocolRecommendation */
 
 //#endregion
 /********************************/
 
 /********************************/
-// #region PUBLIC FUNCTIONS     *
+// #region PRIVATE FUNCTIONS     *
 /********************************/
 
 /**
- * @function getDatabaseName - get the database list name given a type
+ * @function getDatabaseName_private - get the database list name given a type
  * @param {DATABASE_LIST_TYPE} databaseListType - the database type
  * @returns {string} - the name of the database
  */
-function getDatabaseName( databaseListType )
+function getDatabaseName_private( databaseListType )
 {
     switch( databaseListType )
     {
@@ -1124,16 +1124,16 @@ function getDatabaseName( databaseListType )
         default:
             return "";
     }
-} /* getDatabaseName() */
+} /* getDatabaseName_private() */
 
-/** @function getObjectById
+/** @function getObjectById_private
  * Look up a given object by its id
  * @param {number} id - The id to search for
  * @param {DATABASE_LIST_TYPE} databaseListType - Which list to search
  * @param {DatabaseModel} database - The database to search
  * @returns {ListType} - The object with the id if found; null if not found
  */
-function getObjectById( id, databaseListType, database )
+function getObjectById_private( id, databaseListType, database )
 {
     let list    = findDatabaseList( databaseListType, database );
     let findObj = null;
@@ -1143,20 +1143,20 @@ function getObjectById( id, databaseListType, database )
         findObj = findObjectByIdInList( id, list, 0, list.length );
         if( findObj != null )
         {
-            findObj = findObj.Copy();
+            findObj = findObj.copy();
         }
     }    
     return findObj;
-} /* getObjectById() */
+} /* getObjectById_private() */
 
 /**
- * @function getObjectByName - Get and find an object by its name
+ * @function getObjectByName_private - Get and find an object by its name
  * @param {string} name - the name of the object 
  * @param {DATABASE_LIST_TYPE} databaseListType - which list to lookup 
  * @param {DatabaseModel} database - the database to traverse
  * @returns {ListType} - the object associated with the name
  */
-function getObjectByName( name, databaseListType, database )
+function getObjectByName_private( name, databaseListType, database )
 {
     let list    = findDatabaseList( databaseListType, database );
     let findObj = null;
@@ -1166,57 +1166,56 @@ function getObjectByName( name, databaseListType, database )
         findObj = findByNameInList( name, list );
         if( findObj != null )
         {
-            findObj = findObj.Copy();
+            findObj = findObj.copy();
         }
     }    
     return findObj;
-} /* getObjectByName() */
+} /* getObjectByName_private() */
 
-/** @function getNameById
- * Look up a given object by its id
+/** @function getNameById_private - Look up a given object by its id
  * @param {number} id - The id to search for
  * @param {DATABASE_LIST_TYPE} databaseListType - Which list to search
  * @param {DatabaseModel} database - The database to search
  * @returns {string} - The name of the object with the id if found; empty string if not found
  */
-function getNameById( id, databaseListType, database )
+function getNameById_private( id, databaseListType, database )
 {
-    let tempObject = getObjectById( id, databaseListType, database );
+    let tempObject = getObjectById_private( id, databaseListType, database );
 
     if( tempObject != null )
     {
-        return tempObject.Name;
+        return tempObject.name;
     }
     else
     {
         return "";
     }
-} /* getNameById() */
+} /* getNameById_private() */
 
 /**
-* @function getUserTaskById - Gets the user version of a particular task (name adjusted for hormone task)
+* @function getUserTaskById_private - Gets the user version of a particular task (name adjusted for hormone task)
 * @param {number} id - the id of the task to query
 * @param {DatabaseModel} database - the database to search
 * @returns {Task} - the user task 
 */
-function getUserTaskById( id, database )
+function getUserTaskById_private( id, database )
 {
-    let task = getObjectById( id, DATABASE_LIST_TYPE.TASKS, database );
+    let task = getObjectById_private( id, DATABASE_LIST_TYPE.TASKS, database );
     if( task != null )
     {
         adjustHormoneTaskName( task, database );
     }    
     return task;
-} /* GetUserTaskById() */
+} /* getUserTaskById_private() */
 
 /**
- * @function getDatabaseListElements - Get the list of elements in a database list
+ * @function getDatabaseListElements_private - Get the list of elements in a database list
  * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
  * @param {boolean} sort - whether to sort the list or not
  * @param {DatabaseModel} database - the database to search
  * @returns {ListType[]} - A list of elements with their
  */
-function getDatabaseListElements( databaseListType, sort, database )
+function getDatabaseListElements_private( databaseListType, sort, database )
 {
     let newList = [];
     let list    = findDatabaseList( databaseListType, database );
@@ -1228,7 +1227,7 @@ function getDatabaseListElements( databaseListType, sort, database )
 
     for( let i = 0; i < list.length; i++ )
     {
-        newList.push( list[i].Copy() );
+        newList.push( list[i].copy() );
     }
 
     if( sort == true )
@@ -1236,19 +1235,18 @@ function getDatabaseListElements( databaseListType, sort, database )
         alphabetizeByName( newList, 0, newList.length, 0, 0 );
     }
     return newList;
-} /* getDatabaseListElements() */
+} /* getDatabaseListElements_private() */
 
-/** @function getDatabaseList
- * Get the list of names to display
+/** @function getDatabaseListNames_private - Get the list of names to display
  * @param {DATABASE_LIST_TYPE} databaseListType - The list to get
  * @param {boolean} sort - whether to sort the list or not
  * @param {DatabaseModel} database - The database to search
  * @returns {string[]} - the list of names in the database list
  */
-function getDatabaseListNames( databaseListType, sort, database )
+function getDatabaseListNames_private( databaseListType, sort, database )
 {
     let newList = [];
-    let list    = getDatabaseListElements( databaseListType, sort, database );
+    let list    = getDatabaseListElements_private( databaseListType, sort, database );
 
     if( list != null )
     {
@@ -1259,10 +1257,10 @@ function getDatabaseListNames( databaseListType, sort, database )
     }
     
     return newList;
-} /* getDatabaseList() */
+} /* getDatabaseListNames_private() */
 
 /**
- * @function getRecommendedProtocols - Get the list of protocols which are recommended for the given inputs
+ * @function getRecommendedProtocols_private - Get the list of protocols which are recommended for the given inputs
  * @param {number} semenId - the id of the semen input 
  * @param {number} systemTypeId - the id of the system type 
  * @param {number} breedId - the id of the breed 
@@ -1272,9 +1270,9 @@ function getDatabaseListNames( databaseListType, sort, database )
  * @param {DatabaseModel} database - the database to search
  * @returns {Protocol[]} - A list of protocals associated with inputs 
  */
-function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
+function getRecommendedProtocols_private( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
-    let protocols = database.Protocols;
+    let protocols = database.protocols;
     let newList   = [];
     
     if( semenId         == null 
@@ -1286,24 +1284,24 @@ function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, 
     {
         for( let i = 0; i < protocols.length; i++ )
         {
-            newList.push( protocols[i].Copy() );
+            newList.push( protocols[i].copy() );
         }
     }
     else
     {
         for( let i = 0; i < protocols.length; i++ )
         {
-            if( isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocols[i].Recommendations ) )
+            if( isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, protocols[i].recommendations ) )
             {
-                newList.push( protocols[i].Copy() );
+                newList.push( protocols[i].copy() );
             }
         }
     }  
     return newList;
-} /* getRecommendedProtocols() */
+} /* getRecommendedProtocols_private() */
 
 /**
- * @function getRecommendedProtocolNames - Generates a list of the recommended protocal names associated with inputs
+ * @function getRecommendedProtocolNames_private - Generates a list of the recommended protocal names associated with inputs
  * @param {number} semenId - the id of the semen 
  * @param {number} systemTypeId - the id of the system type
  * @param {number} breedId - the id of the breed 
@@ -1313,82 +1311,82 @@ function getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, 
  * @param {DatabaseModel} database - the database to traverse
  * @returns {string[]} - A list of the names of the recommended protocals 
  */
-function getRecommendedProtocolNames( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
+function getRecommendedProtocolNames_private( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database )
 {
-    let protocols = getRecommendedProtocols( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database );
+    let protocols = getRecommendedProtocols_private( semenId, systemTypeId, breedId, gnrhId, pgId, cattleId, database );
     let newList   = [];
 
     for( let i = 0; i < protocols.length; i++ )
     {
-        newList.push( protocols[i].Name );
+        newList.push( protocols[i].name );
     }  
     return newList;
-} /* getRecommendedProtocolNames() */
+} /* getRecommendedProtocolNames_private() */
 
-/** @function addListElement
+/** @function addListElement_private
  * Add a list element to a database list if it doesn't already exist
  * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to
  * @param {string} elementName - the name of the element 
  * @param {DatabaseModel} database - the database object
  * @returns {boolean} - whether the element was added or not
  */
-function addListElement( databaseListType, elementName, database )
+function addListElement_private( databaseListType, elementName, database )
 {
     let list = findDatabaseInputList( databaseListType, database );
 
     if( list != null )
     {
-        let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
+        let newId = list.length > 0 ? list[ list.length - 1 ].id + 1 : 0; // Take last id and add 1 -- default 0
         return addElementToDatabase( new ListType( newId, elementName ), list );
     }
     return false;
-} /* addListElement() */
+} /* addListElement_private() */
 
 /**
-* @function addHormoneProduct - Add a new list hormone product to the database if it doesn't already exist
+* @function addHormoneProduct_private - Add a new list hormone product to the database if it doesn't already exist
 * @param {string} hormoneName - the name of the product
 * @param {number} defaultCCs - the default dosage for the product
 * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to
 * @param {DatabaseModel} database - the database to add to
 * @returns {boolean} - whether the product was successfully addded or not
 */
-function addHormoneProduct( hormoneName, defaultCCs, databaseListType, database )
+function addHormoneProduct_private( hormoneName, defaultCCs, databaseListType, database )
 {
     let list = findDatabaseProductList( databaseListType, database );
 
     if( list != null )
     {
-        let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
+        let newId = list.length > 0 ? list[ list.length - 1 ].id + 1 : 0; // Take last id and add 1 -- default 0
         return addElementToDatabase( new HormoneProduct( newId, hormoneName, defaultCCs ), list );
     }
     return false;
-} /* addHormoneProduct() */
+} /* addHormoneProduct_private() */
 
 /**
- * @function addTask - Add a new task to the database
+ * @function addTask_private - Add a new task to the database
  * @param {string} taskName - the unique name of the task to add
  * @param {string} taskDescription - the description of the task
  * @param {number} taskLength - the length of the task
  * @param {DatabaseModel} database - the database to add to
  * @returns {boolean} - whether the task was added or not
  */
-function addTask( taskName, taskDescription, taskLength, database )
+function addTask_private( taskName, taskDescription, taskLength, database )
 {
-    let list = database.Tasks;    
+    let list = database.tasks;    
     
-    let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
+    let newId = list.length > 0 ? list[ list.length - 1 ].id + 1 : 0; // Take last id and add 1 -- default 0
     return addElementToDatabase( new Task( newId, taskName, taskDescription, taskLength ), list );
-} /* addTask() */
+} /* addTask_private() */
 
 /**
- * @function updateListElementName - Update the name of the list element
+ * @function updateListElementName_private - Update the name of the list element
  * @param {DATABASE_LIST_TYPE} databaseListType - which list to update 
  * @param {number} elementId - the id of the element to update
  * @param {string} newName - the new name to set the element to
  * @param {DatabaseModel} database - the database to traverse
  * @returns {boolean} - Whether the name was updated in the database
  */
-function updateListElementName( databaseListType, elementId, newName, database )
+function updateListElementName_private( databaseListType, elementId, newName, database )
 {
     if( newName == null )
     {
@@ -1407,13 +1405,13 @@ function updateListElementName( databaseListType, elementId, newName, database )
     {
         return false;
     }
-    oldElement.Name = newName;
+    oldElement.name = newName;
 
     return true;
-} /* updateListElementName() */
+} /* updateListElementName_private() */
 
 /**
-* @function updateHormoneProduct - update a product with a new name and/or default dosage
+* @function updateHormoneProduct_private - update a product with a new name and/or default dosage
 * @param {number} productId - the id of the product to update 
 * @param {string} newProductName - the new name of the product
 * @param {number} newDefaultCCs - the new default dosage of the product
@@ -1421,7 +1419,7 @@ function updateListElementName( databaseListType, elementId, newName, database )
 * @param {DatabaseModel} database - the database to traverse
 * @returns {boolean} - whether the product was updated or not 
 */
-function updateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType, database )
+function updateHormoneProduct_private( productId, newProductName, newDefaultCCs, databaseListType, database )
 {
     let list = findDatabaseProductList( databaseListType, database );
     if( list == null 
@@ -1441,18 +1439,18 @@ function updateHormoneProduct( productId, newProductName, newDefaultCCs, databas
 
     if( newProductName != null )
     {
-        oldProduct.Name = newProductName;
+        oldProduct.name = newProductName;
     }
     if( newDefaultCCs != null )
     {
-        oldProduct.DefaultCCs = newDefaultCCs;
+        oldProduct.defaultCCs = newDefaultCCs;
     }
 
     return true;
-} /* updateHormoneProduct() */
+} /* updateHormoneProduct_private() */
 
 /**
- * @function updateTask - updates a given task in the database
+ * @function updateTask_private - updates a given task in the database
  * @param {number} taskId - the id of the task to update 
  * @param {string} newTaskName - the new task name
  * @param {string} newTaskDescription - the new description of the task
@@ -1460,9 +1458,9 @@ function updateHormoneProduct( productId, newProductName, newDefaultCCs, databas
  * @param {DatabaseModel} database - the database to update
  * @returns {boolean} - whether the task was updated or not
  */
-function updateTask( taskId, newTaskName, newTaskDescription, newTaskLength, database )
+function updateTask_private( taskId, newTaskName, newTaskDescription, newTaskLength, database )
 {
-    let list = database.Tasks;
+    let list = database.tasks;
     if( taskId == null 
         || newTaskName == null && newTaskDescription == null && newTaskLength == null )
     {
@@ -1479,33 +1477,33 @@ function updateTask( taskId, newTaskName, newTaskDescription, newTaskLength, dat
     // Update Task
     if( newTaskName != null )
     {
-        oldTask.Name = newTaskName;
+        oldTask.name = newTaskName;
     }
 
     if( newTaskDescription != null )
     {
-        oldTask.Description = newTaskDescription;
+        oldTask.description = newTaskDescription;
     }
 
     if( newTaskLength != null )
     {
-        oldTask.TaskLength = newTaskLength;
+        oldTask.taskLength = newTaskLength;
     }
 
     return true;
-} /* updateTask() */
+} /* updateTask_private() */
 
 /**
-* @function updateProtocolText - update a protocol with a new name and/or description
+* @function updateProtocolText_private - update a protocol with a new name and/or description
 * @param {number} protocolId - the id of the protocol to update 
 * @param {string} newProtocolName - the new name of the protocol
 * @param {string} newProtocolDescription - the new description of the protocol
 * @param {DatabaseModel} database - the database to traverse
 * @returns {boolean} - whether the protocol was updated or not
 */
-function updateProtocolText( protocolId, newProtocolName, newProtocolDescription, database )
+function updateProtocolText_private( protocolId, newProtocolName, newProtocolDescription, database )
 {
-    let list = database.Protocols;
+    let list = database.protocols;
     if( protocolId == null 
         || newProtocolName == null && newProtocolDescription == null )
     {
@@ -1522,25 +1520,25 @@ function updateProtocolText( protocolId, newProtocolName, newProtocolDescription
     // Update Protocol
     if( newProtocolName != null )
     {
-        oldProtocol.Name = newProtocolName;
+        oldProtocol.name = newProtocolName;
     }
 
     if( newProtocolDescription != null )
     {
-        oldProtocol.Description = newProtocolDescription;
+        oldProtocol.description = newProtocolDescription;
     }
 
     return true;
-} /* updateProtocolText() */
+} /* updateProtocolText_private() */
 
 /**
-* @function deleteObject - removes an object from the database
+* @function deleteObject_private - removes an object from the database
 * @param {number} id - the id of the object to remove
 * @param {DATABASE_LIST_TYPE} databaseListType - which list to remove object from
 * @param {DatabaseModel} database - the database to update
 * @returns {boolean} - whether the object was deleted or not 
 */
-function deleteObject( id, databaseListType, database )
+function deleteObject_private( id, databaseListType, database )
 {
     let list = findDatabaseList( databaseListType, database );
 
@@ -1561,7 +1559,7 @@ function deleteObject( id, databaseListType, database )
                 let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );
                 for( let i = 0; i < protocols.length; i++ )
                 {
-                    let protocolRecommendationList = findDatabaseList( databaseListType, protocols[i].Recommendations );
+                    let protocolRecommendationList = findDatabaseList( databaseListType, protocols[i].recommendations );
                     for( let j = 0; j < protocolRecommendationList.length; j++)
                     {
                         if( protocolRecommendationList[j] == id )
@@ -1578,10 +1576,10 @@ function deleteObject( id, databaseListType, database )
                 let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );
                 for( let i = 0; i < protocols.length; i++ )
                 {
-                    let tasks = protocols[i].Tasks;
+                    let tasks = protocols[i].tasks;
                     for( let j = 0; j < tasks.length; j++ )
                     {
-                        if( tasks[j].TaskId == id )
+                        if( tasks[j].taskId == id )
                         {
                             tasks.splice( j, 1 );
                         }
@@ -1590,38 +1588,38 @@ function deleteObject( id, databaseListType, database )
             }
 
             // Update selected id if was deleted
-            if( databaseListType == DATABASE_LIST_TYPE.P_G && database.SelectedPGId == id )
+            if( databaseListType == DATABASE_LIST_TYPE.P_G && database.selectedPGId == id )
             {
-                database.SelectedPGId = INVALID_ID;
+                database.selectedPGId = INVALID_ID;
             }
-            else if( databaseListType == DATABASE_LIST_TYPE.GN_RH && database.SelectedGnRHId == id )
+            else if( databaseListType == DATABASE_LIST_TYPE.GN_RH && database.selectedGnRHId == id )
             {
-                database.SelectedGnRHId = INVALID_ID;
+                database.selectedGnRHId = INVALID_ID;
             }
 
             return true;
         }
     }
     return false;
-} /* deleteObject() */
+} /* deleteObject_private() */
 
 /**
- * @function addRecommendedToProtocol - adds a given elementId to a given protocols list of recommendations
+ * @function addRecommendedToProtocol_private - adds a given elementId to a given protocols list of recommendations
  * @param {number} elementId - the id of the element to recommend
  * @param {number} protocolId - the id of the protocol to recommend on
  * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to
  * @param {DatabaseModel} database - the database object to update
  * @returns {boolean} - whether the item was successfully added or not
  */
-function addRecommendedToProtocol( elementId, protocolId, databaseListType, database )
+function addRecommendedToProtocol_private( elementId, protocolId, databaseListType, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );    
-    let elementCheck = getObjectById( elementId, databaseListType, database );
+    let elementCheck = getObjectById_private( elementId, databaseListType, database );
 
     if( protocol != null && elementCheck != null )
     {        
-        let recommendation = findDatabaseList( databaseListType, protocol.Recommendations );
+        let recommendation = findDatabaseList( databaseListType, protocol.recommendations );
 
         if( recommendation != null )
         {
@@ -1633,24 +1631,24 @@ function addRecommendedToProtocol( elementId, protocolId, databaseListType, data
         }        
     }    
     return false;
-} /* addRecommendedToProtocol() */
+} /* addRecommendedToProtocol_private() */
 
 /**
- * @function removeRecommendedFromProtocol - removes a given elementId from a given protocols list of recommendations
+ * @function removeRecommendedFromProtocol_private - removes a given elementId from a given protocols list of recommendations
  * @param {number} elementId - the id of the element to remove
  * @param {number} protocolId - the id of the protocol to remove from
  * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to
  * @param {DatabaseModel} database - the database object to update
  * @returns {boolean} - whether the item was successfully removed or not
  */
-function removeRecommendedFromProtocol( elementId, protocolId, databaseListType, database )
+function removeRecommendedFromProtocol_private( elementId, protocolId, databaseListType, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );  
      
     if( protocol != null )
     {        
-        let recommendation = findDatabaseList( databaseListType, protocol.Recommendations );
+        let recommendation = findDatabaseList( databaseListType, protocol.recommendations );
         if( recommendation != null )
         {
             let i = 0;
@@ -1671,104 +1669,104 @@ function removeRecommendedFromProtocol( elementId, protocolId, databaseListType,
         }         
     }    
     return false;
-} /* removeRecommendedFromProtocol() */
+} /* removeRecommendedFromProtocol_private() */
 
  /**
-  * @function isRecommendedInProtocol - check if a given elementId is contained in a given protocols list of recommendations
+  * @function isRecommendedInProtocol_private - check if a given elementId is contained in a given protocols list of recommendations
   * @param {number} elementId - the id of the element to check
   * @param {number} protocolId - the id of the protocol to check in
   * @param {DATABASE_LIST_TYPE} databaseListType - which element this item belongs to
   * @param {DatabaseModel} database - the database object to check in 
   * @returns {boolean} - whether the item is contained
   */
-function isRecommendedInProtocol( elementId, protocolId, databaseListType, database )
+function isRecommendedInProtocol_private( elementId, protocolId, databaseListType, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );  
 
     if( protocol != null )
     {        
-        let recommendation = findDatabaseList( databaseListType, protocol.Recommendations );
+        let recommendation = findDatabaseList( databaseListType, protocol.recommendations );
         if( recommendation != null )
         {
             return isContainedInList( elementId, recommendation, isEqualNum );   
         }                 
     }    
     return false;      
-} /* IsRecommendedInProtocol() */
+} /* isRecommendedInProtocol_private() */
 
 /**
- * @function AddTaskToProtocol - Adds a given task to a protocol
+ * @function addTaskToProtocol - Adds a given task to a protocol
  * @param {number} taskId - which task to add 
  * @param {number} protocolId - which protocol to add to
  * @param {number} secondsSinceStart - how many seconds since the start of the protocol to start task
  * @param {DatabaseModel} database - which database to search in
  * @returns {boolean} - whether the task was successfully added or not
  */
-function addTaskToProtocol( taskId, protocolId, secondsSinceStart, database )
+function addTaskToProtocol_private( taskId, protocolId, secondsSinceStart, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );
-    let elementCheck = getObjectById( taskId, Database.DATABASE_LIST_TYPE.TASKS, database );
+    let elementCheck = getObjectById_private( taskId, Database.DATABASE_LIST_TYPE.TASKS, database );
 
     if( protocol != null && elementCheck != null )
     {
         let protocolTask = new ProtocolTask( taskId, secondsSinceStart );
-        if( !isContainedInList( protocolTask, protocol.Tasks, isEqualProtocolTask ) )
+        if( !isContainedInList( protocolTask, protocol.tasks, isEqualProtocolTask ) )
         {
-            for( let i = 0; i < protocol.Tasks.length; i++ )
+            for( let i = 0; i < protocol.tasks.length; i++ )
             {                
                 // insert ordered based on seconds since start
-                if( protocolTask.SecondsSinceStart < protocol.Tasks[i].SecondsSinceStart )
+                if( protocolTask.secondsSinceStart < protocol.tasks[i].secondsSinceStart )
                 {
-                    protocol.Tasks.splice( i, 0, protocolTask );
+                    protocol.tasks.splice( i, 0, protocolTask );
                     return true;
                 }
             }
 
             // default if tasks are emtpy
-            protocol.Tasks.push( protocolTask );
+            protocol.tasks.push( protocolTask );
             return true;
         }
     }
     return false;
-} /* addTaskToProtocol() */
+} /* addTaskToProtocol_private() */
 
 /**
- * @function removeTaskFromProtocol - Removes a given task from the protocol
+ * @function removeTaskFromProtocol_private - Removes a given task from the protocol
  * @param {ProtocolTask} task - the task to remove
  * @param {number} protocolId - the id of the protocol to remove from
  * @param {DatabaseModel} database - the database to search
  * @returns {boolean} - whether the task was successfully removed or not
  */
-function removeTaskFromProtocol( task, protocolId, database )
+function removeTaskFromProtocol_private( task, protocolId, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );
 
     if( protocol != null )
     {
-        for( let i = 0; i < protocol.Tasks.length; i++ )
+        for( let i = 0; i < protocol.tasks.length; i++ )
         {
-            if( isEqualProtocolTask( task, protocol.Tasks[i] ) )
+            if( isEqualProtocolTask( task, protocol.tasks[i] ) )
             {
-                protocol.Tasks.splice( i, 1 );
+                protocol.tasks.splice( i, 1 );
                 return true;
             }
         }
     }
     return false;
-} /* removeTaskFromProtocol() */
+} /* removeTaskFromProtocol_private() */
 
 /**
- * @function updateTaskStartInProtocol - Update the start time of a particular task
+ * @function updateTaskStartInProtocol_private - Update the start time of a particular task
  * @param {ProtocolTask} oldTask - the old task to update
  * @param {number} newSecondsSinceStart - the new time to set the task for
  * @param {number} protocolId - the id of the protocol to update
  * @param {DatabaseModel} database = the database to search in
  * @returns {boolean} - whether the task was updated successfully or not
  */
-function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, database )
+function updateTaskStartInProtocol_private( oldTask, newSecondsSinceStart, protocolId, database )
 {
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );
@@ -1776,13 +1774,13 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
     if( protocol != null )
     {
         let taskUpdated = false;
-        let tasks = protocol.Tasks;
+        let tasks = protocol.tasks;
         let i;
         for( i = 0; i < tasks.length; i++ )
         {
             if( isEqualProtocolTask( oldTask, tasks[i] ) )
             {                
-                tasks[i].SecondsSinceStart = newSecondsSinceStart;
+                tasks[i].secondsSinceStart = newSecondsSinceStart;
                 taskUpdated = true;
                 break;
             }
@@ -1792,7 +1790,7 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
         {            
             let j = i + 1;                        
             // try sort right
-            while( j < tasks.length && tasks[j].SecondsSinceStart < newSecondsSinceStart )
+            while( j < tasks.length && tasks[j].secondsSinceStart < newSecondsSinceStart )
             {                
                 swapElements(j - 1, j, tasks);                
                 j++;
@@ -1800,7 +1798,7 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
 
             j = i - 1;
             //try sort left
-            while( j >= 0 && tasks[j].SecondsSinceStart > newSecondsSinceStart )
+            while( j >= 0 && tasks[j].secondsSinceStart > newSecondsSinceStart )
             {
                 swapElements(j + 1, j, tasks);
                 j--;
@@ -1810,10 +1808,10 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
         }
     }
     return false;
-} /* updateTaskStartInProtocol() */
+} /* updateTaskStartInProtocol_private() */
 
 /**
- * @function addProtocol - Add a new protocol to the database
+ * @function addProtocol_private - Add a new protocol to the database
  * @param {string} protocolName - the name of the new protocol
  * @param {string} description - the description of the new protocol
  * @param {ProtocolTask[]} tasks - an array of tasks to add to the new protocol
@@ -1821,10 +1819,10 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
  * @param {DatabaseModel} database - the database to traverse
  * @returns {boolean} - Whether the protocol was successfully added or not
  */
- function addProtocol( protocolName, description, tasks, recommendations, database )
+ function addProtocol_private( protocolName, description, tasks, recommendations, database )
  {
      let list = findDatabaseList( DATABASE_LIST_TYPE.PROTOCOLS, database );
-     let id = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // take last elements id and add 1 -- default 0
+     let id = list.length > 0 ? list[ list.length - 1 ].id + 1 : 0; // take last elements id and add 1 -- default 0
      let protocol = new Protocol( id, protocolName, description, tasks, recommendations );
      if( isValidProtocol( protocol, database ) )
      {
@@ -1834,42 +1832,42 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
      {
          return false; // something went wrong.
      }     
- } /* addProtocol() */
+ } /* addProtocol_private() */
 
 /**
-* @function selectHormoneId - Select a hormone product
+* @function selectHormoneId_private - Select a hormone product
 * @param {number} id - the id of the hormone product to select 
 * @param {DATABASE_LIST_TYPE} hormoneListType - which hormone to select (P_G or GN_RH)
 * @param {DatabaseModel} database - the database to traverse
 * @returns {boolean} - whether the hormone was selected or not 
 */
-function selectHormoneId( id, hormoneListType, database )
+function selectHormoneId_private( id, hormoneListType, database )
 {
     if( isHormoneDatabaseType( hormoneListType ) )
     {
-        let objectCheck = getObjectById( id, hormoneListType, database );
+        let objectCheck = getObjectById_private( id, hormoneListType, database );
         if( objectCheck != null )
         {
             if( hormoneListType == DATABASE_LIST_TYPE.P_G )
             {
-                database.SelectedPGId = id;
+                database.selectedPGId = id;
             }
             else
             {
-                database.SelectedGnRHId = id;
+                database.selectedGnRHId = id;
             }
             return true;
         }
     }
     return false;
-} /* selectHormoneId() */
+} /* selectHormoneId_private() */
 
 /**
- * @function getJSONData - fetches a given json file and returns a json object
+ * @function getJSONData_private - fetches a given json file and returns a json object
  * @param {string} path - the path to the json object
  * @returns {object} - a json object
  */
-async function getJSONData( path )
+async function getJSONData_private( path )
 {
     let json = await fetch( path,
     {
@@ -1881,14 +1879,14 @@ async function getJSONData( path )
     });
     json = await json.json();
     return json;
-} /* getJSONData() */
+} /* getJSONData_private() */
 
 /**
- * Initiate a download of the database object
+ * @function downloadDatabaseAsJSON_private - Initiate a download of the database object
  * @param {string} filename - the name to set the file as
  * @param {DatabaseModel} database - the database to download
  */
-function downloadDatabaseAsJSON( filename, database )
+function downloadDatabaseAsJSON_private( filename, database )
 {   
     let link = document.createElement('a');
     link.setAttribute( 'href', 
@@ -1903,13 +1901,13 @@ function downloadDatabaseAsJSON( filename, database )
     link.click();
           
     document.body.removeChild( link );        
-} /* downloadDatabaseAsJSON() */
+} /* downloadDatabaseAsJSON_private() */
 
 //#endregion
 /********************************/
 
 /********************************/
-// #region PRIVATE FUNCTIONS    *
+// #region HELPER FUNCTIONS    *
 /********************************/
 
 /**
@@ -1936,10 +1934,10 @@ function findDatabaseList( databaseListType, database )
     switch( databaseListType )
     {
         case DATABASE_LIST_TYPE.TASKS:
-            return database.Tasks;
+            return database.tasks;
 
         case DATABASE_LIST_TYPE.PROTOCOLS:
-            return database.Protocols;
+            return database.protocols;
 
         default:
             return null;
@@ -1957,16 +1955,16 @@ function findDatabaseInputList( databaseListType, database )
     switch( databaseListType )
     {
         case DATABASE_LIST_TYPE.SYSTEM_TYPE:
-            return database.SystemType;
+            return database.systemType;
 
         case DATABASE_LIST_TYPE.SEMEN:
-            return database.Semen;
+            return database.semen;
     
         case DATABASE_LIST_TYPE.BREED:
-            return database.Breed;        
+            return database.breed;        
 
         case DATABASE_LIST_TYPE.CATTLE:
-            return database.Cattle;
+            return database.cattle;
 
         default:
             return null;
@@ -1984,10 +1982,10 @@ function findDatabaseProductList( databaseListType, database )
     switch( databaseListType )
     {
         case DATABASE_LIST_TYPE.P_G:
-            return database.PG;
+            return database.pg;
 
         case DATABASE_LIST_TYPE.GN_RH:
-            return database.GnRH;
+            return database.gnrh;
 
         default:
             return null;
@@ -2014,11 +2012,11 @@ function findIndexByIdInList( id, list, start, length )
     while( start < end )
     {
         let mid = Math.trunc( ( start + end ) / 2 );
-        if( id < list[ mid ].Id )
+        if( id < list[ mid ].id )
         {
             end = mid;
         }
-        else if( id > list[ mid ].Id )
+        else if( id > list[ mid ].id )
         {
             start = mid + 1;
         }
@@ -2062,7 +2060,7 @@ function findByNameInList( name, list )
     }
     for( let i = 0; i < list.length; i++ )
     {
-        if( list[i].Name.toUpperCase() === name.toUpperCase() )
+        if( list[i].name.toUpperCase() === name.toUpperCase() )
         {
             return list[i];
         }
@@ -2081,7 +2079,7 @@ function databaseElementToString( element )
     if( element != null )
     {
         //FORMAT - "ID - NAME" 
-        newString = element.Name;
+        newString = element.name;
     }
     return newString;
 } /* databaseElementToString() */
@@ -2095,7 +2093,7 @@ function databaseElementToString( element )
 function addElementToDatabase( element, list )
 {
     // check for duplicates
-    if( findObjectByIdInList( element.Id, list, 0, list.length ) || findByNameInList( element.Name, list ) )
+    if( findObjectByIdInList( element.id, list, 0, list.length ) || findByNameInList( element.name, list ) )
     {
         return false;
     }
@@ -2119,42 +2117,42 @@ function isRecommendedProtocol( semenId, systemTypeId, breedId, gnrhId, pgId, ca
 {
     if( semenId != null )
     {
-        if( !isContainedInList( semenId, protocolRecommendation.Semen, isEqualNum ) )
+        if( !isContainedInList( semenId, protocolRecommendation.semen, isEqualNum ) )
         {
             return false;
         }
     }
     if( systemTypeId != null )
     {
-        if( !isContainedInList( systemTypeId, protocolRecommendation.SystemType, isEqualNum ) )
+        if( !isContainedInList( systemTypeId, protocolRecommendation.systemType, isEqualNum ) )
         {
             return false;
         }
     }
     if( breedId != null )
     {
-        if( !isContainedInList( breedId, protocolRecommendation.Breed, isEqualNum ) )
+        if( !isContainedInList( breedId, protocolRecommendation.breed, isEqualNum ) )
         {
             return false;
         }
     }
     if( gnrhId != null )
     {
-        if( !isContainedInList( gnrhId, protocolRecommendation.GnRH, isEqualNum ) )
+        if( !isContainedInList( gnrhId, protocolRecommendation.gnrh, isEqualNum ) )
         {
             return false;
         }
     }
     if( pgId != null )
     {
-        if( !isContainedInList( pgId, protocolRecommendation.PG, isEqualNum ) )
+        if( !isContainedInList( pgId, protocolRecommendation.pg, isEqualNum ) )
         {
             return false;
         }
     }
     if( cattleId != null )
     {
-        if( !isContainedInList( cattleId, protocolRecommendation.Cattle, isEqualNum ) )
+        if( !isContainedInList( cattleId, protocolRecommendation.cattle, isEqualNum ) )
         {
             return false;
         }
@@ -2181,8 +2179,8 @@ function isEqualNum( num1, num2 )
  */
 function isEqualId( element1, element2 )
 {
-    let cmp1 = typeof element1 == "number" ? element1 : element1.Id;
-    let cmp2 = typeof element2 == "number" ? element2 : element2.Id;    
+    let cmp1 = typeof element1 == "number" ? element1 : element1.id;
+    let cmp2 = typeof element2 == "number" ? element2 : element2.id;    
     return cmp1 == cmp2 && cmp1 != null;
 } /* isEqualId() */
 
@@ -2194,7 +2192,7 @@ function isEqualId( element1, element2 )
  */
 function isProtocolTaskIdEqualToTaskId( protocolTask, task )
 {
-    return protocolTask.TaskId == task.Id && task.Id != null;
+    return protocolTask.taskId == task.id && task.id != null;
 } /* isProtocolTaskIdEqualToTaskId */
 
 /**
@@ -2205,7 +2203,7 @@ function isProtocolTaskIdEqualToTaskId( protocolTask, task )
  */
 function isEqualProtocolTask( task1, task2 )
 {
-    return task1.TaskId == task2.TaskId && task1.SecondsSinceStart == task2.SecondsSinceStart;
+    return task1.taskId == task2.taskId && task1.secondsSinceStart == task2.secondsSinceStart;
 } /* isEqualProtocolTask() */
 
 /**
@@ -2241,84 +2239,84 @@ function isValidProtocol( protocol, database )
     }
 
     // Check tasks   
-    if( protocol.Tasks == null || protocol.Tasks.length == null )
+    if( protocol.tasks == null || protocol.tasks.length == null )
     {        
         return false;
     }
     let list = findDatabaseList( DATABASE_LIST_TYPE.TASKS, database );
-    if( !isListContainedInList( protocol.Tasks, list, isProtocolTaskIdEqualToTaskId ) )
+    if( !isListContainedInList( protocol.tasks, list, isProtocolTaskIdEqualToTaskId ) )
     {        
         return false;
     }
     
     // Check recommendation    
-    if( protocol.Recommendations == null )
+    if( protocol.recommendations == null )
     {        
         return false;
     }
     
     // Check System Type    
-    if( protocol.Recommendations.SystemType == null || protocol.Recommendations.SystemType.length == null )
+    if( protocol.recommendations.systemType == null || protocol.recommendations.systemType.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.SYSTEM_TYPE, database );
-    if( !isListContainedInList( protocol.Recommendations.SystemType, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.systemType, list, isEqualId ) )
     {        
         return false;
     }
 
-    // Check Semen    
-    if( protocol.Recommendations.Semen == null || protocol.Recommendations.Semen.length == null )
+    // Check semen    
+    if( protocol.recommendations.semen == null || protocol.recommendations.semen.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.SEMEN, database );
-    if( !isListContainedInList( protocol.Recommendations.Semen, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.semen, list, isEqualId ) )
     {        
         return false;
     }
 
-    // Check Breed    
-    if( protocol.Recommendations.Breed == null || protocol.Recommendations.Breed.length == null )
+    // Check breed    
+    if( protocol.recommendations.breed == null || protocol.recommendations.breed.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.BREED, database );
-    if( !isListContainedInList( protocol.Recommendations.Breed, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.breed, list, isEqualId ) )
     {        
         return false;
     }
 
-    // Check GnRH    
-    if( protocol.Recommendations.GnRH == null || protocol.Recommendations.GnRH.length == null )
+    // Check gnrh    
+    if( protocol.recommendations.gnrh == null || protocol.recommendations.gnrh.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.GN_RH, database );
-    if( !isListContainedInList( protocol.Recommendations.GnRH, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.gnrh, list, isEqualId ) )
     {        
         return false;
     }
 
-    // Check PG    
-    if( protocol.Recommendations.PG == null || protocol.Recommendations.PG.length == null )
+    // Check pg    
+    if( protocol.recommendations.pg == null || protocol.recommendations.pg.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.P_G, database );
-    if( !isListContainedInList( protocol.Recommendations.PG, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.pg, list, isEqualId ) )
     {        
         return false;
     }
 
-    // Check Cattle    
-    if( protocol.Recommendations.Cattle == null || protocol.Recommendations.Cattle.length == null )
+    // Check cattle    
+    if( protocol.recommendations.cattle == null || protocol.recommendations.cattle.length == null )
     {        
         return false;
     }
     list = findDatabaseList( DATABASE_LIST_TYPE.CATTLE, database );
-    if( !isListContainedInList( protocol.Recommendations.Cattle, list, isEqualId ) )
+    if( !isListContainedInList( protocol.recommendations.cattle, list, isEqualId ) )
     {        
         return false;
     }
@@ -2454,11 +2452,11 @@ function isHormoneDatabaseType( databaseListType )
  */
 function adjustHormoneTaskName( task, database )
 {
-    let pg = getObjectById( database.SelectedPGId, DATABASE_LIST_TYPE.P_G, database );
-    let gnrh = getObjectById( database.SelectedGnRHId, DATABASE_LIST_TYPE.GN_RH, database );
+    let pg = getObjectById_private( database.selectedPGId, DATABASE_LIST_TYPE.P_G, database );
+    let gnrh = getObjectById_private( database.selectedGnRHId, DATABASE_LIST_TYPE.GN_RH, database );
     
-    task.Name = formatHormoneString( task.Name, pg, VAR_NAME.P_G );    
-    task.Name = formatHormoneString( task.Name, gnrh, VAR_NAME.GN_RH );    
+    task.name = formatHormoneString( task.name, pg, VAR_NAME.P_G );    
+    task.name = formatHormoneString( task.name, gnrh, VAR_NAME.GN_RH );    
 } /* adjustHormoneTaskName() */
 
 /**
@@ -2478,7 +2476,7 @@ function formatHormoneString( s, hormone, variableName )
     {
         for( let i = 1; i < s_split.length; i++ )
         {
-            newString = `${ newString }${ hormone.DefaultCCs }cc of ${ hormone.Name } (${ variableName })${ s_split[i] }`
+            newString = `${ newString }${ hormone.defaultCCs }cc of ${ hormone.name } (${ variableName })${ s_split[i] }`
         }
     }
     // hormone doesn't exist so... remove '$', and show variable name instead
@@ -2518,9 +2516,9 @@ function alphabetizeByName( list, start, length, charIndex, recDepth )
     let median = null;
     for( let i = start; i < start + length; i++ )
     {
-        if( charIndex < list[i].Name.length )
+        if( charIndex < list[i].name.length )
         {            
-            median = list[i].Name[ charIndex ];           
+            median = list[i].name[ charIndex ];           
             break;
         }
     }
@@ -2534,14 +2532,14 @@ function alphabetizeByName( list, start, length, charIndex, recDepth )
     // Partian
     while( u_start <= u_end )
     {
-        if( charIndex >= list[ u_start ].Name.length )
+        if( charIndex >= list[ u_start ].name.length )
         {            
             // end of string reached and sorted
             u_start++;
         }
         else
         {
-            let character = list[ u_start ].Name[ charIndex ];
+            let character = list[ u_start ].name[ charIndex ];
             if( character < median )
             {                
                 // Move to L

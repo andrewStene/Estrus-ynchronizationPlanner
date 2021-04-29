@@ -24,16 +24,21 @@ import { Button } from '@material-ui/core'
  */
 class Help extends React.Component
 {
-    constructor(props)
+    constructor( props )
     {
-        super(props);
-        this.state = {
+        super( props );
+        this.state = 
+        {
             prevPage: props.link
-        }
-          
-        
+        }; /* constructor() */
     }
-    render(){
+
+    /**
+     * @function render - renders the help component
+     * @returns {jsx} - a jsx component of the help page
+     */
+    render()
+    {
         return(
             <div>
                 <h1>How to use</h1>
@@ -46,7 +51,7 @@ class Help extends React.Component
                 <Button 
                     className = "sidebysidebutton" 
                     component = { Link } 
-                    to        = {this.state.prevPage} 
+                    to        = { this.state.prevPage } 
                     color     = "defualt" 
                     variant   = "contained" 
                     size      = "small" 
@@ -55,7 +60,6 @@ class Help extends React.Component
                 </Button>
             </div>
         );
-    }
-    
-} /* Help() */
+    } /* render() */    
+} /* end Help */
 export default Help;

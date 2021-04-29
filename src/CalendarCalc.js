@@ -28,7 +28,7 @@
  ******************************/
 
 export {
-    CalculateProtocolCalendar,    
+    calculateProtocolCalendar,    
     ScheduledEvent
 };
 
@@ -37,14 +37,14 @@ export {
  *********************************/
 
  /**
-  * @function CalculateProtocolCalendar - Creates a new CowSchedulingCalendar based on a protocol
+  * @function calculateProtocolCalendar - Creates a new CowSchedulingCalendar based on a protocol
   * @param {Protocol} protocol - the protocol to create the calendar from
   * @param {Date} dateOffset - the date to start the calendar
   * @param {Database} database - A database object which contains all the protocols
   * @param {String} name name of the group
   * @returns {ScheduledEvent[]} - A calendar of all the different tasks to be displayed 
   */
- function CalculateProtocolCalendar( protocol, dateOffset, database, name )
+ function calculateProtocolCalendar( protocol, dateOffset, database, name )
  {
     let events = [];
 
@@ -59,17 +59,17 @@ export {
         dateOffset = new Date();
     }
 
-    for( let i = 0; i < protocol.Tasks.length; i++ )
+    for( let i = 0; i < protocol.tasks.length; i++ )
     {
-        let task = database.GetUserTaskById( protocol.Tasks[i].TaskId );
+        let task = database.getUserTaskById( protocol.tasks[i].taskId );
         if( task == null )
         {
             return null;
         }
 
-        let startTime  = offsetDate( dateOffset, protocol.Tasks[i].SecondsSinceStart );
-        let endTime    = offsetDate( dateOffset, protocol.Tasks[i].SecondsSinceStart + task.TaskLength );
-        let groupTitle = `[GROUP: ${ name.toUpperCase() }] ${ task.Name }`;
+        let startTime  = offsetDate( dateOffset, protocol.tasks[i].secondsSinceStart );
+        let endTime    = offsetDate( dateOffset, protocol.tasks[i].secondsSinceStart + task.taskLength );
+        let groupTitle = `[GROUP: ${ name.toUpperCase() }] ${ task.name }`;
 
         console.log("Start Time:" + startTime + "\nEnd Time: " + endTime);
 
@@ -79,7 +79,7 @@ export {
     }
     return events;
 
-} /* CalculateprotocolCalendar() */
+} /* calculateprotocolCalendar() */
 
 /**********************************
  *          PUBLIC CLASS          *

@@ -18,7 +18,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import {  CalculateProtocolCalendar } from './CalendarCalc';
+import { calculateProtocolCalendar } from './CalendarCalc';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { Database } from './Database'
@@ -90,8 +90,8 @@ class CalendarPage extends React.Component
      */
     render()
     {
-        let protocol = this.state.database.GetObjectById( this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS );
-        let results  = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.database, this.state.protocolName );
+        let protocol = this.state.database.getObjectById( this.state.protocolId, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let results  = calculateProtocolCalendar( protocol, this.state.startingDate, this.state.database, this.state.protocolName );
         
         // if CalculateProtocolCalendar returns null for some reason 
         // Fills the array with placeholder data
@@ -120,12 +120,12 @@ class CalendarPage extends React.Component
                                             Print this out
                                     </Button>
                               }
-                    content = { () => this.componentRef}    
+                    content = { () => this.componentRef }    
                 />
                 <Button 
                     className = "sidebysidebutton"   
                     variant   = "contained"  
-                    onClick   = { () => this.exportCalendar(INITIAL_EVENTS) } 
+                    onClick   = { () => this.exportCalendar( INITIAL_EVENTS ) } 
                 > 
                     Download Calendar
                 </Button>
