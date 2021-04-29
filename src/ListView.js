@@ -85,7 +85,7 @@ class ListView extends React.Component
         let taskComponents = [];
 
         let styles = { };
-        let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let protocol = this.state.db.getObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
 
         if( protocol != null )
         {
@@ -173,7 +173,7 @@ class ListView extends React.Component
             <div> 
                   
                 <br/>              
-                <h1>Protocol - { this.state.db.GetNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
+                <h1>Protocol - { this.state.db.getNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
 
                    <List ref = { ( el ) => ( this.componentRef = el ) } >
 
