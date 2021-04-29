@@ -147,7 +147,7 @@ class App extends React.Component
     setPG( pg )
     {
         this.setState( { pg: pg } );
-        this.state.database.SelectHormoneId( parseInt( pg ), Database.DATABASE_LIST_TYPE.P_G );
+        this.state.database.selectHormoneId( parseInt( pg ), Database.DATABASE_LIST_TYPE.P_G );
         console.log( this.state.pg );
     } /* setPG() */
 
@@ -159,7 +159,7 @@ class App extends React.Component
     setGnRH( gnrh )
     {
         this.setState( { gnrh: gnrh } );
-        this.state.database.SelectHormoneId( parseInt( gnrh ), Database.DATABASE_LIST_TYPE.GN_RH );
+        this.state.database.selectHormoneId( parseInt( gnrh ), Database.DATABASE_LIST_TYPE.GN_RH );
         console.log( this.state.gnrh );
     } /* setGnRH() */ 
 
@@ -210,7 +210,7 @@ class App extends React.Component
      */
     getProtocolStringFromState()
     {
-        let string = this.state.database.GetObjectById(this.state.id, Database.DATABASE_LIST_NAME.PROTOCOLS);
+        let string = this.state.database.getObjectById(this.state.id, Database.DATABASE_LIST_NAME.PROTOCOLS);
         if(string === null)
         {
             return "";
@@ -227,7 +227,7 @@ class App extends React.Component
 
         if( this.state.waitToRender )
         {
-            Database.GetJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
+            Database.getJSONData( './data.json' ).then( ( json ) => { this.setState( { database: new Database( json ), waitToRender: false } ) } );
             return( <div></div> );
         }
         else

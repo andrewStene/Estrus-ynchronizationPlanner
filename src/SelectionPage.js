@@ -159,11 +159,11 @@ class SelectionPage extends React.Component
     */
     mapListToMenuItems(databaseListType)
     {
-        return ( this.state.database.GetDatabaseListElements( databaseListType ).map( 
+        return ( this.state.database.getDatabaseListElements( databaseListType ).map( 
                  (item) => 
                   < MenuItem
                     key   = { item.Name }
-                    value = { this.state.database.GetDatabaseName( databaseListType ) + "-" + item.Id }
+                    value = { this.state.database.getDatabaseName( databaseListType ) + "-" + item.Id }
                   > 
                     { item.Name } 
                   </MenuItem > ));

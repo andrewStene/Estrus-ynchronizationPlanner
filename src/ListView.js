@@ -21,7 +21,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import ListItemText from '@material-ui/core/ListItemText';
-import { CalculateProtocolCalendar } from './CalendarCalc';
+import { calculateProtocolCalendar } from './CalendarCalc';
 import { Database } from './Database.js';
 import Divider from '@material-ui/core/Divider';
 import './index.css';
@@ -78,11 +78,11 @@ class ListView extends React.Component
     generateTaskComponents()
     {
         let taskComponents = [];
-        let styles = { paddingLeft:  700 };
-        let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let styles   = { paddingLeft:  700 };
+        let protocol = this.state.db.getObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
         if( protocol != null )
         {
-            let events          = CalculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
+            let events = calculateProtocolCalendar( protocol, this.state.startingDate, this.state.db, this.state.protocolName );        
             for( let i = 0; i < events.length; i++ )
             {
                 taskComponents.push(<ListItem style={styles}> { `${ this.formatDate( events[i].start ) } > ${ events[i].title }` } </ListItem>);
@@ -162,7 +162,7 @@ class ListView extends React.Component
         const taskComponents = this.generateTaskComponents();
         return (
             <div>               
-                <h1>Protocol - { this.state.db.GetNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
+                <h1>Protocol - { this.state.db.getNameById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS ) }</h1>
                    <List>
                        { taskComponents }
                    </List>

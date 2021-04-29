@@ -29,7 +29,7 @@
  ******************************/
 
 export {
-    CalculateProtocolCalendar,    
+    calculateProtocolCalendar,    
     ScheduledEvent
 };
 
@@ -38,14 +38,14 @@ export {
  *********************************/
 
  /**
-  * @function CalculateProtocolCalendar - Creates a new CowSchedulingCalendar based on a protocol
+  * @function calculateProtocolCalendar - Creates a new CowSchedulingCalendar based on a protocol
   * @param {Protocol} protocol - the protocol to create the calendar from
   * @param {Date} dateOffset - the date to start the calendar
   * @param {Database} database - A database object which contains all the protocols
   * @param {String} name name of the group
   * @returns {ScheduledEvent[]} - A calendar of all the different tasks to be displayed 
   */
- function CalculateProtocolCalendar( protocol, dateOffset, database, name )
+ function calculateProtocolCalendar( protocol, dateOffset, database, name )
  {
     let events = [];
 
@@ -62,7 +62,7 @@ export {
 
     for( let i = 0; i < protocol.Tasks.length; i++ )
     {
-        let task = database.GetUserTaskById( protocol.Tasks[i].TaskId );
+        let task = database.getUserTaskById( protocol.Tasks[i].TaskId );
         if( task == null )
         {
             return null;
@@ -80,7 +80,7 @@ export {
     }
     return events;
 
-} /* CalculateprotocolCalendar() */
+} /* calculateprotocolCalendar() */
 
 /**********************************
  *          PUBLIC CLASS          *

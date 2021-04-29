@@ -81,7 +81,7 @@ class ProtocolPage extends React.Component
     {   
         console.log("type: " + typeof(event.target.value));
     
-        let protocol    = this.state.database.GetObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
+        let protocol    = this.state.database.getObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
         let name;
         let id;        
@@ -155,7 +155,7 @@ class ProtocolPage extends React.Component
      */
     lookupNameFromLabel( label, databaseListType )
     {
-        let name = this.state.database.GetNameById( parseIdFromLabel( label ), databaseListType );
+        let name = this.state.database.getNameById( parseIdFromLabel( label ), databaseListType );
         if( name === "" )
         {
             name = <em>Not Selected</em>;
@@ -169,7 +169,7 @@ class ProtocolPage extends React.Component
      */
     render()
     {        
-        const recommendedProtocols = this.state.database.GetRecommendedProtocols(
+        const recommendedProtocols = this.state.database.getRecommendedProtocols(
                                      parseIdFromLabel( this.state.semen ),
                                      parseIdFromLabel( this.state.systemType ),
                                      parseIdFromLabel( this.state.breed ),
