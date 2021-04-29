@@ -20,7 +20,6 @@
  *          IMPORTS
  ******************************/
 
- import React from 'react';
  import { Database } from './Database.js';
 
 

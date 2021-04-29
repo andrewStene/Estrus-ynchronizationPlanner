@@ -23,11 +23,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Database } from './Database.js';
-import centering from './ProtocolPage.css';
 import 'date-fns';
-import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
@@ -93,7 +90,7 @@ class ProtocolPage extends React.Component
             name        = protocol.name;
             id          = protocol.id;
         }       
-    
+      
         this.setState( { protocolString: name } );        
         this.setState( { description: description } );
         this.props.setProtocol( id );
@@ -126,25 +123,25 @@ class ProtocolPage extends React.Component
 
         console.log("Exiting updateParentStartDate");
     } /* updateParentStartDate() */
-    
+
     /**
-     * @function updateParentId - updates the parent app state
+     * Updates the state of the parent component to the Starting Time selected
+     * by the user in this class
+     */
+    updateParentStartDate()
+    {   
+        this.props.setStartDateTime( this.state.startDate );
+    }
+
+
+    /**
+     * Updates the state of the parent component to the ID of the protocol
+     * selected by the user in this class
      */
     updateParentId()
     {   
-        //console.log("In updateParentStartDate");
-        this.props.setProtocol( this.state.id );
-        //console.log("Exiting updateParentStartDate");    
-    } /* updateParentId() */
-
-     /**
-     * Not currently implemented
-     * @param {*} event 
-     */
-    verifyInput( event )
-    {
-        event.preventDefualt();       
-    } /* verifyInput() */
+         this.props.setProtocol(this.state.id);
+    }
 
     /**
      * Looks up a given name in the database given a label
@@ -240,9 +237,7 @@ class ProtocolPage extends React.Component
                         //onError   = { console.log }
                         format      = "MM/dd/yyyy hh:mm aa"/>
                     </MuiPickersUtilsProvider>
-                  
-                 
-                    
+   
                     <br/>
                     <br/>
 

@@ -19,8 +19,6 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 
-
-
 /**
  * The class that represents the react component that is the first page
  * that a user sees when accessing the application
