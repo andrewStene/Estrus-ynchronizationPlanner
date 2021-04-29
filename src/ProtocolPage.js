@@ -84,11 +84,11 @@ class ProtocolPage extends React.Component
         let protocol    = this.state.database.GetObjectById( event.target.value, Database.DATABASE_LIST_TYPE.PROTOCOLS );
         let description = "";
         let name;
-        let id;
+        let id;        
         
-        console.log(protocol.Name);
         if( protocol != null )
         {
+            console.log(protocol.Name);
             description = protocol.Description;
             name = protocol.Name;
             id = protocol.Id;
@@ -175,7 +175,7 @@ class ProtocolPage extends React.Component
                                      parseIdFromLabel( this.state.breed ),
                                      null,
                                      null,
-                                     null ).map(
+                                     parseIdFromLabel( this.state.cowType ) ).map(
                                      ( protocol ) => < MenuItem 
                                        value = { protocol.Id } > { protocol.Name } </ MenuItem > );
         
