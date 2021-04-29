@@ -79,7 +79,7 @@ class ListView extends React.Component
     generateTaskComponents()
     {
         let taskComponents = [];
-        let styles = { paddingLeft:  700 };
+        let styles = { };
         let protocol       = this.state.db.GetObjectById( parseInt( this.state.protocolId ), Database.DATABASE_LIST_TYPE.PROTOCOLS );
         if( protocol != null )
         {
