@@ -77,9 +77,9 @@ const DATABASE_LIST_NAME =
  */
 const VAR_NAME = 
 {
-    P_G: "PG",
+    P_G:   "PG",
     GN_RH: "GnRH"
-}
+};
 
 //#endregion
 /********************************/
@@ -272,9 +272,12 @@ class DatabaseModel
  * GetRecommendedProtocols
  * GetRecommendedProtocolNames
  * AddListElement
+ * AddHormoneProduct
  * AddTask
  * UpdateListElementName
+ * UpdateHormoneProduct
  * UpdateTask
+ * UpdateProtocolText
  * DeleteObject
  * AddRecommendedToProtocol
  * RemoveRecommendedFromProtocol
@@ -411,13 +414,20 @@ class Database
     /**
      * @function GetDatabaseListElements - Lookup the elements of the database list
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
+     * @param {boolean} sort - whether to return a sorted list or not
      * @returns {ListType[]} - a list of all the elements of a given list
      */
-    GetDatabaseListElements( databaseListType )
+    GetDatabaseListElements( databaseListType, sort )
     {
-        if( checkParameterTypes( databaseListType, "number" ) )
+        if( sort == null )
         {
-            return getDatabaseListElements( databaseListType, databaseModels[ this.Id ] );
+            sort = false;
+        }
+
+        if( checkParameterTypes( [ databaseListType, sort ], 
+                                 [ "number",         "boolean" ] ) )
+        {
+            return getDatabaseListElements( databaseListType, sort, databaseModels[ this.Id ] );
         }
         return [];
     } /* GetDatabaseListElements() */
@@ -425,13 +435,20 @@ class Database
     /**
      * @function GetDatabaseList - Lookup the names of the elements in the database
      * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
+     * @param {boolean} sort - whether to sort the list or not
      * @returns {string[]} - A list of the names of a given list  
      */
-    GetDatabaseListNames( databaseListType )
+    GetDatabaseListNames( databaseListType, sort )
     {
-        if( checkParameterTypes( databaseListType, "number" ) )
+        if( sort == null )
         {
-            return getDatabaseListNames( databaseListType, databaseModels[ this.Id ] );
+            sort = false;
+        }
+
+        if( checkParameterTypes( [ databaseListType, sort ], 
+                                 [ "number",         "boolean" ] ) )
+        {
+            return getDatabaseListNames( databaseListType, sort, databaseModels[ this.Id ] );
         }
         return [];
     } /* GetDatabaseList() */
@@ -494,6 +511,23 @@ class Database
     } /* AddListElement() */
 
     /**
+     * @function AddHormoneProduct - Add a new list hormone product to the database if it doesn't already exist
+     * @param {string} hormoneName - the name of the product
+     * @param {number} defaultCCs - the default dosage for the product
+     * @param {DATABASE_LIST_TYPE} databaseListType - which list to add to 
+     * @returns {boolean} - whether the product was successfully addded or not
+     */
+    AddHormoneProduct( hormoneName, defaultCCs, databaseListType )
+    {
+        if( checkParameterTypes( [ hormoneName, defaultCCs, databaseListType ], 
+                                 [ "string",    "number",   "number" ] ) )
+        {
+            return addHormoneProduct( hormoneName, defaultCCs, databaseListType, databaseModels[ this.Id ] );
+        }
+        return false;
+    } /* AddHormoneProduct() */
+
+    /**
      * @function AddTask - Add a new task to the database if it doesn't already exist
      * @param {string} taskName - the name of the task to add
      * @param {string} taskDescription - the description of the task
@@ -528,6 +562,24 @@ class Database
     } /* UpdateListElementName() */
 
     /**
+     * @function UpdateHormoneProduct - update a product with a new name and/or default dosage
+     * @param {number} productId - the id of the product to update 
+     * @param {string} newProductName - the new name of the product
+     * @param {number} newDefaultCCs - the new default dosage of the product
+     * @param {DATABASE_LIST_TYPE} databaseListType - which list to update
+     * @returns {boolean} - whether the product was updated or not 
+     */
+    UpdateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType )
+    {
+        if( checkNullableParameters( [ productId,  newProductName, newDefaultCCs, databaseListType ],
+                                     [ "number",   "string",       "number",      "number" ] ) )
+        {
+            return updateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType, databaseModels[ this.Id ] );
+        }        
+        return false;
+    } /* UpdateHormoneProduct() */
+
+    /**
      * @function UpdateTask - update a task with a new name and/or task length
      * @param {number} taskId - the id of the task to update 
      * @param {string} newTaskName - the new name of the task
@@ -544,6 +596,23 @@ class Database
         }
         return false;
     } /* UpdateTask() */
+
+    /**
+    * @function UpdateProtocolText - update a protocol with a new name and/or description
+    * @param {number} protocolId - the id of the protocol to update 
+    * @param {string} newProtocolName - the new name of the protocol
+    * @param {string} newProtocolDescription - the new description of the protocol
+    * @returns {boolean} - whether the protocol was updated or not
+    */
+    UpdateProtocolText( protocolId, newProtocolName, newProtocolDescription )
+    {
+        if( checkNullableParameters( [ protocolId,  newProtocolName, newProtocolDescription, ],
+                                     [ "number",    "string",        "string", ] ) )
+        {
+            return updateProtocolText( protocolId, newProtocolName, newProtocolDescription, databaseModels[ this.Id ] );
+        }
+        return false;
+    } /* UpdateProtocolText() */
 
     /**
      * @function DeleteObject - removes an object from the database
@@ -765,7 +834,7 @@ class HormoneProduct extends ListType
         super( id, name );
 
         this.DefaultCCs = 0;
-        if( typeof defaultCCs == "number" )
+        if( typeof defaultCCs == "number" && defaultCCs >= 0 )
         {
             this.DefaultCCs = defaultCCs;
         }
@@ -886,7 +955,7 @@ class ProtocolTask
         {
             this.TaskId = taskId;
         }
-        if( typeof secondsSinceStart == "number" && secondsSinceStart >= 0 )
+        if( typeof secondsSinceStart == "number" )
         {
             this.SecondsSinceStart = secondsSinceStart;
         }    
@@ -918,49 +987,49 @@ class ProtocolRecommendation
     */
     constructor( systemType, semen, breed, gnRH, pG, cattle )
     {
+        this.SystemType = [];
+        this.Semen      = [];
+        this.Breed      = [];
+        this.GnRH       = [];
+        this.PG         = [];
+        this.Cattle     = [];
         if( typeof systemType == "object" )
-        {
-            this.SystemType = [];
+        {            
             for( let i = 0; i < systemType.length; i++ )
             {
                 this.SystemType.push( systemType[i] );
             }
         }
         if( typeof semen == "object" )
-        {
-            this.Semen = [];
+        {            
             for( let i = 0; i < semen.length; i++ )
             {
                 this.Semen.push( semen[i] );
             }
         }
         if( typeof breed == "object" )
-        {
-            this.Breed = [];
+        {            
             for( let i = 0; i < breed.length; i++ )
             {
                 this.Breed.push( breed[i] );
             }
         }
         if( typeof gnRH == "object" )
-        {
-            this.GnRH = [];
+        {            
             for( let i = 0; i < gnRH.length; i++ )
             {
                 this.GnRH.push( gnRH[i] );
             }
         }
         if( typeof pG == "object" )
-        {
-            this.PG = [];
+        {           
             for( let i = 0; i < pG.length; i++ )
             {
                 this.PG.push( pG[i] );
             }
         }    
         if( typeof cattle == "object" )
-        {
-            this.Cattle = [];
+        {            
             for( let i = 0; i < cattle.length; i++ )
             {
                 this.Cattle.push( cattle[i] );
@@ -1005,7 +1074,6 @@ class ProtocolRecommendation
         {
             cattleCopy.push( this.Cattle[i] );
         }
-
         return new ProtocolRecommendation( systemTypeCopy, semenCopy, breedCopy, gnRHCopy, pgCopy, cattleCopy );
     } /* Copy() */
 } /* class ProtocolRecommendation */
@@ -1144,10 +1212,11 @@ function getUserTaskById( id, database )
 /**
  * @function getDatabaseListElements - Get the list of elements in a database list
  * @param {DATABASE_LIST_TYPE} databaseListType - which list to get
+ * @param {boolean} sort - whether to sort the list or not
  * @param {DatabaseModel} database - the database to search
  * @returns {ListType[]} - A list of elements with their
  */
-function getDatabaseListElements( databaseListType, database )
+function getDatabaseListElements( databaseListType, sort, database )
 {
     let newList = [];
     let list    = findDatabaseList( databaseListType, database );
@@ -1160,28 +1229,35 @@ function getDatabaseListElements( databaseListType, database )
     for( let i = 0; i < list.length; i++ )
     {
         newList.push( list[i].Copy() );
-    }  
+    }
+
+    if( sort == true )
+    {
+        alphabetizeByName( newList, 0, newList.length, 0, 0 );
+    }
     return newList;
 } /* getDatabaseListElements() */
 
 /** @function getDatabaseList
  * Get the list of names to display
  * @param {DATABASE_LIST_TYPE} databaseListType - The list to get
+ * @param {boolean} sort - whether to sort the list or not
  * @param {DatabaseModel} database - The database to search
  * @returns {string[]} - the list of names in the database list
  */
-function getDatabaseListNames( databaseListType, database )
+function getDatabaseListNames( databaseListType, sort, database )
 {
     let newList = [];
-    let list    = findDatabaseList( databaseListType, database );
+    let list    = getDatabaseListElements( databaseListType, sort, database );
 
     if( list != null )
     {
         for( let i = 0; i < list.length; i++ )
         {
-            newList.push( databaseElementToString(list[i]) );
+            newList.push( databaseElementToString( list[i] ) );
         }
     }
+    
     return newList;
 } /* getDatabaseList() */
 
@@ -1262,11 +1338,31 @@ function addListElement( databaseListType, elementName, database )
 
     if( list != null )
     {
-        let newId = list[ list.length - 1 ].Id + 1; // Take last id and add 1
+        let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
         return addElementToDatabase( new ListType( newId, elementName ), list );
     }
     return false;
 } /* addListElement() */
+
+/**
+* @function addHormoneProduct - Add a new list hormone product to the database if it doesn't already exist
+* @param {string} hormoneName - the name of the product
+* @param {number} defaultCCs - the default dosage for the product
+* @param {DATABASE_LIST_TYPE} databaseListType - which list to add to
+* @param {DatabaseModel} database - the database to add to
+* @returns {boolean} - whether the product was successfully addded or not
+*/
+function addHormoneProduct( hormoneName, defaultCCs, databaseListType, database )
+{
+    let list = findDatabaseProductList( databaseListType, database );
+
+    if( list != null )
+    {
+        let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
+        return addElementToDatabase( new HormoneProduct( newId, hormoneName, defaultCCs ), list );
+    }
+    return false;
+} /* addHormoneProduct() */
 
 /**
  * @function addTask - Add a new task to the database
@@ -1278,14 +1374,9 @@ function addListElement( databaseListType, elementName, database )
  */
 function addTask( taskName, taskDescription, taskLength, database )
 {
-    let list = database.Tasks;
-
-    if( taskName == null || taskDescription == null || taskLength == null )
-    {
-        return false;
-    }
+    let list = database.Tasks;    
     
-    let newId = list[ list.length - 1 ].Id + 1; // Take last id and add 1
+    let newId = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // Take last id and add 1 -- default 0
     return addElementToDatabase( new Task( newId, taskName, taskDescription, taskLength ), list );
 } /* addTask() */
 
@@ -1320,6 +1411,45 @@ function updateListElementName( databaseListType, elementId, newName, database )
 
     return true;
 } /* updateListElementName() */
+
+/**
+* @function updateHormoneProduct - update a product with a new name and/or default dosage
+* @param {number} productId - the id of the product to update 
+* @param {string} newProductName - the new name of the product
+* @param {number} newDefaultCCs - the new default dosage of the product
+* @param {DATABASE_LIST_TYPE} databaseListType - which list to update
+* @param {DatabaseModel} database - the database to traverse
+* @returns {boolean} - whether the product was updated or not 
+*/
+function updateHormoneProduct( productId, newProductName, newDefaultCCs, databaseListType, database )
+{
+    let list = findDatabaseProductList( databaseListType, database );
+    if( list == null 
+        || productId == null 
+        || newProductName == null && newDefaultCCs == null
+        || newDefaultCCs < 0 )
+    {
+        return false;
+    }
+
+    let oldProduct = findObjectByIdInList( productId, list, 0, list.length );
+
+    if( oldProduct == null )
+    {
+        return false;
+    }
+
+    if( newProductName != null )
+    {
+        oldProduct.Name = newProductName;
+    }
+    if( newDefaultCCs != null )
+    {
+        oldProduct.DefaultCCs = newDefaultCCs;
+    }
+
+    return true;
+} /* updateHormoneProduct() */
 
 /**
  * @function updateTask - updates a given task in the database
@@ -1366,6 +1496,44 @@ function updateTask( taskId, newTaskName, newTaskDescription, newTaskLength, dat
 } /* updateTask() */
 
 /**
+* @function updateProtocolText - update a protocol with a new name and/or description
+* @param {number} protocolId - the id of the protocol to update 
+* @param {string} newProtocolName - the new name of the protocol
+* @param {string} newProtocolDescription - the new description of the protocol
+* @param {DatabaseModel} database - the database to traverse
+* @returns {boolean} - whether the protocol was updated or not
+*/
+function updateProtocolText( protocolId, newProtocolName, newProtocolDescription, database )
+{
+    let list = database.Protocols;
+    if( protocolId == null 
+        || newProtocolName == null && newProtocolDescription == null )
+    {
+        return false;
+    }
+
+    let oldProtocol = findObjectByIdInList( protocolId, list, 0, list.length );
+    
+    if( oldProtocol == null )
+    {
+        return false;
+    }
+
+    // Update Protocol
+    if( newProtocolName != null )
+    {
+        oldProtocol.Name = newProtocolName;
+    }
+
+    if( newProtocolDescription != null )
+    {
+        oldProtocol.Description = newProtocolDescription;
+    }
+
+    return true;
+} /* updateProtocolText() */
+
+/**
 * @function deleteObject - removes an object from the database
 * @param {number} id - the id of the object to remove
 * @param {DATABASE_LIST_TYPE} databaseListType - which list to remove object from
@@ -1402,6 +1570,23 @@ function deleteObject( id, databaseListType, database )
                         }
                     }
                 }                
+            }
+
+            // Update protocol tasks dependencies if recommended element deleted 
+            if( databaseListType == DATABASE_LIST_TYPE.TASKS )
+            {
+                let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );
+                for( let i = 0; i < protocols.length; i++ )
+                {
+                    let tasks = protocols[i].Tasks;
+                    for( let j = 0; j < tasks.length; j++ )
+                    {
+                        if( tasks[j].TaskId == id )
+                        {
+                            tasks.splice( j, 1 );
+                        }
+                    }
+                }
             }
 
             // Update selected id if was deleted
@@ -1526,7 +1711,7 @@ function addTaskToProtocol( taskId, protocolId, secondsSinceStart, database )
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );
     let elementCheck = getObjectById( taskId, Database.DATABASE_LIST_TYPE.TASKS, database );
 
-    if( protocol != null && elementCheck != null && secondsSinceStart >= 0 )
+    if( protocol != null && elementCheck != null )
     {
         let protocolTask = new ProtocolTask( taskId, secondsSinceStart );
         if( !isContainedInList( protocolTask, protocol.Tasks, isEqualProtocolTask ) )
@@ -1588,7 +1773,7 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
     let protocols = findDatabaseList( Database.DATABASE_LIST_TYPE.PROTOCOLS, database );    
     let protocol = findObjectByIdInList( protocolId, protocols, 0, protocols.length );
 
-    if( protocol != null && newSecondsSinceStart >= 0 )
+    if( protocol != null )
     {
         let taskUpdated = false;
         let tasks = protocol.Tasks;
@@ -1639,7 +1824,7 @@ function updateTaskStartInProtocol( oldTask, newSecondsSinceStart, protocolId, d
  function addProtocol( protocolName, description, tasks, recommendations, database )
  {
      let list = findDatabaseList( DATABASE_LIST_TYPE.PROTOCOLS, database );
-     let id = list[ list.length - 1 ].Id + 1; // take last elements id and add 1
+     let id = list.length > 0 ? list[ list.length - 1 ].Id + 1 : 0; // take last elements id and add 1 -- default 0
      let protocol = new Protocol( id, protocolName, description, tasks, recommendations );
      if( isValidProtocol( protocol, database ) )
      {
@@ -1742,6 +1927,12 @@ function findDatabaseList( databaseListType, database )
         return list;
     }
 
+    list = findDatabaseProductList( databaseListType, database );
+    if( list != null )
+    {
+        return list;
+    }
+
     switch( databaseListType )
     {
         case DATABASE_LIST_TYPE.TASKS:
@@ -1756,7 +1947,7 @@ function findDatabaseList( databaseListType, database )
 } /* findDatabaseList() */
 
 /**
- * @function findDatabaseList - find a given input database list
+ * @function findDatabaseInputList - find a given input database list
  * @param {DATABASE_LIST_TYPE} databaseListType - the list to find
  * @param {DatabaseModel} database - the database to traverse
  * @returns {ListType[]} - the input database list
@@ -1772,13 +1963,7 @@ function findDatabaseInputList( databaseListType, database )
             return database.Semen;
     
         case DATABASE_LIST_TYPE.BREED:
-            return database.Breed;
-
-        case DATABASE_LIST_TYPE.P_G:
-            return database.PG;
-
-        case DATABASE_LIST_TYPE.GN_RH:
-            return database.GnRH;
+            return database.Breed;        
 
         case DATABASE_LIST_TYPE.CATTLE:
             return database.Cattle;
@@ -1787,6 +1972,27 @@ function findDatabaseInputList( databaseListType, database )
             return null;
     }
 } /* findDatabaseInputList() */
+
+/**
+ * @function findDatabaseProductList - find a given product database list
+ * @param {DATABASE_LIST_TYPE} databaseListType - the list to find
+ * @param {DatabaseModel} database - the database to traverse
+ * @returns {HormoneProduct[]} - the product database list
+ */
+function findDatabaseProductList( databaseListType, database )
+{
+    switch( databaseListType )
+    {
+        case DATABASE_LIST_TYPE.P_G:
+            return database.PG;
+
+        case DATABASE_LIST_TYPE.GN_RH:
+            return database.GnRH;
+
+        default:
+            return null;
+    }
+} /* findDatabaseProductList() */
 
 /**
  * @function findIndexByIdInList - finds the index of the list which contains element with the id
@@ -2285,6 +2491,97 @@ function formatHormoneString( s, hormone, variableName )
     }    
     return newString; 
 } /* formatHormoneTask() */
+
+/**
+ * @function ListType - alphabetizes a list by name
+ * @param {ListType[]} list - the list to alphabetize
+ * @param {number} start - the starting index
+ * @param {number} length - how far of the list to alphabetize
+ * @param {number} charIndex - which character to sort on
+ * @param {number} recDepth - how deep we are into recursion
+ */
+function alphabetizeByName( list, start, length, charIndex, recDepth )
+{
+    const recursionMax = 75
+
+    // Already sorted
+    if( length <= 1 || recDepth >= recursionMax )
+    {        
+        return;
+    }
+
+    // (L)ess (U)nsorted (M)edian (G)reater
+    let u_start = start;
+    let u_end = start + length - 1;
+    let m_end = start + length - 1;
+
+    let median = null;
+    for( let i = start; i < start + length; i++ )
+    {
+        if( charIndex < list[i].Name.length )
+        {            
+            median = list[i].Name[ charIndex ];           
+            break;
+        }
+    }
+
+    // Already sorted
+    if( median == null )
+    {        
+        return;
+    }
+
+    // Partian
+    while( u_start <= u_end )
+    {
+        if( charIndex >= list[ u_start ].Name.length )
+        {            
+            // end of string reached and sorted
+            u_start++;
+        }
+        else
+        {
+            let character = list[ u_start ].Name[ charIndex ];
+            if( character < median )
+            {                
+                // Move to L
+                u_start++
+            }
+            else if( character > median )
+            {                
+                // Move to G               
+                swapElements( u_start, m_end, list );                
+                swapElements( u_start, u_end, list );
+                u_end--;
+                m_end--;                
+            }
+            else
+            {                
+                // Move to M
+                swapElements( u_start, u_end, list );
+                u_end--;
+            }
+        } 
+    }
+
+    // Sort L if more than 1 element    
+    if( u_start - start > 1 )
+    {        
+        alphabetizeByName( list, start, u_start - start, charIndex, recDepth + 1 );
+    }
+
+    // Sort M if more than 1 element    
+    if( m_end - u_end > 1 )
+    {        
+        alphabetizeByName( list, u_start, m_end - u_end, charIndex + 1, recDepth + 1 );
+    }
+
+    // Sort G if more than 1 element    
+    if( ( start + length - 1 ) - m_end > 1 )
+    {        
+        alphabetizeByName( list, m_end + 1, ( start + length - 1 ) - m_end, charIndex, recDepth + 1 );
+    }
+} /* alphabetizeByName() */
 
 //#endregion
 /********************************/
